@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Documentation (preserve original formatting)
+docs/
+README.md
+*.md
+
+# Config files (preserve original formatting)
+*.json
+.prettierrc
