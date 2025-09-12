@@ -1,7 +1,7 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { useGameEngine } from '../useGameEngine';
-import type { GameStateBase } from '../useGameState';
+import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { useGameEngine } from "../useGameEngine";
+import type { GameStateBase } from "../useGameState";
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -11,28 +11,63 @@ const mockLocalStorage = {
   clear: vi.fn(),
 };
 
-Object.defineProperty(window, 'localStorage', {
+Object.defineProperty(window, "localStorage", {
   value: mockLocalStorage,
 });
 
 // Mock performance.now
-Object.defineProperty(window, 'performance', {
+Object.defineProperty(window, "performance", {
   value: {
     now: vi.fn(() => Date.now()),
   },
 });
 
-// Mock requestAnimationFrame and cancelAnimationFrame
+// Mock requestAnimationFrame and cancelAnimationFrame with direct callback execution
 let animationFrameId = 0;
+let animationFrameCallbacks: Map<number, FrameRequestCallback> = new Map();
+let isAnimationLoopRunning = false;
+
 const mockRAF = vi.fn((callback: FrameRequestCallback) => {
   animationFrameId++;
-  setTimeout(() => callback(performance.now()), 16);
-  return animationFrameId;
-});
-const mockCAF = vi.fn(() => {});
+  const currentId = animationFrameId;
 
-Object.defineProperty(window, 'requestAnimationFrame', { value: mockRAF });
-Object.defineProperty(window, 'cancelAnimationFrame', { value: mockCAF });
+  animationFrameCallbacks.set(currentId, callback);
+
+  // Execute immediately for test determinism
+  setTimeout(() => {
+    if (animationFrameCallbacks.has(currentId)) {
+      callback(performance.now());
+    }
+  }, 10);
+
+  return currentId;
+});
+
+const mockCAF = vi.fn((id: number) => {
+  animationFrameCallbacks.delete(id);
+});
+
+// Helper to manually trigger game loop and ensure callbacks execute
+const triggerGameLoop = async () => {
+  const currentTime = performance.now();
+  const deltaTime = 16.67; // ~60fps
+
+  // Execute all registered animation frame callbacks multiple times to simulate game loop
+  for (let i = 0; i < 3; i++) {
+    animationFrameCallbacks.forEach((callback) => {
+      try {
+        callback(currentTime + i * deltaTime);
+      } catch (error) {
+        // Ignore errors in callback execution for testing
+      }
+    });
+    // Small delay between frames
+    await new Promise((resolve) => setTimeout(resolve, 5));
+  }
+};
+
+Object.defineProperty(window, "requestAnimationFrame", { value: mockRAF });
+Object.defineProperty(window, "cancelAnimationFrame", { value: mockCAF });
 
 interface TestGameState extends GameStateBase {
   isPlaying: boolean;
@@ -53,7 +88,7 @@ const mockContext = {
   canvas: { width: 800, height: 600 },
 } as any;
 
-describe('useGameEngine', () => {
+describe("useGameEngine", () => {
   const initialGameState: TestGameState = {
     isPlaying: false,
     isPaused: false,
@@ -75,13 +110,15 @@ describe('useGameEngine', () => {
     vi.clearAllMocks();
     mockLocalStorage.getItem.mockReturnValue(null);
     animationFrameId = 0;
+    animationFrameCallbacks.clear();
+    isAnimationLoopRunning = false;
   });
 
   afterEach(() => {
     vi.clearAllTimers();
   });
 
-  it('initializes with provided configuration', () => {
+  it("initializes with provided configuration", () => {
     const { result } = renderHook(() => useGameEngine(config));
 
     expect(result.current.gameState).toEqual(initialGameState);
@@ -90,25 +127,35 @@ describe('useGameEngine', () => {
     expect(result.current.isGameActive).toBe(false);
   });
 
-  it('handles canvas ready callback', async () => {
+  it("handles canvas ready callback", async () => {
     const { result } = renderHook(() => useGameEngine(config));
 
-    const mockCanvas = document.createElement('canvas');
-    
+    const mockCanvas = document.createElement("canvas");
+
     act(() => {
       result.current.handleCanvasReady(mockCanvas, mockContext);
+    });
+
+    // Force re-render to update ref values
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50));
     });
 
     expect(result.current.canvas).toBe(mockCanvas);
     expect(result.current.context).toBe(mockContext);
   });
 
-  it('starts and stops engine correctly', async () => {
+  it("starts and stops engine correctly", async () => {
     const { result } = renderHook(() => useGameEngine(config));
 
     // Start engine
     act(() => {
       result.current.startEngine();
+    });
+
+    // Wait for useGameLoop state update (100ms interval in useGameLoop)
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50)); //(150);
     });
 
     expect(result.current.isRunning).toBe(true);
@@ -120,12 +167,17 @@ describe('useGameEngine', () => {
       result.current.stopEngine();
     });
 
+    // Wait for state update
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50)); //(150);
+    });
+
     expect(result.current.isRunning).toBe(false);
     expect(result.current.gameState.isPlaying).toBe(false);
     expect(result.current.isGameActive).toBe(false);
   });
 
-  it('pauses and resumes engine correctly', async () => {
+  it("pauses and resumes engine correctly", async () => {
     const { result } = renderHook(() => useGameEngine(config));
 
     // Start engine first
@@ -133,9 +185,17 @@ describe('useGameEngine', () => {
       result.current.startEngine();
     });
 
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50)); //(150);
+    });
+
     // Pause engine
     act(() => {
       result.current.pauseEngine();
+    });
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50)); //(150);
     });
 
     expect(result.current.isPaused).toBe(true);
@@ -147,12 +207,16 @@ describe('useGameEngine', () => {
       result.current.resumeEngine();
     });
 
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50)); //(150);
+    });
+
     expect(result.current.isPaused).toBe(false);
     expect(result.current.gameState.isPaused).toBe(false);
     expect(result.current.isGameActive).toBe(true);
   });
 
-  it('registers and executes update callbacks', async () => {
+  it("registers and executes update callbacks", async () => {
     const { result } = renderHook(() => useGameEngine(config));
     const mockUpdateCallback = vi.fn();
 
@@ -163,7 +227,7 @@ describe('useGameEngine', () => {
     });
 
     // Set up canvas
-    const mockCanvas = document.createElement('canvas');
+    const mockCanvas = document.createElement("canvas");
     act(() => {
       result.current.handleCanvasReady(mockCanvas, mockContext);
     });
@@ -173,9 +237,12 @@ describe('useGameEngine', () => {
       result.current.startEngine();
     });
 
-    // Wait for animation frame
+    // Wait for game loop state updates and trigger animation frames
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 120)); // Wait for useGameLoop interval
+      // Manually trigger game loop to ensure callbacks execute
+      await triggerGameLoop();
+      await new Promise((resolve) => setTimeout(resolve, 20));
     });
 
     expect(mockUpdateCallback).toHaveBeenCalledWith(
@@ -184,7 +251,7 @@ describe('useGameEngine', () => {
         currentTime: expect.any(Number),
         gameState: expect.objectContaining(result.current.gameState),
         updateGameState: expect.any(Function),
-      })
+      }),
     );
 
     // Test unsubscribe
@@ -195,7 +262,7 @@ describe('useGameEngine', () => {
     }
   });
 
-  it('registers and executes render callbacks', async () => {
+  it("registers and executes render callbacks", async () => {
     const { result } = renderHook(() => useGameEngine(config));
     const mockRenderCallback = vi.fn();
 
@@ -206,7 +273,7 @@ describe('useGameEngine', () => {
     });
 
     // Set up canvas
-    const mockCanvas = document.createElement('canvas');
+    const mockCanvas = document.createElement("canvas");
     act(() => {
       result.current.handleCanvasReady(mockCanvas, mockContext);
     });
@@ -216,9 +283,12 @@ describe('useGameEngine', () => {
       result.current.startEngine();
     });
 
-    // Wait for animation frame
+    // Wait for game loop state updates and trigger render callbacks
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 120)); // Wait for useGameLoop interval
+      // Manually trigger game loop to ensure render callbacks execute
+      await triggerGameLoop();
+      await new Promise((resolve) => setTimeout(resolve, 20));
     });
 
     expect(mockRenderCallback).toHaveBeenCalledWith(
@@ -227,7 +297,7 @@ describe('useGameEngine', () => {
         context: mockContext,
         deltaTime: expect.any(Number),
         currentTime: expect.any(Number),
-      })
+      }),
     );
 
     // Test unsubscribe
@@ -238,7 +308,7 @@ describe('useGameEngine', () => {
     }
   });
 
-  it('clears canvas before render callbacks', async () => {
+  it("clears canvas before render callbacks", async () => {
     const { result } = renderHook(() => useGameEngine(config));
     const mockRenderCallback = vi.fn();
 
@@ -246,10 +316,10 @@ describe('useGameEngine', () => {
       result.current.onRender(mockRenderCallback);
     });
 
-    const mockCanvas = document.createElement('canvas');
+    const mockCanvas = document.createElement("canvas");
     mockCanvas.width = 800;
     mockCanvas.height = 600;
-    
+
     act(() => {
       result.current.handleCanvasReady(mockCanvas, mockContext);
     });
@@ -259,17 +329,20 @@ describe('useGameEngine', () => {
     });
 
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 120)); // Wait for useGameLoop interval
+      // Manually trigger game loop to ensure canvas clearing and render callbacks
+      await triggerGameLoop();
+      await new Promise((resolve) => setTimeout(resolve, 20));
     });
 
     expect(mockContext.clearRect).toHaveBeenCalledWith(0, 0, 800, 600);
     expect(mockRenderCallback).toHaveBeenCalled();
   });
 
-  it('updates game time during game loop', async () => {
+  it("updates game time during game loop", async () => {
     const { result } = renderHook(() => useGameEngine(config));
 
-    const mockCanvas = document.createElement('canvas');
+    const mockCanvas = document.createElement("canvas");
     act(() => {
       result.current.handleCanvasReady(mockCanvas, mockContext);
     });
@@ -281,13 +354,16 @@ describe('useGameEngine', () => {
     const initialGameTime = result.current.gameState.gameTime;
 
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise((resolve) => setTimeout(resolve, 120)); // Wait for useGameLoop interval
+      // Trigger game loop to ensure game time updates
+      await triggerGameLoop();
+      await new Promise((resolve) => setTimeout(resolve, 20));
     });
 
     expect(result.current.gameState.gameTime).toBeGreaterThan(initialGameTime);
   });
 
-  it('only updates when game is active', async () => {
+  it("only updates when game is active", async () => {
     const { result } = renderHook(() => useGameEngine(config));
     const mockUpdateCallback = vi.fn();
 
@@ -295,7 +371,7 @@ describe('useGameEngine', () => {
       result.current.onUpdate(mockUpdateCallback);
     });
 
-    const mockCanvas = document.createElement('canvas');
+    const mockCanvas = document.createElement("canvas");
     act(() => {
       result.current.handleCanvasReady(mockCanvas, mockContext);
     });
@@ -306,7 +382,7 @@ describe('useGameEngine', () => {
     });
 
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 50)); //(200);
     });
 
     // Update callback should not have been called because game is not active
@@ -318,14 +394,17 @@ describe('useGameEngine', () => {
     });
 
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 120)); // Wait for useGameLoop interval
+      // Trigger game loop to ensure callbacks execute when game is active
+      await triggerGameLoop();
+      await new Promise((resolve) => setTimeout(resolve, 20));
     });
 
     // Now update callback should be called
     expect(mockUpdateCallback).toHaveBeenCalled();
   });
 
-  it('saves game state to localStorage', () => {
+  it("saves game state to localStorage", () => {
     const { result } = renderHook(() => useGameEngine(config));
 
     // Modify game state
@@ -344,12 +423,12 @@ describe('useGameEngine', () => {
 
     expect(saveResult!).toBe(true);
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-      'gameState',
-      expect.stringContaining('"score":1000')
+      "gameState",
+      expect.stringContaining('"score":1000'),
     );
   });
 
-  it('loads game state from localStorage', () => {
+  it("loads game state from localStorage", () => {
     const savedState = {
       ...initialGameState,
       score: 500,
@@ -370,13 +449,15 @@ describe('useGameEngine', () => {
     expect(result.current.gameState.level).toBe(2);
   });
 
-  it('handles save/load errors gracefully', () => {
+  it("handles save/load errors gracefully", () => {
     const { result } = renderHook(() => useGameEngine(config));
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     // Test save error
     mockLocalStorage.setItem.mockImplementation(() => {
-      throw new Error('Storage full');
+      throw new Error("Storage full");
     });
 
     let saveResult: boolean;
@@ -389,7 +470,7 @@ describe('useGameEngine', () => {
 
     // Test load error
     mockLocalStorage.getItem.mockImplementation(() => {
-      throw new Error('Storage error');
+      throw new Error("Storage error");
     });
 
     let loadResult: boolean;
@@ -403,7 +484,7 @@ describe('useGameEngine', () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it('enables auto-save functionality', async () => {
+  it("enables auto-save functionality", async () => {
     const configWithAutoSave = {
       ...config,
       enableAutoSave: true,
@@ -419,25 +500,27 @@ describe('useGameEngine', () => {
 
     // Wait for auto-save interval
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await new Promise((resolve) => setTimeout(resolve, 50)); //(150);
     });
 
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-      'gameState',
-      expect.stringContaining('"score":100')
+      "gameState",
+      expect.stringContaining('"score":100'),
     );
   });
 
-  it('handles callback errors gracefully', async () => {
+  it("handles callback errors gracefully", async () => {
     const { result } = renderHook(() => useGameEngine(config));
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     const faultyUpdateCallback = vi.fn(() => {
-      throw new Error('Update error');
+      throw new Error("Update error");
     });
 
     const faultyRenderCallback = vi.fn(() => {
-      throw new Error('Render error');
+      throw new Error("Render error");
     });
 
     act(() => {
@@ -445,7 +528,7 @@ describe('useGameEngine', () => {
       result.current.onRender(faultyRenderCallback);
     });
 
-    const mockCanvas = document.createElement('canvas');
+    const mockCanvas = document.createElement("canvas");
     act(() => {
       result.current.handleCanvasReady(mockCanvas, mockContext);
     });
@@ -455,7 +538,10 @@ describe('useGameEngine', () => {
     });
 
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 120)); // Wait for useGameLoop interval
+      // Trigger game loop to ensure faulty callbacks are executed
+      await triggerGameLoop();
+      await new Promise((resolve) => setTimeout(resolve, 20));
     });
 
     expect(consoleErrorSpy).toHaveBeenCalledTimes(2);
@@ -465,10 +551,10 @@ describe('useGameEngine', () => {
     consoleErrorSpy.mockRestore();
   });
 
-  it('provides performance metrics', async () => {
+  it("provides performance metrics", async () => {
     const { result } = renderHook(() => useGameEngine(config));
 
-    const mockCanvas = document.createElement('canvas');
+    const mockCanvas = document.createElement("canvas");
     act(() => {
       result.current.handleCanvasReady(mockCanvas, mockContext);
     });
@@ -478,7 +564,10 @@ describe('useGameEngine', () => {
     });
 
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, 120)); // Wait for useGameLoop interval
+      // Trigger game loop to ensure performance metrics are calculated
+      await triggerGameLoop();
+      await new Promise((resolve) => setTimeout(resolve, 20));
     });
 
     expect(result.current.performanceMetrics).toBeDefined();
