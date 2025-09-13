@@ -1,0 +1,11 @@
+{
+  "session_id": "2f916cad-9e45-4e5d-9c0e-ad00ec1c8238",
+  "transcript_path": "/Users/yoshikawashin/.claude/projects/-Users-yoshikawashin-project-bmad-brock-bloken/2f916cad-9e45-4e5d-9c0e-ad00ec1c8238.jsonl",
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/CollisionDetector.ts",
+    "old_string": "  /**\n   * Resolve collision priority for multiple simultaneous collisions\n   * Story 2.4: Priority handling system (Paddle > Block > Wall)\n   */\n  static resolvePriorityCollisions(collisionResults: any[]): any[] {\n    return collisionResults; // Stub implementation\n  }",
+    "new_string": "  /**\n   * Resolve collision priority for multiple simultaneous collisions\n   * Story 2.4: Priority handling system (Paddle > Block > Wall)\n   */\n  static resolvePriorityCollisions(collisionResults: any[]): any[] {\n    // Simple priority mapping: lower number = higher priority\n    const priorityMap: { [key: string]: number } = {\n      paddle: 1,\n      block: 2,\n      wall: 3\n    };\n\n    return collisionResults.sort((a, b) => {\n      const priorityA = priorityMap[a.type] || 999;\n      const priorityB = priorityMap[b.type] || 999;\n      return priorityA - priorityB;\n    });\n  }"
+  }
+}

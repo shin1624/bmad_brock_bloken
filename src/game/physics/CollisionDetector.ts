@@ -516,4 +516,23 @@ export class CollisionDetector {
     }
     return 0; // Center returns straight up
   }
+
+  /**
+   * Resolve collision priority for multiple simultaneous collisions
+   * Story 2.4: Priority handling system (Paddle > Block > Wall)
+   */
+  static resolvePriorityCollisions(collisionResults: any[]): any[] {
+    // Simple priority mapping: lower number = higher priority
+    const priorityMap: { [key: string]: number } = {
+      paddle: 1,
+      block: 2,
+      wall: 3,
+    };
+
+    return collisionResults.sort((a, b) => {
+      const priorityA = priorityMap[a.type] || 999;
+      const priorityB = priorityMap[b.type] || 999;
+      return priorityA - priorityB;
+    });
+  }
 }

@@ -52,4 +52,20 @@ describe("CollisionDetector - Story 2.4 Extended Features", () => {
       });
     });
   });
+
+  describe("AC4: 複数同時衝突の優先順位処理", () => {
+    describe("2.4-UNIT-009: 優先順位アルゴリズム", () => {
+      it("should prioritize paddle collision over block collision", () => {
+        const collisionResults = [
+          { type: "block", distance: 5 },
+          { type: "paddle", distance: 7 },
+        ];
+
+        const prioritized =
+          CollisionDetector.resolvePriorityCollisions(collisionResults);
+
+        expect(prioritized[0].type).toBe("paddle"); // Paddle should be first
+      });
+    });
+  });
 });

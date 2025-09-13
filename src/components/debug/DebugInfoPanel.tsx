@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import type { PerformanceMetrics } from "../../types/game.types";
 import { useDebugInfo } from "../../hooks/useDebugInfo";
 

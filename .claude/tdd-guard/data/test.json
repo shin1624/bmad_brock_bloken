@@ -1,0 +1,31 @@
+{
+  "testModules": [
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/__tests__/CollisionDetector.extended.test.ts",
+      "tests": [
+        {
+          "name": "should detect AABB collision between overlapping rectangles",
+          "fullName": "CollisionDetector - Story 2.4 Extended Features > AC1: AABB衝突検出実装 > 2.4-UNIT-001: AABB重複判定アルゴリズム > should detect AABB collision between overlapping rectangles",
+          "state": "passed"
+        },
+        {
+          "name": "should not detect collision between separated rectangles",
+          "fullName": "CollisionDetector - Story 2.4 Extended Features > AC1: AABB衝突検出実装 > 2.4-UNIT-001: AABB重複判定アルゴリズム > should not detect collision between separated rectangles",
+          "state": "passed"
+        },
+        {
+          "name": "should calculate reflection angle based on paddle hit position",
+          "fullName": "CollisionDetector - Story 2.4 Extended Features > AC2: ボール-パドル衝突（反射角計算含む） > 2.4-UNIT-004: 反射角計算数学ロジック > should calculate reflection angle based on paddle hit position",
+          "state": "passed"
+        },
+        {
+          "name": "should prioritize paddle collision over block collision",
+          "fullName": "CollisionDetector - Story 2.4 Extended Features > AC4: 複数同時衝突の優先順位処理 > 2.4-UNIT-009: 優先順位アルゴリズム > should prioritize paddle collision over block collision",
+          "state": "passed"
+        }
+      ]
+    }
+  ],
+  "unhandledErrors": [],
+  "reason": "passed"
+}
