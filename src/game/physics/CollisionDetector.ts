@@ -280,4 +280,118 @@ export class CollisionDetector {
       object1Position.y -= collisionInfo.normal.y * collisionInfo.penetration;
     }
   }
+
+  /**
+   * Check collision between ball (circle) and block (rectangle) with enhanced feedback
+   * Returns collision information including contact point for particle effects
+   */
+  public static checkBallBlockCollision(
+    ballPosition: Vector2D,
+    ballRadius: number,
+    ballVelocity: Vector2D,
+    blockBounds: Rectangle,
+    deltaTime: number
+  ): CollisionInfo & { contactPoint?: Vector2D; blockHit?: boolean } {
+    // First check if ball is moving toward the block
+    const ballNextPosition = {
+      x: ballPosition.x + ballVelocity.x * deltaTime,
+      y: ballPosition.y + ballVelocity.y * deltaTime
+    };
+
+    // Use continuous collision detection for fast-moving balls
+    const collisionInfo = this.checkContinuousCircleRectangle(
+      ballPosition,
+      ballNextPosition,
+      ballRadius,
+      blockBounds
+    );
+
+    if (collisionInfo.collided) {
+      // Calculate contact point for particle effects
+      let contactPoint: Vector2D;
+      
+      // Determine which side of the block was hit
+      const ballCenterX = ballPosition.x;
+      const ballCenterY = ballPosition.y;
+      const blockCenterX = blockBounds.x + blockBounds.width / 2;
+      const blockCenterY = blockBounds.y + blockBounds.height / 2;
+      
+      // Calculate distances to each edge
+      const distanceToLeft = Math.abs(ballCenterX - blockBounds.x);
+      const distanceToRight = Math.abs(ballCenterX - (blockBounds.x + blockBounds.width));
+      const distanceToTop = Math.abs(ballCenterY - blockBounds.y);
+      const distanceToBottom = Math.abs(ballCenterY - (blockBounds.y + blockBounds.height));
+      
+      const minDistance = Math.min(distanceToLeft, distanceToRight, distanceToTop, distanceToBottom);
+      
+      if (minDistance === distanceToLeft) {
+        // Hit from left
+        contactPoint = { x: blockBounds.x, y: ballCenterY };
+      } else if (minDistance === distanceToRight) {
+        // Hit from right
+        contactPoint = { x: blockBounds.x + blockBounds.width, y: ballCenterY };
+      } else if (minDistance === distanceToTop) {
+        // Hit from top
+        contactPoint = { x: ballCenterX, y: blockBounds.y };
+      } else {
+        // Hit from bottom
+        contactPoint = { x: ballCenterX, y: blockBounds.y + blockBounds.height };
+      }
+
+      return {
+        ...collisionInfo,
+        contactPoint,
+        blockHit: true
+      };
+    }
+
+    return {
+      collided: false,
+      blockHit: false
+    };
+  }
+
+  /**
+   * Check multiple block collisions and return the closest one
+   * This prevents ball from tunneling through multiple blocks
+   */
+  public static checkBallBlocksCollision(
+    ballPosition: Vector2D,
+    ballRadius: number,
+    ballVelocity: Vector2D,
+    blocks: { id: string; bounds: Rectangle; active: boolean }[],
+    deltaTime: number
+  ): { blockId: string; collision: CollisionInfo & { contactPoint?: Vector2D } } | null {
+    let closestCollision: { blockId: string; collision: CollisionInfo & { contactPoint?: Vector2D }; distance: number } | null = null;
+
+    for (const block of blocks) {
+      if (!block.active) continue;
+
+      const collision = this.checkBallBlockCollision(
+        ballPosition,
+        ballRadius,
+        ballVelocity,
+        block.bounds,
+        deltaTime
+      );
+
+      if (collision.collided && collision.contactPoint) {
+        // Calculate distance to collision point
+        const distance = Math.sqrt(
+          Math.pow(collision.contactPoint.x - ballPosition.x, 2) +
+          Math.pow(collision.contactPoint.y - ballPosition.y, 2)
+        );
+
+        if (!closestCollision || distance < closestCollision.distance) {
+          closestCollision = {
+            blockId: block.id,
+            collision,
+            distance
+          };
+        }
+      }
+    }
+
+    return closestCollision ? { blockId: closestCollision.blockId, collision: closestCollision.collision } : null;
+  }
 }

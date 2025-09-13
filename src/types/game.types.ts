@@ -97,6 +97,50 @@ export interface EntityState {
   active: boolean;
 }
 
+// Block system types
+export enum BlockType {
+  Normal = 'normal',
+  Hard = 'hard',
+  Indestructible = 'indestructible'
+}
+
+export interface BlockConfiguration {
+  type: BlockType;
+  maxHitPoints: number;
+  scoreValue: number;
+  color: string;
+  width: number;  // 75px
+  height: number; // 25px
+}
+
+export interface BlockState extends EntityState {
+  type: BlockType;
+  currentHitPoints: number;
+  maxHitPoints: number;
+  isDestroyed: boolean;
+  scoreValue: number;
+  gridRow: number;
+  gridColumn: number;
+}
+
+export interface GridLayout {
+  columns: number;    // 10列
+  rows: number;      // 8行
+  cellWidth: number; // 75px
+  cellHeight: number; // 25px
+  spacing: number;   // 5px
+  offsetX: number;   // グリッド開始X座標
+  offsetY: number;   // グリッド開始Y座標
+}
+
+export interface ParticleConfig {
+  count: number;        // 8個
+  lifespan: number;     // 0.5秒
+  velocity: Vector2D;   // 初期速度範囲
+  gravity: number;      // 重力加速度
+  color: string;        // ブロック色ベース
+}
+
 // Enhanced Game State for state management
 export interface GameState {
   score: number;
@@ -104,7 +148,7 @@ export interface GameState {
   lives: number;
   gameStatus: GameStatus;
   balls: EntityState[];
-  blocks: EntityState[];
+  blocks: BlockState[];
   powerUps: EntityState[];
   combo: number;
   highScore: number;
