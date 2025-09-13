@@ -35,6 +35,44 @@ export interface PaddleState extends EntityState {
   inputDevice: InputDevice;
 }
 
+// Ball types
+export interface BallState extends EntityState {
+  radius: number;
+  speed: number;
+  maxSpeed: number;
+  minSpeed: number;
+}
+
+export interface BallConfiguration {
+  initialRadius: number;
+  initialSpeed: number;
+  maxSpeed: number;
+  minSpeed: number;
+  initialPosition: Position;
+  bounceDamping: number;
+}
+
+// Collision types
+export interface CollisionInfo {
+  collided: boolean;
+  normal?: Vector2D;
+  penetration?: number;
+  contactPoint?: Vector2D;
+}
+
+export interface Rectangle {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface Circle {
+  x: number;
+  y: number;
+  radius: number;
+}
+
 export interface PerformanceMetrics {
   fps: number;
   deltaTime: number;
