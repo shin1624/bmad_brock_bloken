@@ -22,6 +22,11 @@
           "name": "should prioritize paddle collision over block collision",
           "fullName": "CollisionDetector - Story 2.4 Extended Features > AC4: 複数同時衝突の優先順位処理 > 2.4-UNIT-009: 優先順位アルゴリズム > should prioritize paddle collision over block collision",
           "state": "passed"
+        },
+        {
+          "name": "should calculate ball trajectory for CCD",
+          "fullName": "CollisionDetector - Story 2.4 Extended Features > AC5: 貫通バグの防止（CCD） > 2.4-UNIT-012: 軌跡計算アルゴリズム > should calculate ball trajectory for CCD",
+          "state": "passed"
         }
       ]
     }

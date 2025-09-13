@@ -535,4 +535,25 @@ export class CollisionDetector {
       return priorityA - priorityB;
     });
   }
+
+  /**
+   * Calculate ball trajectory for continuous collision detection
+   * Story 2.4: CCD system for preventing tunneling
+   */
+  static calculateTrajectory(
+    startPos: Vector2D,
+    velocity: Vector2D,
+    deltaTime: number,
+  ): { start: Vector2D; end: Vector2D } {
+    // Calculate end position based on velocity and deltaTime
+    const endPos: Vector2D = {
+      x: startPos.x + velocity.x * deltaTime,
+      y: startPos.y + velocity.y * deltaTime,
+    };
+
+    return {
+      start: startPos,
+      end: endPos,
+    };
+  }
 }

@@ -5,7 +5,7 @@
   "tool_name": "Edit",
   "tool_input": {
     "file_path": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/CollisionDetector.ts",
-    "old_string": "  /**\n   * Resolve collision priority for multiple simultaneous collisions\n   * Story 2.4: Priority handling system (Paddle > Block > Wall)\n   */\n  static resolvePriorityCollisions(collisionResults: any[]): any[] {\n    return collisionResults; // Stub implementation\n  }",
-    "new_string": "  /**\n   * Resolve collision priority for multiple simultaneous collisions\n   * Story 2.4: Priority handling system (Paddle > Block > Wall)\n   */\n  static resolvePriorityCollisions(collisionResults: any[]): any[] {\n    // Simple priority mapping: lower number = higher priority\n    const priorityMap: { [key: string]: number } = {\n      paddle: 1,\n      block: 2,\n      wall: 3\n    };\n\n    return collisionResults.sort((a, b) => {\n      const priorityA = priorityMap[a.type] || 999;\n      const priorityB = priorityMap[b.type] || 999;\n      return priorityA - priorityB;\n    });\n  }"
+    "old_string": "  static calculateTrajectory(\n    startPos: Vector2D,\n    velocity: Vector2D,\n    deltaTime: number,\n  ): { start: Vector2D; end: Vector2D } {\n    return {\n      start: startPos,\n      end: startPos, // Stub implementation\n    };\n  }",
+    "new_string": "  static calculateTrajectory(\n    startPos: Vector2D,\n    velocity: Vector2D,\n    deltaTime: number,\n  ): { start: Vector2D; end: Vector2D } {\n    // Calculate end position based on velocity and deltaTime\n    const endPos: Vector2D = {\n      x: startPos.x + velocity.x * deltaTime,\n      y: startPos.y + velocity.y * deltaTime,\n    };\n\n    return {\n      start: startPos,\n      end: endPos,\n    };\n  }"
   }
 }

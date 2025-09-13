@@ -68,4 +68,24 @@ describe("CollisionDetector - Story 2.4 Extended Features", () => {
       });
     });
   });
+
+  describe("AC5: 貫通バグの防止（CCD）", () => {
+    describe("2.4-UNIT-012: 軌跡計算アルゴリズム", () => {
+      it("should calculate ball trajectory for CCD", () => {
+        const startPos: Vector2D = { x: 10, y: 10 };
+        const velocity: Vector2D = { x: 100, y: 100 };
+        const deltaTime = 0.016; // 60fps frame
+
+        const trajectory = CollisionDetector.calculateTrajectory(
+          startPos,
+          velocity,
+          deltaTime,
+        );
+
+        expect(trajectory.start).toEqual(startPos);
+        expect(trajectory.end.x).toBe(11.6); // 10 + 100 * 0.016
+        expect(trajectory.end.y).toBe(11.6);
+      });
+    });
+  });
 });
