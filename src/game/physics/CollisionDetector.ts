@@ -1,15 +1,37 @@
 /**
  * Collision detection system with support for circle-rectangle and circle-circle collisions
  * Implements both discrete and continuous collision detection
+ * Integrated with EventBus for collision event notifications
  */
 import {
   Vector2D,
   CollisionInfo,
   Rectangle,
   Circle,
+  BlockState,
+  BlockType,
 } from "../../types/game.types";
+import { EventBus, GameEventType } from "../core/EventBus";
 
 export class CollisionDetector {
+  private eventBus: EventBus | null = null;
+
+  /**
+   * Set EventBus for collision event notifications
+   */
+  setEventBus(eventBus: EventBus): void {
+    this.eventBus = eventBus;
+  }
+
+  /**
+   * Emit collision event
+   */
+  private emitCollisionEvent(type: GameEventType, payload: any): void {
+    if (this.eventBus) {
+      this.eventBus.emit(type, payload);
+    }
+  }
+
   /**
    * Check collision between circle and rectangle (for ball-paddle/block collisions)
    */
@@ -555,5 +577,197 @@ export class CollisionDetector {
       start: startPos,
       end: endPos,
     };
+  }
+
+  /**
+   * Enhanced ball-paddle collision with EventBus integration
+   */
+  checkBallPaddleCollision(
+    ball: Circle & { id: string; velocity: Vector2D },
+    paddle: Rectangle & { id: string }
+  ): CollisionInfo {
+    const collision = CollisionDetector.checkCircleRectangle(ball, paddle);
+    
+    if (collision.collided && this.eventBus) {
+      // Calculate hit position on paddle (0 = left edge, 1 = right edge)
+      const hitPosition = (ball.x - paddle.x) / paddle.width;
+      
+      // Emit collision event
+      this.eventBus.emit(GameEventType.BALL_PADDLE_COLLISION, {
+        ballId: ball.id,
+        paddlePosition: hitPosition
+      });
+
+      // Also emit for debug visualization
+      this.eventBus.emit('collision' as any, {
+        type: 'ball-paddle',
+        entityIds: [ball.id, paddle.id],
+        collisionInfo: collision,
+        timestamp: Date.now(),
+        position: { x: ball.x, y: ball.y }
+      });
+    }
+    
+    return collision;
+  }
+
+  /**
+   * Enhanced ball-block collision with EventBus integration and destruction handling
+   */
+  checkBallBlockCollision(
+    ball: Circle & { id: string },
+    block: Rectangle & { id: string }
+  ): CollisionInfo {
+    const collision = CollisionDetector.checkCircleRectangle(ball, block);
+    
+    if (collision.collided && this.eventBus) {
+      // Emit collision event
+      this.eventBus.emit(GameEventType.BALL_BLOCK_COLLISION, {
+        ballId: ball.id,
+        blockId: block.id
+      });
+
+      // Also emit for debug visualization
+      this.eventBus.emit('collision' as any, {
+        type: 'ball-block',
+        entityIds: [ball.id, block.id],
+        collisionInfo: collision,
+        timestamp: Date.now(),
+        position: { x: ball.x, y: ball.y }
+      });
+    }
+    
+    return collision;
+  }
+
+  /**
+   * Enhanced ball-block collision with integrated destruction logic
+   * Story 2.4 AC3: Block destruction integration
+   */
+  checkBallBlockCollisionWithDestruction(
+    ball: Circle & { id: string },
+    block: Rectangle & BlockState
+  ): { collision: CollisionInfo; blockDestroyed: boolean; pointsAwarded: number } {
+    const collision = CollisionDetector.checkCircleRectangle(ball, block);
+    let blockDestroyed = false;
+    let pointsAwarded = 0;
+    
+    if (collision.collided && !block.isDestroyed) {
+      // Apply damage to block based on type
+      const damageAmount = this.calculateBlockDamage(block.type);
+      const newHitPoints = Math.max(0, block.currentHitPoints - damageAmount);
+      
+      // Check if block should be destroyed
+      if (newHitPoints <= 0 && block.type !== BlockType.Indestructible) {
+        blockDestroyed = true;
+        pointsAwarded = block.scoreValue;
+        
+        // Emit block destroyed event
+        if (this.eventBus) {
+          this.eventBus.emit(GameEventType.BLOCK_DESTROYED, {
+            id: block.id,
+            points: pointsAwarded,
+            position: { x: block.position.x, y: block.position.y }
+          });
+
+          // Emit for debug visualization
+          this.eventBus.emit('collision' as any, {
+            type: 'ball-block',
+            entityIds: [ball.id, block.id],
+            collisionInfo: collision,
+            timestamp: Date.now(),
+            position: { x: ball.x, y: ball.y }
+          });
+        }
+      } else {
+        // Block damaged but not destroyed
+        if (this.eventBus) {
+          this.eventBus.emit(GameEventType.BALL_BLOCK_COLLISION, {
+            ballId: ball.id,
+            blockId: block.id
+          });
+        }
+      }
+    }
+    
+    return { collision, blockDestroyed, pointsAwarded };
+  }
+
+  /**
+   * Calculate damage amount based on block type
+   */
+  private calculateBlockDamage(blockType: BlockType): number {
+    switch (blockType) {
+      case BlockType.Normal:
+        return 1; // One hit destruction
+      case BlockType.Hard:
+        return 1; // Still one hit, but they start with more HP
+      case BlockType.Indestructible:
+        return 0; // Cannot be damaged
+      default:
+        return 1;
+    }
+  }
+
+  /**
+   * Enhanced ball-wall collision with EventBus integration
+   */
+  checkBallWallCollision(
+    ball: Circle & { id: string },
+    bounds: Rectangle
+  ): { collided: boolean; wall?: 'left' | 'right' | 'top' } {
+    let wall: 'left' | 'right' | 'top' | undefined;
+    let collided = false;
+
+    // Check left wall
+    if (ball.x - ball.radius <= bounds.x) {
+      wall = 'left';
+      collided = true;
+    }
+    // Check right wall
+    else if (ball.x + ball.radius >= bounds.x + bounds.width) {
+      wall = 'right';
+      collided = true;
+    }
+    // Check top wall
+    else if (ball.y - ball.radius <= bounds.y) {
+      wall = 'top';
+      collided = true;
+    }
+
+    if (collided && wall && this.eventBus) {
+      // Emit collision event
+      this.eventBus.emit(GameEventType.BALL_WALL_COLLISION, {
+        ballId: ball.id,
+        wall
+      });
+
+      // Also emit for debug visualization
+      this.eventBus.emit('collision' as any, {
+        type: 'ball-boundary',
+        entityIds: [ball.id, 'wall'],
+        collisionInfo: { collided: true, normal: this.getWallNormal(wall) },
+        timestamp: Date.now(),
+        position: { x: ball.x, y: ball.y }
+      });
+    }
+
+    return { collided, wall };
+  }
+
+  /**
+   * Get wall normal vector
+   */
+  private getWallNormal(wall: 'left' | 'right' | 'top'): Vector2D {
+    switch (wall) {
+      case 'left':
+        return { x: 1, y: 0 };
+      case 'right':
+        return { x: -1, y: 0 };
+      case 'top':
+        return { x: 0, y: 1 };
+      default:
+        return { x: 0, y: 0 };
+    }
   }
 }

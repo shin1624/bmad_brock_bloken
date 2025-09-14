@@ -1,6 +1,161 @@
 {
   "testModules": [
     {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/__tests__/SpatialGrid.test.ts",
+      "tests": [
+        {
+          "name": "should divide space into grid cells",
+          "fullName": "SpatialGrid - Story 2.4 Performance Optimization > AC7: 性能最適化（空間分割） > 2.4-UNIT-017: 空間分割グリッドアルゴリズム > should divide space into grid cells",
+          "state": "passed"
+        },
+        {
+          "name": "should efficiently query objects in specific regions",
+          "fullName": "SpatialGrid - Story 2.4 Performance Optimization > AC7: 性能最適化（空間分割） > 2.4-UNIT-017: 空間分割グリッドアルゴリズム > should efficiently query objects in specific regions",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/debug/__tests__/CollisionDebugger.test.ts",
+      "tests": [
+        {
+          "name": "should toggle debug mode when F6 is pressed",
+          "fullName": "CollisionDebugger > should toggle debug mode when F6 is pressed",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/__tests__/PhysicsSystem.test.ts",
+      "tests": [
+        {
+          "name": "should add ball to system",
+          "fullName": "PhysicsSystem > Ball Management > should add ball to system",
+          "state": "passed"
+        },
+        {
+          "name": "should not add duplicate ball",
+          "fullName": "PhysicsSystem > Ball Management > should not add duplicate ball",
+          "state": "passed"
+        },
+        {
+          "name": "should remove ball from system",
+          "fullName": "PhysicsSystem > Ball Management > should remove ball from system",
+          "state": "passed"
+        },
+        {
+          "name": "should handle removing non-existent ball",
+          "fullName": "PhysicsSystem > Ball Management > should handle removing non-existent ball",
+          "state": "passed"
+        },
+        {
+          "name": "should clear all balls",
+          "fullName": "PhysicsSystem > Ball Management > should clear all balls",
+          "state": "passed"
+        },
+        {
+          "name": "should detect and handle left wall collision",
+          "fullName": "PhysicsSystem > Wall Collision Detection > should detect and handle left wall collision",
+          "state": "passed"
+        },
+        {
+          "name": "should detect and handle right wall collision",
+          "fullName": "PhysicsSystem > Wall Collision Detection > should detect and handle right wall collision",
+          "state": "passed"
+        },
+        {
+          "name": "should detect and handle top wall collision",
+          "fullName": "PhysicsSystem > Wall Collision Detection > should detect and handle top wall collision",
+          "state": "passed"
+        },
+        {
+          "name": "should detect and handle bottom wall collision",
+          "fullName": "PhysicsSystem > Wall Collision Detection > should detect and handle bottom wall collision",
+          "state": "passed"
+        },
+        {
+          "name": "should handle fast-moving ball through wall",
+          "fullName": "PhysicsSystem > Continuous Collision Detection > should handle fast-moving ball through wall",
+          "state": "passed"
+        },
+        {
+          "name": "should handle corner collision correctly",
+          "fullName": "PhysicsSystem > Continuous Collision Detection > should handle corner collision correctly",
+          "state": "passed"
+        },
+        {
+          "name": "should update configuration correctly",
+          "fullName": "PhysicsSystem > Physics Configuration > should update configuration correctly",
+          "state": "passed"
+        },
+        {
+          "name": "should apply gravity when configured",
+          "fullName": "PhysicsSystem > Physics Configuration > should apply gravity when configured",
+          "state": "passed"
+        },
+        {
+          "name": "should apply wall bounce threshold",
+          "fullName": "PhysicsSystem > Physics Configuration > should apply wall bounce threshold",
+          "state": "passed"
+        },
+        {
+          "name": "should correctly identify ball out of bounds",
+          "fullName": "PhysicsSystem > Out of Bounds Detection > should correctly identify ball out of bounds",
+          "state": "passed"
+        },
+        {
+          "name": "should correctly identify ball in bounds",
+          "fullName": "PhysicsSystem > Out of Bounds Detection > should correctly identify ball in bounds",
+          "state": "passed"
+        },
+        {
+          "name": "should handle multiple balls independently",
+          "fullName": "PhysicsSystem > Multiple Ball Physics > should handle multiple balls independently",
+          "state": "passed"
+        },
+        {
+          "name": "should handle inactive balls correctly",
+          "fullName": "PhysicsSystem > Multiple Ball Physics > should handle inactive balls correctly",
+          "state": "passed"
+        },
+        {
+          "name": "should handle large delta times without instability",
+          "fullName": "PhysicsSystem > Performance and Stability > should handle large delta times without instability",
+          "state": "passed"
+        },
+        {
+          "name": "should maintain consistency over many updates",
+          "fullName": "PhysicsSystem > Performance and Stability > should maintain consistency over many updates",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/__tests__/CollisionPerformance.test.ts",
+      "tests": [
+        {
+          "name": "should demonstrate basic spatial grid functionality and performance",
+          "fullName": "Collision Performance Benchmarks - Story 2.4 > AC7: 性能最適化（空間分割） > 2.4-PERF-001: Spatial Grid Performance Validation > should demonstrate basic spatial grid functionality and performance",
+          "state": "passed"
+        },
+        {
+          "name": "should measure spatial grid statistics and efficiency",
+          "fullName": "Collision Performance Benchmarks - Story 2.4 > AC7: 性能最適化（空間分割） > 2.4-PERF-001: Spatial Grid Performance Validation > should measure spatial grid statistics and efficiency",
+          "state": "passed"
+        },
+        {
+          "name": "should validate query result accuracy",
+          "fullName": "Collision Performance Benchmarks - Story 2.4 > AC7: 性能最適化（空間分割） > 2.4-PERF-001: Spatial Grid Performance Validation > should validate query result accuracy",
+          "state": "passed"
+        },
+        {
+          "name": "should benchmark circle-rectangle collision detection",
+          "fullName": "Collision Performance Benchmarks - Story 2.4 > AC7: 性能最適化（空間分割） > 2.4-PERF-002: Collision Detection Performance > should benchmark circle-rectangle collision detection",
+          "state": "passed"
+        }
+      ]
+    },
+    {
       "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/__tests__/CollisionDetector.extended.test.ts",
       "tests": [
         {
@@ -26,6 +181,146 @@
         {
           "name": "should calculate ball trajectory for CCD",
           "fullName": "CollisionDetector - Story 2.4 Extended Features > AC5: 貫通バグの防止（CCD） > 2.4-UNIT-012: 軌跡計算アルゴリズム > should calculate ball trajectory for CCD",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/__tests__/CollisionDetector.test.ts",
+      "tests": [
+        {
+          "name": "should detect collision when circle overlaps rectangle",
+          "fullName": "CollisionDetector > Circle-Rectangle Collision > should detect collision when circle overlaps rectangle",
+          "state": "passed"
+        },
+        {
+          "name": "should not detect collision when circle is far from rectangle",
+          "fullName": "CollisionDetector > Circle-Rectangle Collision > should not detect collision when circle is far from rectangle",
+          "state": "passed"
+        },
+        {
+          "name": "should detect collision when circle touches rectangle edge",
+          "fullName": "CollisionDetector > Circle-Rectangle Collision > should detect collision when circle touches rectangle edge",
+          "state": "passed"
+        },
+        {
+          "name": "should calculate correct normal for top collision",
+          "fullName": "CollisionDetector > Circle-Rectangle Collision > should calculate correct normal for top collision",
+          "state": "passed"
+        },
+        {
+          "name": "should calculate correct normal for right collision",
+          "fullName": "CollisionDetector > Circle-Rectangle Collision > should calculate correct normal for right collision",
+          "state": "passed"
+        },
+        {
+          "name": "should calculate correct normal for bottom collision",
+          "fullName": "CollisionDetector > Circle-Rectangle Collision > should calculate correct normal for bottom collision",
+          "state": "passed"
+        },
+        {
+          "name": "should handle circle center inside rectangle",
+          "fullName": "CollisionDetector > Circle-Rectangle Collision > should handle circle center inside rectangle",
+          "state": "passed"
+        },
+        {
+          "name": "should handle corner collision correctly",
+          "fullName": "CollisionDetector > Circle-Rectangle Collision > should handle corner collision correctly",
+          "state": "passed"
+        },
+        {
+          "name": "should detect collision when circles overlap",
+          "fullName": "CollisionDetector > Circle-Circle Collision > should detect collision when circles overlap",
+          "state": "passed"
+        },
+        {
+          "name": "should not detect collision when circles are apart",
+          "fullName": "CollisionDetector > Circle-Circle Collision > should not detect collision when circles are apart",
+          "state": "passed"
+        },
+        {
+          "name": "should detect collision when circles just touch",
+          "fullName": "CollisionDetector > Circle-Circle Collision > should detect collision when circles just touch",
+          "state": "passed"
+        },
+        {
+          "name": "should calculate correct normal direction",
+          "fullName": "CollisionDetector > Circle-Circle Collision > should calculate correct normal direction",
+          "state": "passed"
+        },
+        {
+          "name": "should handle circles at same position",
+          "fullName": "CollisionDetector > Circle-Circle Collision > should handle circles at same position",
+          "state": "passed"
+        },
+        {
+          "name": "should calculate correct contact point",
+          "fullName": "CollisionDetector > Circle-Circle Collision > should calculate correct contact point",
+          "state": "passed"
+        },
+        {
+          "name": "should detect collision when fast circle passes through rectangle",
+          "fullName": "CollisionDetector > Continuous Collision Detection > should detect collision when fast circle passes through rectangle",
+          "state": "passed"
+        },
+        {
+          "name": "should not detect collision when ray misses rectangle",
+          "fullName": "CollisionDetector > Continuous Collision Detection > should not detect collision when ray misses rectangle",
+          "state": "passed"
+        },
+        {
+          "name": "should detect collision with correct normal for left edge",
+          "fullName": "CollisionDetector > Continuous Collision Detection > should detect collision with correct normal for left edge",
+          "state": "passed"
+        },
+        {
+          "name": "should handle vertical collision correctly",
+          "fullName": "CollisionDetector > Continuous Collision Detection > should handle vertical collision correctly",
+          "state": "passed"
+        },
+        {
+          "name": "should correctly test point in rectangle",
+          "fullName": "CollisionDetector > Point Testing > should correctly test point in rectangle",
+          "state": "passed"
+        },
+        {
+          "name": "should correctly test point in circle",
+          "fullName": "CollisionDetector > Point Testing > should correctly test point in circle",
+          "state": "passed"
+        },
+        {
+          "name": "should resolve collision between two objects",
+          "fullName": "CollisionDetector > Collision Resolution > should resolve collision between two objects",
+          "state": "passed"
+        },
+        {
+          "name": "should resolve collision for single object against static",
+          "fullName": "CollisionDetector > Collision Resolution > should resolve collision for single object against static",
+          "state": "passed"
+        },
+        {
+          "name": "should not resolve when no collision",
+          "fullName": "CollisionDetector > Collision Resolution > should not resolve when no collision",
+          "state": "passed"
+        },
+        {
+          "name": "should handle zero-size rectangle",
+          "fullName": "CollisionDetector > Edge Cases > should handle zero-size rectangle",
+          "state": "passed"
+        },
+        {
+          "name": "should handle zero-radius circle",
+          "fullName": "CollisionDetector > Edge Cases > should handle zero-radius circle",
+          "state": "passed"
+        },
+        {
+          "name": "should handle very small penetration values",
+          "fullName": "CollisionDetector > Edge Cases > should handle very small penetration values",
+          "state": "passed"
+        },
+        {
+          "name": "should handle negative coordinates",
+          "fullName": "CollisionDetector > Edge Cases > should handle negative coordinates",
           "state": "passed"
         }
       ]
