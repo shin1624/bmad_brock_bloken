@@ -1,0 +1,187 @@
+/* GPU-optimized animations for 60FPS performance */
+
+/* Menu entrance animations */
+@keyframes menuEnter {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes menuExit {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}
+
+/* Menu item entrance with stagger */
+@keyframes menuItemEnter {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Hover animations */
+@keyframes buttonHover {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes cardHover {
+  from {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  to {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Loading animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Slide transitions */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Animation classes */
+.menu-enter {
+  animation: menuEnter 0.3s ease-out forwards;
+}
+
+.menu-exit {
+  animation: menuExit 0.25s ease-in forwards;
+}
+
+.menu-item-enter {
+  animation: menuItemEnter 0.4s ease-out forwards;
+}
+
+.menu-item-enter:nth-child(1) { animation-delay: 0ms; }
+.menu-item-enter:nth-child(2) { animation-delay: 100ms; }
+.menu-item-enter:nth-child(3) { animation-delay: 200ms; }
+.menu-item-enter:nth-child(4) { animation-delay: 300ms; }
+.menu-item-enter:nth-child(5) { animation-delay: 400ms; }
+
+.button-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button-hover:hover {
+  animation: buttonHover 0.2s ease forwards;
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  animation: cardHover 0.2s ease forwards;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.35s ease-out forwards;
+}
+
+.slide-out-left {
+  animation: slideOutLeft 0.35s ease-in forwards;
+}
+
+/* Fade transitions */
+.fade-enter {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.fade-enter-active {
+  opacity: 1;
+}
+
+.fade-exit {
+  opacity: 1;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.fade-exit-active {
+  opacity: 0;
+}
+
+/* Performance optimizations */
+.menu-container {
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Force hardware acceleration */
+}
+
+.animation-container {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

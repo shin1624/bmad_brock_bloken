@@ -1,0 +1,269 @@
+/* Main Menu Container */
+.main-menu {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.menu-container {
+  max-width: 28rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transform: translateY(0);
+  animation: menuEnter 0.6s ease-out;
+}
+
+/* Loading State */
+.main-menu.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  width: 4rem;
+  height: 4rem;
+  position: relative;
+}
+
+.spinner-ring {
+  width: 100%;
+  height: 100%;
+  border: 4px solid #374151;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Menu Header */
+.menu-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.game-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+.game-subtitle {
+  font-size: 1.125rem;
+  color: #cbd5e1;
+  font-weight: 300;
+  opacity: 0.8;
+}
+
+@keyframes titleGlow {
+  from {
+    text-shadow: 0 0 20px rgba(79, 70, 229, 0.5);
+  }
+  to {
+    text-shadow: 0 0 30px rgba(79, 70, 229, 0.8), 0 0 40px rgba(79, 70, 229, 0.3);
+  }
+}
+
+/* Menu Navigation */
+.menu-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Menu Buttons */
+.menu-button {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  text-align: left;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid #475569;
+  color: white;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.menu-button:hover {
+  background: rgba(51, 65, 85, 0.7);
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.2);
+}
+
+.menu-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #6366f1, 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.menu-button:active {
+  transform: scale(0.95);
+}
+
+.menu-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.menu-button:disabled:hover {
+  transform: scale(1);
+  background: rgba(30, 41, 59, 0.5);
+}
+
+/* Primary Start Button */
+.start-button {
+  background: #4f46e5;
+  border-color: #6366f1;
+  color: white;
+  font-weight: bold;
+}
+
+.start-button:hover {
+  background: #6366f1;
+  border-color: #818cf8;
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+}
+
+.button-glow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.start-button:hover .button-glow {
+  left: 100%;
+}
+
+/* Button Content */
+.button-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.button-text {
+  flex: 1;
+  font-size: 1.125rem;
+}
+
+/* Entrance Animations */
+.menu-item-enter {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: menuItemEnter 0.5s ease-out forwards;
+}
+
+.menu-item-enter:nth-child(1) { animation-delay: 0.1s; }
+.menu-item-enter:nth-child(2) { animation-delay: 0.2s; }
+.menu-item-enter:nth-child(3) { animation-delay: 0.3s; }
+.menu-item-enter:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes menuEnter {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes menuItemEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .game-title {
+    font-size: 2.25rem;
+  }
+  
+  .menu-container {
+    max-width: 20rem;
+  }
+  
+  .menu-button {
+    padding: 0.75rem;
+  }
+  
+  .button-text {
+    font-size: 1rem;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .main-menu {
+    background: black;
+  }
+  
+  .menu-button {
+    background: white;
+    color: black;
+    border-color: black;
+  }
+  
+  .start-button {
+    background: black;
+    color: white;
+    border-color: white;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .menu-container,
+  .menu-item-enter,
+  .menu-button,
+  .button-glow,
+  .game-title {
+    animation: none !important;
+  }
+  
+  .menu-button:hover {
+    transform: none;
+  }
+}
