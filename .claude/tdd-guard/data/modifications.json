@@ -1,11 +1,11 @@
 {
-  "session_id": "2f916cad-9e45-4e5d-9c0e-ad00ec1c8238",
-  "transcript_path": "/Users/yoshikawashin/.claude/projects/-Users-yoshikawashin-project-bmad-brock-bloken/2f916cad-9e45-4e5d-9c0e-ad00ec1c8238.jsonl",
+  "session_id": "588d422b-9180-4aeb-8d2a-83ec8147b5b2",
+  "transcript_path": "/Users/yoshikawashin/.claude/projects/-Users-yoshikawashin-project-bmad-brock-bloken/588d422b-9180-4aeb-8d2a-83ec8147b5b2.jsonl",
   "hook_event_name": "PreToolUse",
   "tool_name": "Edit",
   "tool_input": {
-    "file_path": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/physics/__tests__/SpatialGrid.test.ts",
-    "old_string": "/**\n * SpatialGrid Tests for Story 2.4 - Performance Optimization\n */\nimport { describe, it, expect } from \"vitest\";\nimport { SpatialGrid } from \"../SpatialGrid\";\n\ndescribe(\"SpatialGrid - Story 2.4 Performance Optimization\", () => {\n  describe(\"AC7: 性能最適化（空間分割）\", () => {\n    describe(\"2.4-UNIT-017: 空間分割グリッドアルゴリズム\", () => {\n      it(\"should divide space into grid cells\", () => {\n        const grid = new SpatialGrid(800, 600, 64); // 800x600 with 64px cells\n\n        expect(grid.getCellCount()).toBe(13 * 10); // 13x10 = 130 cells\n      });\n    });\n  });\n});",
-    "new_string": "/**\n * SpatialGrid Tests for Story 2.4 - Performance Optimization\n */\nimport { describe, it, expect } from \"vitest\";\nimport { SpatialGrid } from \"../SpatialGrid\";\nimport { Rectangle } from \"../../../types/game.types\";\n\ndescribe(\"SpatialGrid - Story 2.4 Performance Optimization\", () => {\n  describe(\"AC7: 性能最適化（空間分割）\", () => {\n    describe(\"2.4-UNIT-017: 空間分割グリッドアルゴリズム\", () => {\n      it(\"should divide space into grid cells\", () => {\n        const grid = new SpatialGrid(800, 600, 64); // 800x600 with 64px cells\n\n        expect(grid.getCellCount()).toBe(13 * 10); // 13x10 = 130 cells\n      });\n\n      it(\"should efficiently query objects in specific regions\", () => {\n        const grid = new SpatialGrid(400, 400, 100); // 4x4 grid\n        \n        const rect1: Rectangle = { x: 50, y: 50, width: 20, height: 20 };\n        const rect2: Rectangle = { x: 250, y: 250, width: 20, height: 20 };\n        \n        grid.insert('rect1', rect1);\n        grid.insert('rect2', rect2);\n        \n        const queryRegion: Rectangle = { x: 0, y: 0, width: 150, height: 150 };\n        const results = grid.query(queryRegion);\n        \n        expect(results).toContain('rect1');\n        expect(results).not.toContain('rect2');\n      });\n    });\n  });\n});"
+    "file_path": "src/components/game/HUD/ComboDisplay.tsx",
+    "old_string": "import React, { useState, useEffect, useCallback } from 'react';",
+    "new_string": "import React, { useState, useEffect } from 'react';"
   }
 }

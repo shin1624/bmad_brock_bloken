@@ -1,0 +1,73 @@
+/* HUD Overlay System - Story 3.2 - Pure CSS */
+.hud-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.hud-grid-layout {
+  display: grid;
+  grid-template-areas: 
+    "score . level"
+    ". . ."
+    "lives . combo";
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+}
+
+.hud-hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.hud-visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+/* HUD component positioning */
+.hud-score {
+  grid-area: score;
+  justify-self: start;
+  align-self: start;
+}
+
+.hud-level {
+  grid-area: level;
+  justify-self: end;
+  align-self: start;
+}
+
+.hud-lives {
+  grid-area: lives;
+  justify-self: start;
+  align-self: end;
+}
+
+.hud-combo {
+  grid-area: combo;
+  justify-self: end;
+  align-self: end;
+}
+
+/* Text styling */
+.hud-text {
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  pointer-events: auto;
+  user-select: none;
+}
