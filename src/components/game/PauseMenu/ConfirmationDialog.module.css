@@ -1,0 +1,200 @@
+/* ConfirmationDialog.module.css */
+
+.confirmationOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1002; /* Higher than settings overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(16px);
+  background: rgba(0, 0, 0, 0.9);
+  animation: fadeIn 200ms ease-out;
+  padding: 1rem;
+}
+
+.confirmationDialog {
+  position: relative;
+  background: var(--dialog-background, #ffffff);
+  border-radius: 16px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  
+  animation: dialogSlideIn 200ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 2rem 2rem 1rem;
+}
+
+.iconContainer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.warning .iconContainer {
+  background: var(--warning-background, #fef3c7);
+}
+
+.danger .iconContainer {
+  background: var(--danger-background, #fee2e2);
+}
+
+.info .iconContainer {
+  background: var(--info-background, #dbeafe);
+}
+
+.warningIcon {
+  font-size: 24px;
+  color: var(--warning-color, #f59e0b);
+}
+
+.dangerIcon {
+  font-size: 24px;
+  color: var(--danger-color, #ef4444);
+}
+
+.infoIcon {
+  font-size: 24px;
+  color: var(--info-color, #3b82f6);
+}
+
+.dialogTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #1f2937);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.dialogContent {
+  padding: 0 2rem 1.5rem;
+}
+
+.dialogMessage {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary, #6b7280);
+  margin: 0;
+}
+
+.dialogActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding: 0 2rem 2rem;
+}
+
+/* Variant Styles */
+.warning {
+  border-top: 4px solid var(--warning-color, #f59e0b);
+}
+
+.danger {
+  border-top: 4px solid var(--danger-color, #ef4444);
+}
+
+.info {
+  border-top: 4px solid var(--info-color, #3b82f6);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    backdrop-filter: blur(0px); 
+  }
+  to { 
+    opacity: 1; 
+    backdrop-filter: blur(16px); 
+  }
+}
+
+@keyframes dialogSlideIn {
+  from { 
+    transform: translateY(-24px) scale(0.98);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .confirmationDialog {
+    margin: 1rem;
+    max-width: none;
+  }
+  
+  .dialogHeader {
+    padding: 1.5rem 1.5rem 1rem;
+    gap: 0.75rem;
+  }
+  
+  .iconContainer {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .warningIcon,
+  .dangerIcon,
+  .infoIcon {
+    font-size: 20px;
+  }
+  
+  .dialogTitle {
+    font-size: 1.125rem;
+  }
+  
+  .dialogContent {
+    padding: 0 1.5rem 1rem;
+  }
+  
+  .dialogActions {
+    padding: 0 1.5rem 1.5rem;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+  
+  .dialogActions > button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .confirmationOverlay {
+    background: rgba(0, 0, 0, 0.95);
+  }
+  
+  .confirmationDialog {
+    border: 2px solid var(--border-high-contrast, #000000);
+  }
+  
+  .iconContainer {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .confirmationOverlay,
+  .confirmationDialog {
+    animation: none;
+  }
+}

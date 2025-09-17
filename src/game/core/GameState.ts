@@ -13,6 +13,7 @@ export class GameStateManager {
   private state: GameState;
   private subscribers: Set<GameStateSubscriber> = new Set();
   private readonly initialState: GameState;
+  private previousGameStatus: GameStatus | null = null;
 
   constructor(initialState?: Partial<GameState>) {
     this.initialState = {
@@ -56,6 +57,49 @@ export class GameStateManager {
    */
   setGameStatus(status: GameStatus): void {
     this.updateState(() => ({ gameStatus: status }));
+  }
+
+  /**
+   * Pause the game
+   * Stores current game status to restore on resume
+   */
+  pause(): void {
+    if (this.state.gameStatus !== "paused") {
+      this.previousGameStatus = this.state.gameStatus;
+      this.setGameStatus("paused");
+    }
+  }
+
+  /**
+   * Resume the game
+   * Restores previous game status if available
+   */
+  resume(): void {
+    if (this.state.gameStatus === "paused" && this.previousGameStatus) {
+      this.setGameStatus(this.previousGameStatus);
+      this.previousGameStatus = null;
+    } else if (this.state.gameStatus === "paused") {
+      // Fallback to playing if no previous status
+      this.setGameStatus("playing");
+    }
+  }
+
+  /**
+   * Check if game is currently paused
+   */
+  isPaused(): boolean {
+    return this.state.gameStatus === "paused";
+  }
+
+  /**
+   * Toggle pause state
+   */
+  togglePause(): void {
+    if (this.isPaused()) {
+      this.resume();
+    } else {
+      this.pause();
+    }
   }
 
   /**

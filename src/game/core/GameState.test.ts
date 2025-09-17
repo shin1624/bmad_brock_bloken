@@ -37,6 +37,109 @@ describe("GameStateManager", () => {
     });
   });
 
+  describe("pause functionality", () => {
+    it("should pause the game from playing state", () => {
+      manager.setGameStatus("playing");
+      manager.pause();
+      
+      const state = manager.getState();
+      expect(state.gameStatus).toBe("paused");
+    });
+
+    it("should store previous game status when pausing", () => {
+      manager.setGameStatus("playing");
+      manager.pause();
+      
+      // Resume should restore previous status
+      manager.resume();
+      const state = manager.getState();
+      expect(state.gameStatus).toBe("playing");
+    });
+
+    it("should resume to playing state when no previous status", () => {
+      manager.setGameStatus("paused");
+      manager.resume();
+      
+      const state = manager.getState();
+      expect(state.gameStatus).toBe("playing");
+    });
+
+    it("should not change status when pausing already paused game", () => {
+      manager.setGameStatus("playing");
+      manager.pause();
+      manager.pause(); // Second pause should not change anything
+      
+      const state = manager.getState();
+      expect(state.gameStatus).toBe("paused");
+      
+      // Resume should still work
+      manager.resume();
+      const resumedState = manager.getState();
+      expect(resumedState.gameStatus).toBe("playing");
+    });
+
+    it("should correctly report pause status", () => {
+      expect(manager.isPaused()).toBe(false);
+      
+      manager.pause();
+      expect(manager.isPaused()).toBe(true);
+      
+      manager.resume();
+      expect(manager.isPaused()).toBe(false);
+    });
+
+    it("should toggle pause state correctly", () => {
+      manager.setGameStatus("playing");
+      
+      manager.togglePause();
+      expect(manager.isPaused()).toBe(true);
+      expect(manager.getState().gameStatus).toBe("paused");
+      
+      manager.togglePause();
+      expect(manager.isPaused()).toBe(false);
+      expect(manager.getState().gameStatus).toBe("playing");
+    });
+
+    it("should handle pause from different game statuses", () => {
+      // Test pausing from "idle"
+      manager.setGameStatus("idle");
+      manager.pause();
+      expect(manager.getState().gameStatus).toBe("paused");
+      
+      manager.resume();
+      expect(manager.getState().gameStatus).toBe("idle");
+      
+      // Test pausing from "victory"
+      manager.setGameStatus("victory");
+      manager.pause();
+      expect(manager.getState().gameStatus).toBe("paused");
+      
+      manager.resume();
+      expect(manager.getState().gameStatus).toBe("victory");
+    });
+
+    it("should notify subscribers when pause state changes", () => {
+      const subscriber = vi.fn();
+      manager.subscribe(subscriber);
+      
+      // Set to playing state first
+      manager.setGameStatus("playing");
+      vi.clearAllMocks();
+      
+      manager.pause();
+      expect(subscriber).toHaveBeenCalledWith(
+        expect.objectContaining({ gameStatus: "paused" })
+      );
+      
+      vi.clearAllMocks();
+      
+      manager.resume();
+      expect(subscriber).toHaveBeenCalledWith(
+        expect.objectContaining({ gameStatus: "playing" })
+      );
+    });
+  });
+
   describe("state immutability", () => {
     it("should return immutable state", () => {
       const state = manager.getState();

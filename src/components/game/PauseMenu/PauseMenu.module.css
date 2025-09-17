@@ -1,0 +1,277 @@
+/* PauseMenu.module.css - GPU Optimized Animations */
+
+.pauseOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  
+  animation: fadeIn 300ms ease-out;
+  will-change: opacity, backdrop-filter;
+}
+
+.pauseMenu {
+  position: relative;
+  background: var(--menu-background, #ffffff);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  animation: slideIn 300ms ease-out forwards;
+  will-change: transform, opacity;
+}
+
+.pauseMenuHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.pauseMenuTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary, #1f2937);
+  margin: 0;
+}
+
+.pauseMenuContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pauseMenuButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Menu Button Styles */
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms ease-out;
+  will-change: transform, box-shadow;
+  
+  min-height: 48px; /* Accessibility - minimum touch target */
+}
+
+.menuButton:focus {
+  outline: 2px solid var(--focus-ring, #3b82f6);
+  outline-offset: 2px;
+}
+
+.menuButton:active {
+  transform: scale(0.95);
+}
+
+/* Navigation Focus Indicator */
+.focusedButton {
+  outline: 2px solid var(--focus-ring, #3b82f6);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  animation: focusPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes focusPulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); 
+  }
+  50% { 
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); 
+  }
+}
+
+/* Button Variants */
+.menuButtonPrimary {
+  background: var(--primary-bg, #3b82f6);
+  color: var(--primary-text, #ffffff);
+}
+
+.menuButtonPrimary:hover:not(:disabled) {
+  background: var(--primary-bg-hover, #2563eb);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.menuButtonSecondary {
+  background: var(--secondary-bg, #f3f4f6);
+  color: var(--secondary-text, #374151);
+}
+
+.menuButtonSecondary:hover:not(:disabled) {
+  background: var(--secondary-bg-hover, #e5e7eb);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.menuButtonDanger {
+  background: var(--danger-bg, #ef4444);
+  color: var(--danger-text, #ffffff);
+}
+
+.menuButtonDanger:hover:not(:disabled) {
+  background: var(--danger-bg-hover, #dc2626);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.menuButtonDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Button Sizes */
+.menuButtonSmall {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  min-height: 36px;
+}
+
+.menuButtonMedium {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  min-height: 48px;
+}
+
+.menuButtonLarge {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  min-height: 56px;
+}
+
+/* Icon and Text Styles */
+.menuButtonIcon {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.menuButtonText {
+  line-height: 1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    backdrop-filter: blur(0); 
+  }
+  to { 
+    opacity: 1; 
+    backdrop-filter: blur(8px); 
+  }
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from { 
+    opacity: 1; 
+    backdrop-filter: blur(8px); 
+  }
+  to { 
+    opacity: 0; 
+    backdrop-filter: blur(0px); 
+  }
+}
+
+@keyframes slideOut {
+  from { 
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to { 
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+  }
+}
+
+.pauseOverlayExiting {
+  animation: fadeOut 200ms ease-out;
+}
+
+.pauseMenuExiting {
+  animation: slideOut 200ms ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .pauseMenu {
+    margin: 1rem;
+    padding: 1.5rem;
+    max-width: none;
+  }
+  
+  .pauseMenuTitle {
+    font-size: 1.25rem;
+  }
+  
+  .menuButton {
+    padding: 1rem 1.5rem;
+    font-size: 1.125rem;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .pauseOverlay {
+    background: rgba(0, 0, 0, 0.95);
+  }
+  
+  .pauseMenu {
+    border: 2px solid var(--border-high-contrast, #000000);
+  }
+  
+  .menuButton {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .pauseOverlay,
+  .pauseMenu,
+  .menuButton {
+    animation: none;
+    transition: none;
+  }
+  
+  .menuButtonPrimary:hover:not(:disabled),
+  .menuButtonSecondary:hover:not(:disabled),
+  .menuButtonDanger:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .menuButton:active {
+    transform: none;
+  }
+}

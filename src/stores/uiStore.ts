@@ -16,6 +16,9 @@ export interface UIState {
   isSettingsOpen: boolean;
   isGameOverModalOpen: boolean;
 
+  // ゲーム状態
+  isPaused: boolean;
+
   // ゲーム設定状態
   settings: {
     soundEnabled: boolean;
@@ -72,6 +75,11 @@ export interface UIActions {
   openGameOverModal: () => void;
   closeGameOverModal: () => void;
 
+  // ゲーム状態制御
+  pauseGame: () => void;
+  resumeGame: () => void;
+  togglePause: () => void;
+
   // 設定変更
   updateSettings: (settings: Partial<UIState["settings"]>) => void;
   toggleSound: () => void;
@@ -115,6 +123,8 @@ const initialState: UIState = {
   isPauseMenuOpen: false,
   isSettingsOpen: false,
   isGameOverModalOpen: false,
+
+  isPaused: false,
 
   settings: {
     soundEnabled: true,
@@ -229,6 +239,25 @@ export const useUIStore = create<UIState & UIActions>()(
         closeGameOverModal: () =>
           set((state) => {
             state.isGameOverModalOpen = false;
+          }),
+
+        // ゲーム状態制御
+        pauseGame: () =>
+          set((state) => {
+            state.isPaused = true;
+            state.isPauseMenuOpen = true;
+          }),
+
+        resumeGame: () =>
+          set((state) => {
+            state.isPaused = false;
+            state.isPauseMenuOpen = false;
+          }),
+
+        togglePause: () =>
+          set((state) => {
+            state.isPaused = !state.isPaused;
+            state.isPauseMenuOpen = state.isPaused;
           }),
 
         // 設定更新
@@ -361,6 +390,7 @@ export const useIsPauseMenuOpen = () =>
   useUIStore((state) => state.isPauseMenuOpen);
 export const useIsSettingsOpen = () =>
   useUIStore((state) => state.isSettingsOpen);
+export const useIsPaused = () => useUIStore((state) => state.isPaused);
 export const useSettings = () => useUIStore((state) => state.settings);
 export const useNotifications = () =>
   useUIStore((state) => state.notifications);
@@ -397,4 +427,8 @@ export const uiActions = {
   removeNotification: (id: string) =>
     useUIStore.getState().removeNotification(id),
   clearNotifications: () => useUIStore.getState().clearNotifications(),
+
+  pauseGame: () => useUIStore.getState().pauseGame(),
+  resumeGame: () => useUIStore.getState().resumeGame(),
+  togglePause: () => useUIStore.getState().togglePause(),
 };
