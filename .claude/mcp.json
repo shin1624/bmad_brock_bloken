@@ -1,0 +1,10 @@
+{
+  "servers": [
+    {
+      "name": "codex",
+      "type": "stdio",
+      "command": "codex",
+      "args": ["mcp"]
+    }
+  ]
+}

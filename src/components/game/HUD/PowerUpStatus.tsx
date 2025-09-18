@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-// Power-Up types enumeration
+// Power-Up types enumeration - moved to top level for fast refresh compatibility
+// eslint-disable-next-line react-refresh/only-export-components
 export enum PowerUpType {
   MultiBall = "multiball",
   PaddleSize = "paddlesize",
@@ -18,6 +19,9 @@ export interface ActivePowerUp {
   icon: string;
   color: string;
   name: string;
+  variant?: string; // For power-ups with multiple variants (large/small, fast/slow)
+  stackCount?: number; // For stackable power-ups
+  effectStrength?: number; // Multiplier strength for display
 }
 
 interface PowerUpStatusProps {
@@ -147,28 +151,66 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
     return () => clearInterval(interval);
   }, [powerUps, countdownWarnings, expiredPowerUps, handleExpiration]);
 
-  // Get power-up icon based on type
-  const getPowerUpIcon = (type: PowerUpType): string => {
-    const iconMap: Record<PowerUpType, string> = {
-      [PowerUpType.MultiBall]: "⚡",
-      [PowerUpType.PaddleSize]: "🏓",
-      [PowerUpType.BallSpeed]: "💨",
-      [PowerUpType.Penetration]: "🎯",
-      [PowerUpType.Magnet]: "🧲",
-    };
-    return iconMap[type] || "❓";
+  // Get power-up icon based on type with variant support
+  const getPowerUpIcon = (type: PowerUpType, variant?: string): string => {
+    const iconMap: Record<PowerUpType, string | { [variant: string]: string }> =
+      {
+        [PowerUpType.MultiBall]: "⚡",
+        [PowerUpType.PaddleSize]: {
+          large: "🏓",
+          small: "🏏",
+        },
+        [PowerUpType.BallSpeed]: {
+          fast: "💨",
+          slow: "🐌",
+        },
+        [PowerUpType.Penetration]: "🎯",
+        [PowerUpType.Magnet]: "🧲",
+      };
+
+    const mapping = iconMap[type];
+    if (typeof mapping === "string") {
+      return mapping;
+    } else if (mapping && variant && mapping[variant]) {
+      return mapping[variant];
+    } else if (mapping) {
+      // Default to first variant if no specific variant specified
+      return Object.values(mapping)[0];
+    }
+
+    return "❓";
   };
 
-  // Get power-up color based on type
-  const getPowerUpColor = (type: PowerUpType): string => {
-    const colorMap: Record<PowerUpType, string> = {
+  // Get power-up color based on type with variant support
+  const getPowerUpColor = (type: PowerUpType, variant?: string): string => {
+    const colorMap: Record<
+      PowerUpType,
+      string | { [variant: string]: string }
+    > = {
       [PowerUpType.MultiBall]: "#ff6b6b",
-      [PowerUpType.PaddleSize]: "#4ecdc4",
-      [PowerUpType.BallSpeed]: "#45b7d1",
+      [PowerUpType.PaddleSize]: {
+        large: "#4ecdc4",
+        small: "#ff9f43",
+      },
+      [PowerUpType.BallSpeed]: {
+        fast: "#45b7d1",
+        slow: "#96ceb4",
+      },
       [PowerUpType.Penetration]: "#96ceb4",
       [PowerUpType.Magnet]: "#feca57",
     };
-    return colorMap[type] || "#999999";
+
+    const mapping = colorMap[type];
+    if (typeof mapping === "string") {
+      return mapping;
+    } else if (mapping && variant && mapping[variant]) {
+      return mapping[variant];
+    } else if (mapping) {
+      // Default to first variant if no specific variant specified
+      return Object.values(mapping)[0];
+    }
+
+    return "#999999";
   };
 
   // Calculate progress percentage
@@ -216,7 +258,7 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
     const isSpawning = spawnAnimations.has(powerUp.id);
     const isActivating = animatingPowerUps.has(powerUp.id);
     const isExpired = expiredPowerUps.has(powerUp.id);
-    const color = getPowerUpColor(powerUp.type);
+    const color = getPowerUpColor(powerUp.type, powerUp.variant);
 
     let transform = "scale(1)";
     let animation = "none";
@@ -256,10 +298,10 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
     };
   };
 
-  // Enhanced icon styles with glow effects
+  // Enhanced icon styles with glow effects and stack indicator support
   const iconStyle = (powerUp: ActivePowerUp): React.CSSProperties => {
     const isWarning = countdownWarnings.has(powerUp.id);
-    const color = getPowerUpColor(powerUp.type);
+    const color = getPowerUpColor(powerUp.type, powerUp.variant);
 
     return {
       fontSize: "18px",
@@ -267,6 +309,8 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
       textShadow: `0 0 8px ${color}`,
       filter: isWarning ? "brightness(1.3)" : "brightness(1)",
       transition: "all 0.3s ease",
+      position: "relative",
+      display: "inline-block",
     };
   };
 
@@ -284,7 +328,7 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
   const timerFillStyle = (powerUp: ActivePowerUp): React.CSSProperties => {
     const progress = getProgress(powerUp);
     const isWarning = progress < 25;
-    const color = getPowerUpColor(powerUp.type);
+    const color = getPowerUpColor(powerUp.type, powerUp.variant);
 
     return {
       width: `${progress}%`,
@@ -333,9 +377,49 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
           role="timer"
           aria-label={`${powerUp.name || powerUp.type} - ${formatTime(powerUp.duration)} remaining`}
         >
-          <span style={iconStyle(powerUp)}>{getPowerUpIcon(powerUp.type)}</span>
+          <span style={iconStyle(powerUp)}>
+            {getPowerUpIcon(powerUp.type, powerUp.variant)}
+            {powerUp.stackCount && powerUp.stackCount > 1 && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-6px",
+                  right: "-6px",
+                  backgroundColor: "#ff4757",
+                  color: "#ffffff",
+                  fontSize: "10px",
+                  fontWeight: "bold",
+                  borderRadius: "50%",
+                  minWidth: "16px",
+                  height: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid #ffffff",
+                  boxShadow: "0 0 4px rgba(0,0,0,0.5)",
+                }}
+              >
+                {powerUp.stackCount}
+              </span>
+            )}
+          </span>
           <div style={{ flex: 1 }}>
-            <div style={nameStyle}>{powerUp.name || powerUp.type}</div>
+            <div style={nameStyle}>
+              {powerUp.name || powerUp.type}
+              {powerUp.effectStrength && powerUp.effectStrength !== 1 && (
+                <span
+                  style={{
+                    fontSize: "9px",
+                    opacity: 0.7,
+                    marginLeft: "4px",
+                    color: powerUp.effectStrength > 1 ? "#4ecdc4" : "#ff9f43",
+                  }}
+                >
+                  {powerUp.effectStrength > 1 ? "↑" : "↓"}
+                  {Math.round(powerUp.effectStrength * 100)}%
+                </span>
+              )}
+            </div>
             <div style={timerBarStyle}>
               <div style={timerFillStyle(powerUp)} />
             </div>

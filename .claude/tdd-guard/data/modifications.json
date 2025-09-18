@@ -1,11 +1,11 @@
 {
-  "session_id": "588d422b-9180-4aeb-8d2a-83ec8147b5b2",
-  "transcript_path": "/Users/yoshikawashin/.claude/projects/-Users-yoshikawashin-project-bmad-brock-bloken/588d422b-9180-4aeb-8d2a-83ec8147b5b2.jsonl",
+  "session_id": "8de6c206-a412-4fcf-ab75-0531d4dd9b12",
+  "transcript_path": "/Users/yoshikawashin/.claude/projects/-Users-yoshikawashin-project-bmad-brock-bloken/8de6c206-a412-4fcf-ab75-0531d4dd9b12.jsonl",
   "hook_event_name": "PreToolUse",
   "tool_name": "Edit",
   "tool_input": {
-    "file_path": "src/components/game/HUD/ComboDisplay.tsx",
-    "old_string": "import React, { useState, useEffect, useCallback } from 'react';",
-    "new_string": "import React, { useState, useEffect } from 'react';"
+    "file_path": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/PauseMenu/PauseMenu.integration.test.tsx",
+    "old_string": "import { render, screen, fireEvent, waitFor } from \"@testing-library/react\";",
+    "new_string": "import { render, screen, waitFor } from \"@testing-library/react\";"
   }
 }

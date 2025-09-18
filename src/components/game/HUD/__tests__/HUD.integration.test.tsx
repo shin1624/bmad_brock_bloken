@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { HUD } from "../index";
 import { useHUD } from "../../../../hooks/useHUD";
@@ -8,7 +8,7 @@ vi.mock("../../../../hooks/useHUD");
 
 describe("HUD Integration Tests", () => {
   const mockUseHUD = vi.mocked(useHUD);
-  
+
   beforeEach(() => {
     mockUseHUD.mockReturnValue({
       hudState: {
@@ -88,17 +88,17 @@ describe("HUD Integration Tests", () => {
   it("should handle score updates with animations", () => {
     const mockOnScoreChange = vi.fn();
     const { rerender } = render(
-      <HUD 
+      <HUD
         hudState={{ score: 1000, lives: 3, level: 1 }}
         onScoreChange={mockOnScoreChange}
-      />
+      />,
     );
 
     rerender(
-      <HUD 
+      <HUD
         hudState={{ score: 1500, lives: 3, level: 1 }}
         onScoreChange={mockOnScoreChange}
-      />
+      />,
     );
 
     expect(mockOnScoreChange).toHaveBeenCalledWith(1500, 1000);
@@ -107,13 +107,13 @@ describe("HUD Integration Tests", () => {
   it("should handle lives updates with game over callback", () => {
     const mockOnLifeChange = vi.fn();
     const mockOnGameOver = vi.fn();
-    
+
     render(
-      <HUD 
+      <HUD
         hudState={{ score: 1000, lives: 0, level: 1 }}
         onLifeChange={mockOnLifeChange}
         onGameOver={mockOnGameOver}
-      />
+      />,
     );
 
     expect(mockOnGameOver).toHaveBeenCalled();
@@ -136,20 +136,18 @@ describe("HUD Integration Tests", () => {
 
   it("should handle performance optimization requirements", () => {
     const startTime = performance.now();
-    
-    render(
-      <HUD hudState={{ score: 1000, lives: 3, level: 1 }} />
-    );
-    
+
+    render(<HUD hudState={{ score: 1000, lives: 3, level: 1 }} />);
+
     const renderTime = performance.now() - startTime;
-    
+
     // Should render within 8ms for 60FPS compliance
     expect(renderTime).toBeLessThan(8);
   });
 
   it("should handle multiple rapid state updates efficiently", () => {
     const { rerender } = render(
-      <HUD hudState={{ score: 1000, lives: 3, level: 1 }} />
+      <HUD hudState={{ score: 1000, lives: 3, level: 1 }} />,
     );
 
     const startTime = performance.now();
@@ -157,7 +155,7 @@ describe("HUD Integration Tests", () => {
     // Simulate rapid score updates
     for (let i = 0; i < 10; i++) {
       rerender(
-        <HUD hudState={{ score: 1000 + i * 100, lives: 3, level: 1 }} />
+        <HUD hudState={{ score: 1000 + i * 100, lives: 3, level: 1 }} />,
       );
     }
 
@@ -169,16 +167,14 @@ describe("HUD Integration Tests", () => {
   });
 
   it("should maintain accessibility compliance", () => {
-    render(
-      <HUD hudState={{ score: 1500, lives: 2, level: 3 }} />
-    );
+    render(<HUD hudState={{ score: 1500, lives: 2, level: 3 }} />);
 
     const hudContainer = screen.getByTestId("hud-overlay");
-    
+
     // Should have proper accessibility attributes
     expect(hudContainer).toBeInTheDocument();
     expect(hudContainer).toHaveClass("hud-overlay");
-    
+
     // Text should be readable by screen readers
     expect(screen.getByText("1,500")).toBeInTheDocument();
     expect(screen.getByText("Level 3")).toBeInTheDocument();

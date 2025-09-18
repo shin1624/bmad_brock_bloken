@@ -61,7 +61,7 @@ export function GameCanvas({
     if (onCanvasReady) {
       onCanvasReady(canvas, context);
     }
-  }, [canvasSize.width, canvasSize.height, onCanvasReady]);
+  }, [canvasSize.width, canvasSize.height, onCanvasReady, updateCanvasSize]);
 
   // Update canvas size and handle pixel ratio for crisp rendering
   const updateCanvasSize = useCallback(
@@ -157,6 +157,7 @@ export function GameCanvas({
   }, []);
 
   // Expose useful methods via ref (using imperativeHandle if needed)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const canvasApi = {
     getCanvas: () => canvasRef.current,
     getContext: () => contextRef.current,

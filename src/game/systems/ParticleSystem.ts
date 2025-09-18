@@ -4,6 +4,7 @@
  */
 import { Particle, ParticleOptions } from '../entities/Particle';
 import { ObjectPool } from '../utils/ObjectPool';
+import { ParticlePool } from '../utils/ParticlePool';
 import { Vector2D, BlockType } from '../../types/game.types';
 import { EventBus } from '../core/EventBus';
 
@@ -11,6 +12,9 @@ export interface ParticleSystemConfig {
   maxParticles: number;
   preFillCount: number;
   enableDebugMode: boolean;
+  useAdvancedPool: boolean;
+  enableSpatialOptimization: boolean;
+  enableLOD: boolean;
 }
 
 export class ParticleSystem {

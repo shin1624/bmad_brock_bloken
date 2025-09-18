@@ -1,507 +1,114 @@
 {
   "testModules": [
     {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/ComboDisplay.test.tsx",
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/__tests__/useGameStateIntegration.test.ts",
       "tests": [
         {
-          "name": "should render nothing when combo count is 0",
-          "fullName": "ComboDisplay Component > should render nothing when combo count is 0",
+          "name": "should initialize with empty state",
+          "fullName": "useGameStateIntegration Hook > Hook Initialization > should initialize with empty state",
           "state": "passed"
         },
         {
-          "name": "should display combo count",
-          "fullName": "ComboDisplay Component > should display combo count",
+          "name": "should initialize with custom config",
+          "fullName": "useGameStateIntegration Hook > Hook Initialization > should initialize with custom config",
           "state": "passed"
         },
         {
-          "name": "should display formatted multiplier",
-          "fullName": "ComboDisplay Component > should display formatted multiplier",
+          "name": "should handle power-up spawn and create animation",
+          "fullName": "useGameStateIntegration Hook > PowerUp Spawn Events > should handle power-up spawn and create animation",
           "state": "passed"
         },
         {
-          "name": "should format multiplier with one decimal place",
-          "fullName": "ComboDisplay Component > should format multiplier with one decimal place",
+          "name": "should not create animation when disabled",
+          "fullName": "useGameStateIntegration Hook > PowerUp Spawn Events > should not create animation when disabled",
           "state": "passed"
         },
         {
-          "name": "should show streak level for high streaks",
-          "fullName": "ComboDisplay Component > should show streak level for high streaks",
+          "name": "should handle power-up pickup and create pickup animation",
+          "fullName": "useGameStateIntegration Hook > PowerUp Pickup Events > should handle power-up pickup and create pickup animation",
           "state": "passed"
         },
         {
-          "name": "should show different streak levels",
-          "fullName": "ComboDisplay Component > should show different streak levels",
+          "name": "should handle pickup of non-existent power-up gracefully",
+          "fullName": "useGameStateIntegration Hook > PowerUp Pickup Events > should handle pickup of non-existent power-up gracefully",
           "state": "passed"
         },
         {
-          "name": "should not show streak level for low streaks",
-          "fullName": "ComboDisplay Component > should not show streak level for low streaks",
+          "name": "should activate power-up and add to active list",
+          "fullName": "useGameStateIntegration Hook > PowerUp Activation Events > should activate power-up and add to active list",
           "state": "passed"
         },
         {
-          "name": "should call onComboExtend when combo increases",
-          "fullName": "ComboDisplay Component > should call onComboExtend when combo increases",
+          "name": "should replace existing power-up with same ID",
+          "fullName": "useGameStateIntegration Hook > PowerUp Activation Events > should replace existing power-up with same ID",
           "state": "passed"
         },
         {
-          "name": "should call onComboBreak when combo resets to 0",
-          "fullName": "ComboDisplay Component > should call onComboBreak when combo resets to 0",
+          "name": "should handle power-up expiration and remove from active list",
+          "fullName": "useGameStateIntegration Hook > PowerUp Expiration Events > should handle power-up expiration and remove from active list",
           "state": "passed"
         },
         {
-          "name": "should call onStreakAchieved when streak increases",
-          "fullName": "ComboDisplay Component > should call onStreakAchieved when streak increases",
+          "name": "should update power-up durations over time",
+          "fullName": "useGameStateIntegration Hook > Duration Updates > should update power-up durations over time",
           "state": "passed"
         },
         {
-          "name": "should handle zero time remaining",
-          "fullName": "ComboDisplay Component > should handle zero time remaining",
+          "name": "should automatically remove expired power-ups",
+          "fullName": "useGameStateIntegration Hook > Duration Updates > should automatically remove expired power-ups",
           "state": "passed"
         },
         {
-          "name": "should handle high multiplier values",
-          "fullName": "ComboDisplay Component > should handle high multiplier values",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/PowerUpStatus.test.tsx",
-      "tests": [
-        {
-          "name": "should render nothing when no power-ups are active",
-          "fullName": "PowerUpStatus Component > should render nothing when no power-ups are active",
+          "name": "should clear individual animations",
+          "fullName": "useGameStateIntegration Hook > Animation Management > should clear individual animations",
           "state": "passed"
         },
         {
-          "name": "should display active power-up with correct icon and name",
-          "fullName": "PowerUpStatus Component > should display active power-up with correct icon and name",
+          "name": "should clear all animations",
+          "fullName": "useGameStateIntegration Hook > Animation Management > should clear all animations",
           "state": "passed"
         },
         {
-          "name": "should format time correctly for different durations",
-          "fullName": "PowerUpStatus Component > should format time correctly for different durations",
+          "name": "should provide debug information",
+          "fullName": "useGameStateIntegration Hook > Debug Information > should provide debug information",
           "state": "passed"
         },
         {
-          "name": "should display multiple power-ups",
-          "fullName": "PowerUpStatus Component > should display multiple power-ups",
+          "name": "should update debug info periodically",
+          "fullName": "useGameStateIntegration Hook > Debug Information > should update debug info periodically",
           "state": "passed"
         },
         {
-          "name": "should limit display count and show overflow indicator",
-          "fullName": "PowerUpStatus Component > should limit display count and show overflow indicator",
+          "name": "should handle large numbers of power-ups efficiently",
+          "fullName": "useGameStateIntegration Hook > Performance and Memory Management > should handle large numbers of power-ups efficiently",
           "state": "passed"
         },
         {
-          "name": "should call onPowerUpActivate callback for new power-ups",
-          "fullName": "PowerUpStatus Component > should call onPowerUpActivate callback for new power-ups",
-          "state": "passed"
-        },
-        {
-          "name": "should display correct icon for different power-up types",
-          "fullName": "PowerUpStatus Component > should display correct icon for different power-up types",
-          "state": "passed"
-        },
-        {
-          "name": "should handle power-up with fallback type correctly",
-          "fullName": "PowerUpStatus Component > should handle power-up with fallback type correctly",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/LevelDisplay.test.tsx",
-      "tests": [
-        {
-          "name": "should display current level",
-          "fullName": "LevelDisplay Component > should display current level",
-          "state": "passed"
-        },
-        {
-          "name": "should display level counter with total levels",
-          "fullName": "LevelDisplay Component > should display level counter with total levels",
-          "state": "passed"
-        },
-        {
-          "name": "should display progress bar when progress is provided",
-          "fullName": "LevelDisplay Component > should display progress bar when progress is provided",
-          "state": "passed"
-        },
-        {
-          "name": "should hide progress text when progress is 0",
-          "fullName": "LevelDisplay Component > should hide progress text when progress is 0",
-          "state": "passed"
-        },
-        {
-          "name": "should call onLevelTransition when level changes",
-          "fullName": "LevelDisplay Component > should call onLevelTransition when level changes",
-          "state": "passed"
-        },
-        {
-          "name": "should call onLevelComplete when progress reaches 100%",
-          "fullName": "LevelDisplay Component > should call onLevelComplete when progress reaches 100%",
-          "state": "passed"
-        },
-        {
-          "name": "should handle different progress values",
-          "fullName": "LevelDisplay Component > should handle different progress values",
-          "state": "passed"
-        },
-        {
-          "name": "should use default total levels when not specified",
-          "fullName": "LevelDisplay Component > should use default total levels when not specified",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/HUD.test.tsx",
-      "tests": [
-        {
-          "name": "should render HUD overlay with proper positioning",
-          "fullName": "HUD Component > should render HUD overlay with proper positioning",
-          "state": "passed"
-        },
-        {
-          "name": "should use CSS Grid layout for responsive design",
-          "fullName": "HUD Component > should use CSS Grid layout for responsive design",
-          "state": "passed"
-        },
-        {
-          "name": "should display integrated score and lives components",
-          "fullName": "HUD Component > should display integrated score and lives components",
-          "state": "passed"
-        },
-        {
-          "name": "should call callbacks when provided",
-          "fullName": "HUD Component > should call callbacks when provided",
-          "state": "passed"
-        },
-        {
-          "name": "should display level information correctly",
-          "fullName": "HUD Component > should display level information correctly",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/HUD.performance.test.tsx",
-      "tests": [
-        {
-          "name": "should render HUD within performance target",
-          "fullName": "HUD Performance Tests > should render HUD within performance target",
+          "name": "should clean up expired power-ups from registry",
+          "fullName": "useGameStateIntegration Hook > Performance and Memory Management > should clean up expired power-ups from registry",
           "state": "failed",
           "errors": [
             {
-              "message": "expected 129 to be less than 100",
-              "stack": "AssertionError: expected 129 to be less than 100\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/HUD.performance.test.tsx:25:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
-              "expected": "100",
-              "actual": "129"
+              "message": "expected +0 to be 1 // Object.is equality",
+              "stack": "AssertionError: expected +0 to be 1 // Object.is equality\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/__tests__/useGameStateIntegration.test.ts:476:53\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
+              "expected": "1",
+              "actual": "0"
             }
           ]
         },
         {
-          "name": "should handle score updates efficiently",
-          "fullName": "HUD Performance Tests > should handle score updates efficiently",
+          "name": "should handle missing power-up metadata gracefully",
+          "fullName": "useGameStateIntegration Hook > Error Handling > should handle missing power-up metadata gracefully",
           "state": "passed"
         },
         {
-          "name": "should handle lives updates efficiently",
-          "fullName": "HUD Performance Tests > should handle lives updates efficiently",
+          "name": "should handle activation of non-existent power-up",
+          "fullName": "useGameStateIntegration Hook > Error Handling > should handle activation of non-existent power-up",
           "state": "passed"
         },
         {
-          "name": "should handle level progression updates efficiently",
-          "fullName": "HUD Performance Tests > should handle level progression updates efficiently",
-          "state": "passed"
-        },
-        {
-          "name": "should handle multiple power-ups efficiently",
-          "fullName": "HUD Performance Tests > should handle multiple power-ups efficiently",
-          "state": "passed"
-        },
-        {
-          "name": "should handle combo updates efficiently",
-          "fullName": "HUD Performance Tests > should handle combo updates efficiently",
-          "state": "passed"
-        },
-        {
-          "name": "should maintain performance with complex HUD state",
-          "fullName": "HUD Performance Tests > should maintain performance with complex HUD state",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "expected 22 to be less than 16",
-              "stack": "AssertionError: expected 22 to be less than 16\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/HUD.performance.test.tsx:153:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
-              "expected": "16",
-              "actual": "22"
-            }
-          ]
-        },
-        {
-          "name": "should handle animation performance",
-          "fullName": "HUD Performance Tests > should handle animation performance",
-          "state": "passed"
-        },
-        {
-          "name": "should optimize memory usage",
-          "fullName": "HUD Performance Tests > should optimize memory usage",
-          "state": "passed"
-        },
-        {
-          "name": "should handle rapid re-renders without performance degradation",
-          "fullName": "HUD Performance Tests > should handle rapid re-renders without performance degradation",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/HUD.integration.test.tsx",
-      "tests": [
-        {
-          "name": "should integrate with useHUD hook for real-time updates",
-          "fullName": "HUD Integration Tests > should integrate with useHUD hook for real-time updates",
-          "state": "passed"
-        },
-        {
-          "name": "should handle score updates with animations",
-          "fullName": "HUD Integration Tests > should handle score updates with animations",
-          "state": "passed"
-        },
-        {
-          "name": "should handle lives updates with game over callback",
-          "fullName": "HUD Integration Tests > should handle lives updates with game over callback",
-          "state": "passed"
-        },
-        {
-          "name": "should synchronize state between components",
-          "fullName": "HUD Integration Tests > should synchronize state between components",
-          "state": "passed"
-        },
-        {
-          "name": "should handle performance optimization requirements",
-          "fullName": "HUD Integration Tests > should handle performance optimization requirements",
-          "state": "passed"
-        },
-        {
-          "name": "should handle multiple rapid state updates efficiently",
-          "fullName": "HUD Integration Tests > should handle multiple rapid state updates efficiently",
-          "state": "passed"
-        },
-        {
-          "name": "should maintain accessibility compliance",
-          "fullName": "HUD Integration Tests > should maintain accessibility compliance",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/HUD.accessibility.test.tsx",
-      "tests": [
-        {
-          "name": "should have no accessibility violations in HUD container",
-          "fullName": "HUD Accessibility Tests > should have no accessibility violations in HUD container",
-          "state": "passed"
-        },
-        {
-          "name": "should have no accessibility violations in ScoreDisplay",
-          "fullName": "HUD Accessibility Tests > should have no accessibility violations in ScoreDisplay",
-          "state": "passed"
-        },
-        {
-          "name": "should have no accessibility violations in LivesDisplay",
-          "fullName": "HUD Accessibility Tests > should have no accessibility violations in LivesDisplay",
-          "state": "passed"
-        },
-        {
-          "name": "should have no accessibility violations in LevelDisplay",
-          "fullName": "HUD Accessibility Tests > should have no accessibility violations in LevelDisplay",
-          "state": "passed"
-        },
-        {
-          "name": "should have no accessibility violations in PowerUpStatus",
-          "fullName": "HUD Accessibility Tests > should have no accessibility violations in PowerUpStatus",
-          "state": "passed"
-        },
-        {
-          "name": "should have no accessibility violations in ComboDisplay",
-          "fullName": "HUD Accessibility Tests > should have no accessibility violations in ComboDisplay",
-          "state": "passed"
-        },
-        {
-          "name": "should provide appropriate text content for screen readers",
-          "fullName": "HUD Accessibility Tests > should provide appropriate text content for screen readers",
-          "state": "passed"
-        },
-        {
-          "name": "should use semantic HTML structure",
-          "fullName": "HUD Accessibility Tests > should use semantic HTML structure",
-          "state": "passed"
-        },
-        {
-          "name": "should provide color-blind friendly indicators",
-          "fullName": "HUD Accessibility Tests > should provide color-blind friendly indicators",
-          "state": "passed"
-        },
-        {
-          "name": "should handle high contrast mode",
-          "fullName": "HUD Accessibility Tests > should handle high contrast mode",
-          "state": "passed"
-        },
-        {
-          "name": "should provide focus indicators for interactive elements",
-          "fullName": "HUD Accessibility Tests > should provide focus indicators for interactive elements",
-          "state": "passed"
-        },
-        {
-          "name": "should support screen reader announcements for state changes",
-          "fullName": "HUD Accessibility Tests > should support screen reader announcements for state changes",
-          "state": "passed"
-        },
-        {
-          "name": "should handle reduced motion preferences",
-          "fullName": "HUD Accessibility Tests > should handle reduced motion preferences",
-          "state": "passed"
-        },
-        {
-          "name": "should maintain accessibility with complex layouts",
-          "fullName": "HUD Accessibility Tests > should maintain accessibility with complex layouts",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/ScoreDisplay.test.tsx",
-      "tests": [
-        {
-          "name": "should display score with proper comma formatting",
-          "fullName": "ScoreDisplay Component > should display score with proper comma formatting",
-          "state": "passed"
-        },
-        {
-          "name": "should display different score values correctly",
-          "fullName": "ScoreDisplay Component > should display different score values correctly",
-          "state": "passed"
-        },
-        {
-          "name": "should call onScoreChange callback when score changes",
-          "fullName": "ScoreDisplay Component > should call onScoreChange callback when score changes",
-          "state": "passed"
-        },
-        {
-          "name": "should show animation state when score increases",
-          "fullName": "ScoreDisplay Component > should show animation state when score increases",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/game/HUD/__tests__/LivesDisplay.test.tsx",
-      "tests": [
-        {
-          "name": "should display current lives count",
-          "fullName": "LivesDisplay Component > should display current lives count",
-          "state": "passed"
-        },
-        {
-          "name": "should display different lives values correctly",
-          "fullName": "LivesDisplay Component > should display different lives values correctly",
-          "state": "passed"
-        },
-        {
-          "name": "should call onLifeChange callback when lives change",
-          "fullName": "LivesDisplay Component > should call onLifeChange callback when lives change",
-          "state": "passed"
-        },
-        {
-          "name": "should call onGameOver when lives reach 0",
-          "fullName": "LivesDisplay Component > should call onGameOver when lives reach 0",
-          "state": "passed"
-        },
-        {
-          "name": "should show low health warning when lives = 1",
-          "fullName": "LivesDisplay Component > should show low health warning when lives = 1",
-          "state": "passed"
-        },
-        {
-          "name": "should display heart icons for visual indicators",
-          "fullName": "LivesDisplay Component > should display heart icons for visual indicators",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/__tests__/useHUD.test.ts",
-      "tests": [
-        {
-          "name": "should initialize with default HUD state",
-          "fullName": "useHUD Hook > should initialize with default HUD state",
-          "state": "passed"
-        },
-        {
-          "name": "should update power-ups correctly",
-          "fullName": "useHUD Hook > should update power-ups correctly",
-          "state": "passed"
-        },
-        {
-          "name": "should update combo state correctly",
-          "fullName": "useHUD Hook > should update combo state correctly",
-          "state": "passed"
-        },
-        {
-          "name": "should add and remove notifications",
-          "fullName": "useHUD Hook > should add and remove notifications",
-          "state": "passed"
-        },
-        {
-          "name": "should auto-remove notifications after timeout",
-          "fullName": "useHUD Hook > should auto-remove notifications after timeout",
-          "state": "passed"
-        },
-        {
-          "name": "should limit max notifications",
-          "fullName": "useHUD Hook > should limit max notifications",
-          "state": "passed"
-        },
-        {
-          "name": "should handle animation state correctly",
-          "fullName": "useHUD Hook > should handle animation state correctly",
-          "state": "passed"
-        },
-        {
-          "name": "should not animate when animations are disabled",
-          "fullName": "useHUD Hook > should not animate when animations are disabled",
-          "state": "passed"
-        },
-        {
-          "name": "should control visibility correctly",
-          "fullName": "useHUD Hook > should control visibility correctly",
-          "state": "passed"
-        },
-        {
-          "name": "should reset HUD state correctly",
-          "fullName": "useHUD Hook > should reset HUD state correctly",
-          "state": "passed"
-        },
-        {
-          "name": "should provide game controls",
-          "fullName": "useHUD Hook > should provide game controls",
-          "state": "passed"
-        },
-        {
-          "name": "should provide performance metrics",
-          "fullName": "useHUD Hook > should provide performance metrics",
-          "state": "passed"
-        },
-        {
-          "name": "should handle state persistence",
-          "fullName": "useHUD Hook > should handle state persistence",
-          "state": "passed"
-        },
-        {
-          "name": "should handle localStorage errors gracefully",
-          "fullName": "useHUD Hook > should handle localStorage errors gracefully",
+          "name": "should handle expiration of non-existent power-up",
+          "fullName": "useGameStateIntegration Hook > Error Handling > should handle expiration of non-existent power-up",
           "state": "passed"
         }
       ]

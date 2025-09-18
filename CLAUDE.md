@@ -177,4 +177,6 @@ Based on existing code structure, the project has:
 
 Stories and epics defined in the PRD need to be sharded into individual files using BMAD commands before development begins.
 
+## Language
+
 思考は英語で, 出力は日本語で

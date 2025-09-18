@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import React, { useState } from "react";
 import { usePauseInput } from "../../../hooks/usePauseInput";
 import { usePauseMenuNavigation } from "../../../hooks/usePauseMenuNavigation";
 import { useIsPaused, useIsPauseMenuOpen } from "../../../stores/uiStore";
@@ -31,11 +32,6 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMainMenuConfirmOpen, setIsMainMenuConfirmOpen] = useState(false);
 
-  // Don't render if not paused or menu not open
-  if (!isPaused || !isPauseMenuOpen) {
-    return null;
-  }
-
   const menuItems = ["resume", "settings", "mainMenu"];
 
   const handleMenuSelect = (index: number) => {
@@ -58,6 +54,11 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
     onEscape: resumeGame,
     initialFocusIndex: 0,
   });
+
+  // Don't render if not paused or menu not open
+  if (!isPaused || !isPauseMenuOpen) {
+    return null;
+  }
 
   const handleResume = () => {
     resumeGame();
