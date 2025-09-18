@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 
 // Power-Up types enumeration
 export enum PowerUpType {
-  MultiBall = 'multiball',
-  PaddleSize = 'paddlesize', 
-  BallSpeed = 'ballspeed',
-  Penetration = 'penetration',
-  Magnet = 'magnet'
+  MultiBall = "multiball",
+  PaddleSize = "paddlesize",
+  BallSpeed = "ballspeed",
+  Penetration = "penetration",
+  Magnet = "magnet",
 }
 
 // Active power-up interface
 export interface ActivePowerUp {
   id: string;
   type: PowerUpType;
-  duration: number;         // 残り時間（ミリ秒）
-  maxDuration: number;      // 最大持続時間（ミリ秒）
+  duration: number; // 残り時間（ミリ秒）
+  maxDuration: number; // 最大持続時間（ミリ秒）
   icon: string;
   color: string;
   name: string;
@@ -31,199 +31,399 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
   powerUps = [],
   onPowerUpExpire,
   onPowerUpActivate,
-  maxDisplayCount = 4
+  maxDisplayCount = 4,
 }) => {
-  const [animatingPowerUps, setAnimatingPowerUps] = useState<Set<string>>(new Set());
-  const [expiredPowerUps, setExpiredPowerUps] = useState<Set<string>>(new Set());
+  const [animatingPowerUps, setAnimatingPowerUps] = useState<Set<string>>(
+    new Set(),
+  );
+  const [expiredPowerUps, setExpiredPowerUps] = useState<Set<string>>(
+    new Set(),
+  );
+  const [spawnAnimations, setSpawnAnimations] = useState<Set<string>>(
+    new Set(),
+  );
+  const [countdownWarnings, setCountdownWarnings] = useState<Set<string>>(
+    new Set(),
+  );
 
-  // Handle power-up expiration
-  const handleExpiration = useCallback((powerUpId: string) => {
-    setExpiredPowerUps(prev => new Set([...prev, powerUpId]));
-    if (onPowerUpExpire) {
-      onPowerUpExpire(powerUpId);
-    }
-  }, [onPowerUpExpire]);
+  // Enhanced expiration handling with animation
+  const handleExpiration = useCallback(
+    (powerUpId: string) => {
+      // Start expiration animation
+      setExpiredPowerUps((prev) => new Set([...prev, powerUpId]));
 
-  // Handle power-up activation animations
+      // Remove from other animation states
+      setAnimatingPowerUps((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(powerUpId);
+        return newSet;
+      });
+
+      setCountdownWarnings((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(powerUpId);
+        return newSet;
+      });
+
+      // Call expiration callback
+      if (onPowerUpExpire) {
+        onPowerUpExpire(powerUpId);
+      }
+
+      // Clean up expired state after animation completes
+      setTimeout(() => {
+        setExpiredPowerUps((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(powerUpId);
+          return newSet;
+        });
+      }, 500); // Match expiration animation duration
+    },
+    [onPowerUpExpire],
+  );
+
+  // Enhanced activation animations with spawn effect
   useEffect(() => {
-    powerUps.forEach(powerUp => {
-      if (!animatingPowerUps.has(powerUp.id)) {
-        setAnimatingPowerUps(prev => new Set([...prev, powerUp.id]));
-        
+    powerUps.forEach((powerUp) => {
+      if (
+        !animatingPowerUps.has(powerUp.id) &&
+        !spawnAnimations.has(powerUp.id)
+      ) {
+        // Start spawn animation
+        setSpawnAnimations((prev) => new Set([...prev, powerUp.id]));
+
         // Trigger activation callback
         if (onPowerUpActivate) {
           onPowerUpActivate(powerUp);
         }
-        
-        // Remove animation state after animation completes
+
+        // Transition to normal animation state
         setTimeout(() => {
-          setAnimatingPowerUps(prev => {
+          setSpawnAnimations((prev) => {
             const newSet = new Set(prev);
             newSet.delete(powerUp.id);
             return newSet;
           });
-        }, 600);
+          setAnimatingPowerUps((prev) => new Set([...prev, powerUp.id]));
+        }, 600); // Spawn animation duration
+
+        // Remove from animation state after stabilization
+        setTimeout(() => {
+          setAnimatingPowerUps((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(powerUp.id);
+            return newSet;
+          });
+        }, 1200);
       }
     });
-  }, [powerUps, animatingPowerUps, onPowerUpActivate]);
+  }, [powerUps, animatingPowerUps, spawnAnimations, onPowerUpActivate]);
+
+  // Monitor countdown warnings
+  useEffect(() => {
+    const checkCountdowns = () => {
+      powerUps.forEach((powerUp) => {
+        const progress = getProgress(powerUp);
+        const isLowTime = progress < 25; // Show warning when <25% remaining
+
+        if (isLowTime && !countdownWarnings.has(powerUp.id)) {
+          setCountdownWarnings((prev) => new Set([...prev, powerUp.id]));
+        } else if (!isLowTime && countdownWarnings.has(powerUp.id)) {
+          setCountdownWarnings((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(powerUp.id);
+            return newSet;
+          });
+        }
+
+        // Auto-expire when time runs out
+        if (powerUp.duration <= 0 && !expiredPowerUps.has(powerUp.id)) {
+          handleExpiration(powerUp.id);
+        }
+      });
+    };
+
+    const interval = setInterval(checkCountdowns, 100); // Check every 100ms for smooth updates
+    return () => clearInterval(interval);
+  }, [powerUps, countdownWarnings, expiredPowerUps, handleExpiration]);
 
   // Get power-up icon based on type
   const getPowerUpIcon = (type: PowerUpType): string => {
     const iconMap: Record<PowerUpType, string> = {
-      [PowerUpType.MultiBall]: '⚡',
-      [PowerUpType.PaddleSize]: '🏓',
-      [PowerUpType.BallSpeed]: '💨',
-      [PowerUpType.Penetration]: '🎯',
-      [PowerUpType.Magnet]: '🧲'
+      [PowerUpType.MultiBall]: "⚡",
+      [PowerUpType.PaddleSize]: "🏓",
+      [PowerUpType.BallSpeed]: "💨",
+      [PowerUpType.Penetration]: "🎯",
+      [PowerUpType.Magnet]: "🧲",
     };
-    return iconMap[type] || '❓';
+    return iconMap[type] || "❓";
   };
 
   // Get power-up color based on type
   const getPowerUpColor = (type: PowerUpType): string => {
     const colorMap: Record<PowerUpType, string> = {
-      [PowerUpType.MultiBall]: '#ff6b6b',
-      [PowerUpType.PaddleSize]: '#4ecdc4', 
-      [PowerUpType.BallSpeed]: '#45b7d1',
-      [PowerUpType.Penetration]: '#96ceb4',
-      [PowerUpType.Magnet]: '#feca57'
+      [PowerUpType.MultiBall]: "#ff6b6b",
+      [PowerUpType.PaddleSize]: "#4ecdc4",
+      [PowerUpType.BallSpeed]: "#45b7d1",
+      [PowerUpType.Penetration]: "#96ceb4",
+      [PowerUpType.Magnet]: "#feca57",
     };
-    return colorMap[type] || '#999999';
+    return colorMap[type] || "#999999";
   };
 
   // Calculate progress percentage
   const getProgress = (powerUp: ActivePowerUp): number => {
-    return (powerUp.duration / powerUp.maxDuration) * 100;
+    return Math.max(
+      0,
+      Math.min(100, (powerUp.duration / powerUp.maxDuration) * 100),
+    );
   };
 
-  // Format remaining time
+  // Format remaining time with enhanced precision
   const formatTime = (milliseconds: number): string => {
-    const seconds = Math.ceil(milliseconds / 1000);
+    const totalSeconds = Math.max(0, milliseconds / 1000);
+
+    if (totalSeconds < 1) {
+      return `${Math.ceil(totalSeconds * 10) / 10}s`;
+    }
+
+    const seconds = Math.ceil(totalSeconds);
     if (seconds < 60) {
       return `${seconds}s`;
     }
+
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
-  // Container styles
+  // Enhanced container styles with better positioning
   const containerStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    alignItems: 'flex-end',
-    minWidth: '120px'
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    alignItems: "flex-end",
+    minWidth: "140px",
+    position: "relative",
+    zIndex: 1000,
   };
 
-  // Single power-up item styles
+  // Enhanced power-up item styles with advanced animations
   const powerUpItemStyle = (powerUp: ActivePowerUp): React.CSSProperties => {
     const progress = getProgress(powerUp);
     const isExpiring = progress < 20;
-    const isAnimating = animatingPowerUps.has(powerUp.id);
+    const isWarning = countdownWarnings.has(powerUp.id);
+    const isSpawning = spawnAnimations.has(powerUp.id);
+    const isActivating = animatingPowerUps.has(powerUp.id);
+    const isExpired = expiredPowerUps.has(powerUp.id);
     const color = getPowerUpColor(powerUp.type);
 
+    let transform = "scale(1)";
+    let animation = "none";
+
+    if (isSpawning) {
+      animation = "powerUpSpawn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+    } else if (isActivating) {
+      transform = "scale(1.05)";
+    } else if (isExpired) {
+      animation = "powerUpExpire 0.5s ease-out forwards";
+    } else if (isExpiring || isWarning) {
+      animation = "powerUpWarning 0.4s infinite alternate";
+    }
+
     return {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '6px',
-      padding: '4px 8px',
-      borderRadius: '16px',
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-      border: `1px solid ${color}`,
-      color: '#ffffff',
-      fontSize: '12px',
-      fontFamily: 'system-ui, -apple-system, sans-serif',
-      fontWeight: 500,
-      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)',
-      userSelect: 'none',
-      minWidth: '100px',
-      transform: isAnimating ? 'scale(1.1)' : 'scale(1)',
-      transition: 'all 0.3s ease-out',
-      animation: isExpiring ? 'powerUpExpiring 0.5s infinite alternate' : 'none',
-      boxShadow: isExpiring 
-        ? `0 0 8px ${color}` 
-        : `0 0 4px rgba(0, 0, 0, 0.3)`,
-      opacity: expiredPowerUps.has(powerUp.id) ? 0 : 1
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+      padding: "6px 12px",
+      borderRadius: "20px",
+      backgroundColor: "rgba(0, 0, 0, 0.85)",
+      border: `2px solid ${color}`,
+      color: "#ffffff",
+      fontSize: "13px",
+      fontFamily: "system-ui, -apple-system, sans-serif",
+      fontWeight: 600,
+      textShadow: "1px 1px 3px rgba(0, 0, 0, 0.9)",
+      userSelect: "none",
+      minWidth: "120px",
+      transform,
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      animation,
+      boxShadow: isWarning
+        ? `0 0 12px ${color}, inset 0 0 6px rgba(255, 255, 255, 0.1)`
+        : `0 0 8px rgba(0, 0, 0, 0.4), inset 0 0 4px rgba(255, 255, 255, 0.1)`,
+      backdropFilter: "blur(4px)",
     };
   };
 
-  // Icon styles  
-  const iconStyle = (powerUp: ActivePowerUp): React.CSSProperties => ({
-    fontSize: '16px',
-    color: getPowerUpColor(powerUp.type),
-    textShadow: `0 0 6px ${getPowerUpColor(powerUp.type)}`
-  });
+  // Enhanced icon styles with glow effects
+  const iconStyle = (powerUp: ActivePowerUp): React.CSSProperties => {
+    const isWarning = countdownWarnings.has(powerUp.id);
+    const color = getPowerUpColor(powerUp.type);
 
-  // Timer bar styles
+    return {
+      fontSize: "18px",
+      color: color,
+      textShadow: `0 0 8px ${color}`,
+      filter: isWarning ? "brightness(1.3)" : "brightness(1)",
+      transition: "all 0.3s ease",
+    };
+  };
+
+  // Enhanced timer bar with gradient and animations
   const timerBarStyle: React.CSSProperties = {
-    width: '60px',
-    height: '3px',
-    backgroundColor: '#333333',
-    borderRadius: '2px',
-    overflow: 'hidden'
+    width: "70px",
+    height: "4px",
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    borderRadius: "3px",
+    overflow: "hidden",
+    position: "relative",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
   };
 
   const timerFillStyle = (powerUp: ActivePowerUp): React.CSSProperties => {
     const progress = getProgress(powerUp);
+    const isWarning = progress < 25;
+    const color = getPowerUpColor(powerUp.type);
+
     return {
       width: `${progress}%`,
-      height: '100%',
-      backgroundColor: progress < 20 ? '#ff4757' : getPowerUpColor(powerUp.type),
-      transition: 'width 0.1s linear, background-color 0.3s ease-out',
-      borderRadius: '2px'
+      height: "100%",
+      background: isWarning
+        ? "linear-gradient(90deg, #ff4757, #ff6b7a)"
+        : `linear-gradient(90deg, ${color}, ${color}dd)`,
+      transition: "width 0.2s linear, background 0.3s ease-out",
+      borderRadius: "2px",
+      boxShadow: isWarning ? "0 0 4px #ff4757" : `0 0 3px ${color}`,
+      position: "relative",
     };
   };
 
-  // Display limited number of power-ups
+  // Enhanced text styles with better readability
+  const nameStyle: React.CSSProperties = {
+    fontSize: "11px",
+    fontWeight: 500,
+    marginBottom: "2px",
+    opacity: 0.9,
+    letterSpacing: "0.3px",
+  };
+
+  const timeStyle: React.CSSProperties = {
+    fontSize: "11px",
+    fontWeight: 700,
+    minWidth: "30px",
+    textAlign: "right",
+    opacity: 0.95,
+  };
+
+  // Display limited number of power-ups with overflow indicator
   const visiblePowerUps = powerUps.slice(0, maxDisplayCount);
+  const hasOverflow = powerUps.length > maxDisplayCount;
 
   if (visiblePowerUps.length === 0) {
     return null;
   }
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} role="status" aria-label="Active power-ups">
       {visiblePowerUps.map((powerUp) => (
-        <div key={powerUp.id} style={powerUpItemStyle(powerUp)}>
-          <span style={iconStyle(powerUp)}>
-            {getPowerUpIcon(powerUp.type)}
-          </span>
+        <div
+          key={powerUp.id}
+          style={powerUpItemStyle(powerUp)}
+          role="timer"
+          aria-label={`${powerUp.name || powerUp.type} - ${formatTime(powerUp.duration)} remaining`}
+        >
+          <span style={iconStyle(powerUp)}>{getPowerUpIcon(powerUp.type)}</span>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '10px', marginBottom: '1px' }}>
-              {powerUp.name || powerUp.type}
-            </div>
+            <div style={nameStyle}>{powerUp.name || powerUp.type}</div>
             <div style={timerBarStyle}>
               <div style={timerFillStyle(powerUp)} />
             </div>
           </div>
-          <span style={{ fontSize: '10px' }}>
-            {formatTime(powerUp.duration)}
-          </span>
+          <span style={timeStyle}>{formatTime(powerUp.duration)}</span>
         </div>
       ))}
-      
-      {powerUps.length > maxDisplayCount && (
-        <div style={{
-          fontSize: '10px',
-          color: '#999999',
-          textAlign: 'right',
-          marginTop: '2px'
-        }}>
+
+      {hasOverflow && (
+        <div
+          style={{
+            fontSize: "11px",
+            color: "#999999",
+            textAlign: "right",
+            marginTop: "4px",
+            fontWeight: 500,
+            opacity: 0.8,
+          }}
+        >
           +{powerUps.length - maxDisplayCount} more
         </div>
       )}
 
       <style>{`
-        @keyframes powerUpExpiring {
-          0% { opacity: 1; }
-          100% { opacity: 0.5; }
+        @keyframes powerUpSpawn {
+          0% { 
+            transform: scale(0.3) translateY(20px); 
+            opacity: 0; 
+            filter: blur(4px);
+          }
+          50% { 
+            transform: scale(1.2) translateY(-5px); 
+            opacity: 0.8; 
+            filter: blur(1px);
+          }
+          100% { 
+            transform: scale(1) translateY(0); 
+            opacity: 1; 
+            filter: blur(0);
+          }
+        }
+        
+        @keyframes powerUpExpire {
+          0% { 
+            transform: scale(1); 
+            opacity: 1; 
+          }
+          50% { 
+            transform: scale(1.1); 
+            opacity: 0.7; 
+          }
+          100% { 
+            transform: scale(0.8); 
+            opacity: 0; 
+            filter: blur(2px);
+          }
+        }
+        
+        @keyframes powerUpWarning {
+          0% { 
+            opacity: 1; 
+            transform: scale(1);
+          }
+          100% { 
+            opacity: 0.7; 
+            transform: scale(1.02);
+          }
         }
         
         @keyframes powerUpActivate {
-          0% { transform: scale(0.8); opacity: 0; }
-          50% { transform: scale(1.2); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
+          0% { 
+            transform: scale(0.8); 
+            opacity: 0; 
+          }
+          50% { 
+            transform: scale(1.3); 
+            opacity: 1; 
+          }
+          100% { 
+            transform: scale(1); 
+            opacity: 1; 
+          }
+        }
+
+        /* Pulse effect for timer bars when warning */
+        @keyframes timerPulse {
+          0%, 100% { box-shadow: 0 0 3px currentColor; }
+          50% { box-shadow: 0 0 8px currentColor, 0 0 12px currentColor; }
         }
       `}</style>
     </div>
