@@ -24,7 +24,7 @@ Object.defineProperty(window, "performance", {
 
 // Mock requestAnimationFrame and cancelAnimationFrame with direct callback execution
 let animationFrameId = 0;
-let animationFrameCallbacks: Map<number, FrameRequestCallback> = new Map();
+const animationFrameCallbacks: Map<number, FrameRequestCallback> = new Map();
 let isAnimationLoopRunning = false;
 
 const mockRAF = vi.fn((callback: FrameRequestCallback) => {
