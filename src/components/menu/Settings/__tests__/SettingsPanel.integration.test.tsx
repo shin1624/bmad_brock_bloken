@@ -14,7 +14,7 @@ describe("SettingsPanel Integration - Persistence", () => {
     render(<SettingsPanel onClose={mockOnClose} />);
 
     // Make a change to enable save button
-    const volumeSlider = screen.getByLabelText(/volume/i);
+    const volumeSlider = screen.getByLabelText(/master volume/i);
     fireEvent.change(volumeSlider, { target: { value: "0.5" } });
 
     const saveButton = screen.getByText("Save Settings");
@@ -25,6 +25,7 @@ describe("SettingsPanel Integration - Persistence", () => {
       expect(saved).toBeDefined();
       const parsed = JSON.parse(saved!);
       expect(parsed.volume).toBe(0.5);
+      expect(parsed.masterVolume).toBe(0.5);
     });
   });
 });

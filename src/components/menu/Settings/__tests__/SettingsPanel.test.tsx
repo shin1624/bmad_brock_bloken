@@ -13,7 +13,11 @@ const mockSettingsReturn = {
   settings: {
     soundEnabled: true,
     musicEnabled: true,
+    audioEnabled: true,
     volume: 0.7,
+    masterVolume: 0.7,
+    sfxVolume: 0.7,
+    bgmVolume: 0.6,
     theme: 'light' as const,
     difficulty: 'normal' as const,
     controls: 'keyboard' as const,
@@ -72,10 +76,11 @@ describe('SettingsPanel Component', () => {
   });
 
   it('should handle save settings correctly', async () => {
+    const saveMock = vi.fn().mockResolvedValue(undefined);
     mockUseSettings.mockReturnValue({
       ...mockSettingsReturn,
       hasUnsavedChanges: true,
-      saveSettings: vi.fn().mockResolvedValue(undefined),
+      saveSettings: saveMock,
     });
 
     render(<SettingsPanel onClose={mockOnClose} />);
@@ -86,7 +91,7 @@ describe('SettingsPanel Component', () => {
     fireEvent.click(saveButton);
     
     await waitFor(() => {
-      expect(mockSettingsReturn.saveSettings).toHaveBeenCalled();
+      expect(saveMock).toHaveBeenCalled();
       expect(mockOnClose).toHaveBeenCalled();
     });
   });

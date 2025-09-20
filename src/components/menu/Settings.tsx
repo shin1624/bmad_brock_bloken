@@ -12,6 +12,10 @@ export const Settings: React.FC = () => {
     setInputSensitivity,
     setControls,
     closeSettings,
+    setMasterVolume,
+    setSfxVolume,
+    setBgmVolume,
+    setAudioEnabled,
   } = useUIStore();
 
   const handleInputSensitivityChange = (
@@ -144,25 +148,117 @@ export const Settings: React.FC = () => {
               ゲーム設定
             </h3>
             
-            {/* 音量設定 */}
+            {/* オーディオ有効化 */}
+            <div className="mb-4">
+              <label className="flex items-center space-x-2 text-sm font-medium text-gray-600">
+                <input
+                  type="checkbox"
+                  checked={settings.audioEnabled}
+                  onChange={() => setAudioEnabled(!settings.audioEnabled)}
+                  className="form-checkbox"
+                />
+                <span>オーディオを有効化</span>
+              </label>
+            </div>
+
+            {/* マスターボリューム */}
             <div className="mb-4">
               <div className="flex justify-between items-center mb-1">
-                <label className="text-sm font-medium text-gray-600">音量</label>
+                <label
+                  className="text-sm font-medium text-gray-600"
+                  htmlFor="settings-master-volume"
+                >
+                  マスターボリューム
+                </label>
                 <span className="text-sm text-gray-500">
-                  {Math.round(settings.volume * 100)}%
+                  {Math.round(settings.masterVolume * 100)}%
                 </span>
               </div>
               <input
+                id="settings-master-volume"
                 type="range"
                 min="0"
                 max="1"
-                step="0.1"
-                value={settings.volume}
-                onChange={(e) =>
-                  updateSettings({ volume: parseFloat(e.target.value) })
-                }
+                step="0.05"
+                value={settings.masterVolume}
+                onChange={(e) => setMasterVolume(parseFloat(e.target.value))}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                disabled={!settings.audioEnabled}
               />
+            </div>
+
+            {/* 効果音ボリューム */}
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-1">
+                <label
+                  className="text-sm font-medium text-gray-600"
+                  htmlFor="settings-sfx-volume"
+                >
+                  効果音ボリューム
+                </label>
+                <span className="text-sm text-gray-500">
+                  {Math.round(settings.sfxVolume * 100)}%
+                </span>
+              </div>
+              <input
+                id="settings-sfx-volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={settings.sfxVolume}
+                onChange={(e) => setSfxVolume(parseFloat(e.target.value))}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                disabled={!settings.audioEnabled || !settings.soundEnabled}
+              />
+              <label className="flex items-center space-x-2 text-sm text-gray-600 mt-1">
+                <input
+                  type="checkbox"
+                  checked={settings.soundEnabled}
+                  onChange={() =>
+                    updateSettings({ soundEnabled: !settings.soundEnabled })
+                  }
+                  className="form-checkbox"
+                />
+                <span>効果音を有効化</span>
+              </label>
+            </div>
+
+            {/* BGMボリューム */}
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-1">
+                <label
+                  className="text-sm font-medium text-gray-600"
+                  htmlFor="settings-bgm-volume"
+                >
+                  BGMボリューム
+                </label>
+                <span className="text-sm text-gray-500">
+                  {Math.round(settings.bgmVolume * 100)}%
+                </span>
+              </div>
+              <input
+                id="settings-bgm-volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={settings.bgmVolume}
+                onChange={(e) => setBgmVolume(parseFloat(e.target.value))}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                disabled={!settings.audioEnabled || !settings.musicEnabled}
+              />
+              <label className="flex items-center space-x-2 text-sm text-gray-600 mt-1">
+                <input
+                  type="checkbox"
+                  checked={settings.musicEnabled}
+                  onChange={() =>
+                    updateSettings({ musicEnabled: !settings.musicEnabled })
+                  }
+                  className="form-checkbox"
+                />
+                <span>BGMを有効化</span>
+              </label>
             </div>
 
             {/* 難易度設定 */}
@@ -220,6 +316,12 @@ export const Settings: React.FC = () => {
                 // デフォルト設定に戻す
                 updateSettings({
                   volume: 0.7,
+                  masterVolume: 0.7,
+                  sfxVolume: 0.7,
+                  bgmVolume: 0.6,
+                  audioEnabled: true,
+                  soundEnabled: true,
+                  musicEnabled: true,
                   difficulty: "normal",
                   theme: "light",
                   controls: "keyboard",

@@ -15,7 +15,13 @@ const mockStore = {
       mouse: 1.0,
       touch: 1.0,
     },
+    audioEnabled: true,
+    soundEnabled: true,
+    musicEnabled: true,
     volume: 0.7,
+    masterVolume: 0.7,
+    sfxVolume: 0.7,
+    bgmVolume: 0.6,
     difficulty: "normal" as const,
     theme: "light" as const,
   },
@@ -23,6 +29,10 @@ const mockStore = {
   setInputSensitivity: vi.fn(),
   setControls: vi.fn(),
   closeSettings: vi.fn(),
+  setMasterVolume: vi.fn(),
+  setSfxVolume: vi.fn(),
+  setBgmVolume: vi.fn(),
+  setAudioEnabled: vi.fn(),
 };
 
 describe("Settings", () => {
@@ -167,11 +177,46 @@ describe("Settings", () => {
     it("音量を変更できる", async () => {
       render(<Settings />);
 
-      const volumeSlider = screen.getByDisplayValue("0.7");
-      fireEvent.change(volumeSlider, { target: { value: "0.5" } });
+      const masterSlider = screen.getByLabelText("マスターボリューム");
+      fireEvent.change(masterSlider, { target: { value: "0.5" } });
 
       await waitFor(() => {
-        expect(mockStore.updateSettings).toHaveBeenCalledWith({ volume: 0.5 });
+        expect(mockStore.setMasterVolume).toHaveBeenCalledWith(0.5);
+      });
+
+      const sfxSlider = screen.getByLabelText("効果音ボリューム");
+      fireEvent.change(sfxSlider, { target: { value: "0.4" } });
+
+      await waitFor(() => {
+        expect(mockStore.setSfxVolume).toHaveBeenCalledWith(0.4);
+      });
+
+      const bgmSlider = screen.getByLabelText("BGMボリューム");
+      fireEvent.change(bgmSlider, { target: { value: "0.3" } });
+
+      await waitFor(() => {
+        expect(mockStore.setBgmVolume).toHaveBeenCalledWith(0.3);
+      });
+
+      const audioToggle = screen.getByLabelText("オーディオを有効化");
+      fireEvent.click(audioToggle);
+
+      await waitFor(() => {
+        expect(mockStore.setAudioEnabled).toHaveBeenCalledWith(false);
+      });
+
+      const sfxToggle = screen.getByLabelText("効果音を有効化");
+      fireEvent.click(sfxToggle);
+
+      await waitFor(() => {
+        expect(mockStore.updateSettings).toHaveBeenCalledWith({ soundEnabled: false });
+      });
+
+      const bgmToggle = screen.getByLabelText("BGMを有効化");
+      fireEvent.click(bgmToggle);
+
+      await waitFor(() => {
+        expect(mockStore.updateSettings).toHaveBeenCalledWith({ musicEnabled: false });
       });
     });
 
@@ -206,17 +251,22 @@ describe("Settings", () => {
       fireEvent.click(resetButton);
 
       await waitFor(() => {
-        expect(mockStore.updateSettings).toHaveBeenCalledWith({
-          volume: 0.7,
-          difficulty: "normal",
-          theme: "light",
-          controls: "keyboard",
-          inputSensitivity: {
-            keyboard: 1.0,
-            mouse: 1.0,
-            touch: 1.0,
-          },
-        });
+        expect(mockStore.updateSettings).toHaveBeenCalledWith(
+          expect.objectContaining({
+            volume: 0.7,
+            masterVolume: 0.7,
+            sfxVolume: 0.7,
+            bgmVolume: 0.6,
+            difficulty: "normal",
+            theme: "light",
+            controls: "keyboard",
+            inputSensitivity: {
+              keyboard: 1.0,
+              mouse: 1.0,
+              touch: 1.0,
+            },
+          }),
+        );
       });
     });
 
@@ -249,6 +299,9 @@ describe("Settings", () => {
 
       const closeButton = screen.getByLabelText("設定を閉じる");
       expect(closeButton).toBeInTheDocument();
+      expect(screen.getByLabelText("マスターボリューム")).toBeInTheDocument();
+      expect(screen.getByLabelText("効果音ボリューム")).toBeInTheDocument();
+      expect(screen.getByLabelText("BGMボリューム")).toBeInTheDocument();
     });
 
     it("スライダーの値が正しくラベル表示される", () => {
@@ -258,7 +311,8 @@ describe("Settings", () => {
       expect(screen.getByText("1.0")).toBeInTheDocument();
       
       // 音量の百分率表示
-      expect(screen.getByText("70%")).toBeInTheDocument();
+      expect(screen.getAllByText("70%").length).toBeGreaterThan(0);
+      expect(screen.getByText("60%" )).toBeInTheDocument();
     });
   });
 
@@ -270,6 +324,9 @@ describe("Settings", () => {
           ...mockStore.settings,
           controls: "mouse" as const,
           volume: 0.3,
+          masterVolume: 0.3,
+          sfxVolume: 0.4,
+          bgmVolume: 0.25,
           difficulty: "hard" as const,
           theme: "dark" as const,
         },

@@ -2,15 +2,15 @@
  * PowerUp Visual Effects Component
  * Story 4.2, Task 6: Visual feedback for power-up activation and expiration
  */
-import React, { useEffect, useState, useRef } from 'react';
-import { PowerUpType } from '../../../game/entities/PowerUp';
+import React, { useEffect, useState, useRef } from "react";
+import { PowerUpType } from "../../../game/entities/PowerUp";
 
 // Effect types for different power-up events
 export enum EffectType {
-  Activation = 'activation',
-  Collection = 'collection',
-  Expiration = 'expiration',
-  Impact = 'impact'
+  Activation = "activation",
+  Collection = "collection",
+  Expiration = "expiration",
+  Impact = "impact",
 }
 
 // Effect configuration interface
@@ -38,47 +38,59 @@ interface PowerUpEffectsProps {
 const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
   effects,
   onEffectComplete,
-  canvasRef
+  canvasRef,
 }) => {
-  const [activeEffects, setActiveEffects] = useState<Map<string, PowerUpEffect>>(new Map());
-  const animationFrameRef = useRef<number>();
+  const [activeEffects, setActiveEffects] = useState<
+    Map<string, PowerUpEffect>
+  >(new Map());
+  const animationFrameRef = useRef<number>(0);
   const lastTimeRef = useRef<number>(0);
 
   // Effect colors by power-up type
-  const getEffectColor = (powerUpType: PowerUpType, variant?: string): string => {
-    const colorMap: { [type in PowerUpType]: string | { [variant: string]: string } } = {
-      [PowerUpType.MultiBall]: '#ff6b6b',
+  const getEffectColor = (
+    powerUpType: PowerUpType,
+    variant?: string,
+  ): string => {
+    const colorMap: {
+      [type in PowerUpType]: string | { [variant: string]: string };
+    } = {
+      [PowerUpType.MultiBall]: "#ff6b6b",
       [PowerUpType.PaddleSize]: {
-        large: '#4ecdc4',
-        small: '#ff9f43'
+        large: "#4ecdc4",
+        small: "#ff9f43",
       },
       [PowerUpType.BallSpeed]: {
-        fast: '#45b7d1',
-        slow: '#96ceb4'
+        fast: "#45b7d1",
+        slow: "#96ceb4",
       },
-      [PowerUpType.Penetration]: '#96ceb4',
-      [PowerUpType.Magnet]: '#feca57'
+      [PowerUpType.Penetration]: "#96ceb4",
+      [PowerUpType.Magnet]: "#feca57",
     };
 
     const mapping = colorMap[powerUpType];
-    if (typeof mapping === 'string') {
+    if (typeof mapping === "string") {
       return mapping;
     } else if (mapping && variant && mapping[variant]) {
       return mapping[variant];
     } else if (mapping) {
       return Object.values(mapping)[0];
     }
-    return '#ffffff';
+    return "#ffffff";
   };
 
   // Add new effects to active list
   useEffect(() => {
-    effects.forEach(effect => {
+    effects.forEach((effect) => {
       if (!activeEffects.has(effect.id)) {
-        setActiveEffects(prev => new Map(prev.set(effect.id, {
-          ...effect,
-          duration: effect.duration || 1000
-        })));
+        setActiveEffects(
+          (prev) =>
+            new Map(
+              prev.set(effect.id, {
+                ...effect,
+                duration: effect.duration || 1000,
+              }),
+            ),
+        );
       }
     });
   }, [effects, activeEffects]);
@@ -89,13 +101,13 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
       const deltaTime = currentTime - lastTimeRef.current;
       lastTimeRef.current = currentTime;
 
-      setActiveEffects(prev => {
+      setActiveEffects((prev) => {
         const updated = new Map(prev);
         const toRemove: string[] = [];
 
         for (const [id, effect] of updated) {
           const newDuration = effect.duration - deltaTime;
-          
+
           if (newDuration <= 0) {
             toRemove.push(id);
             if (onEffectComplete) {
@@ -106,7 +118,7 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
           }
         }
 
-        toRemove.forEach(id => updated.delete(id));
+        toRemove.forEach((id) => updated.delete(id));
         return updated;
       });
 
@@ -131,20 +143,23 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
     if (!canvasRef?.current) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Clear previous effects (this would be integrated with main game loop)
     // For now, we'll just overlay effects on top
 
-    activeEffects.forEach(effect => {
+    activeEffects.forEach((effect) => {
       renderCanvasEffect(ctx, effect);
     });
   }, [activeEffects, canvasRef]);
 
   // Render canvas effect
-  const renderCanvasEffect = (ctx: CanvasRenderingContext2D, effect: PowerUpEffect) => {
-    const progress = 1 - (effect.duration / (effect.duration + 1000)); // Normalized progress
+  const renderCanvasEffect = (
+    ctx: CanvasRenderingContext2D,
+    effect: PowerUpEffect,
+  ) => {
+    const progress = 1 - effect.duration / (effect.duration + 1000); // Normalized progress
     const { x, y } = effect.position;
     const color = getEffectColor(effect.powerUpType, effect.variant);
 
@@ -174,14 +189,19 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
     x: number,
     y: number,
     progress: number,
-    color: string
+    color: string,
   ) => {
     const radius = 30 * (1 - progress);
     const alpha = 1 - progress;
 
     // Outer glow
     const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-    gradient.addColorStop(0, `${color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`);
+    gradient.addColorStop(
+      0,
+      `${color}${Math.floor(alpha * 255)
+        .toString(16)
+        .padStart(2, "0")}`,
+    );
     gradient.addColorStop(0.7, `${color}40`);
     gradient.addColorStop(1, `${color}00`);
 
@@ -211,13 +231,15 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
     x: number,
     y: number,
     progress: number,
-    color: string
+    color: string,
   ) => {
     const scale = 0.5 + progress * 1.5;
     const alpha = Math.sin(progress * Math.PI);
 
     // Expanding ring
-    ctx.strokeStyle = `${color}${Math.floor(alpha * 128).toString(16).padStart(2, '0')}`;
+    ctx.strokeStyle = `${color}${Math.floor(alpha * 128)
+      .toString(16)
+      .padStart(2, "0")}`;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.arc(x, y, 25 * scale, 0, Math.PI * 2);
@@ -232,7 +254,9 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
       const endX = x + Math.cos(angle) * (10 + length);
       const endY = y + Math.sin(angle) * (10 + length);
 
-      ctx.strokeStyle = `${color}${Math.floor(alpha * 180).toString(16).padStart(2, '0')}`;
+      ctx.strokeStyle = `${color}${Math.floor(alpha * 180)
+        .toString(16)
+        .padStart(2, "0")}`;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(startX, startY);
@@ -247,13 +271,15 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
     x: number,
     y: number,
     progress: number,
-    color: string
+    color: string,
   ) => {
     const alpha = 1 - progress;
     const radius = 20 + progress * 20;
 
     // Fading circle
-    ctx.fillStyle = `${color}${Math.floor(alpha * 100).toString(16).padStart(2, '0')}`;
+    ctx.fillStyle = `${color}${Math.floor(alpha * 100)
+      .toString(16)
+      .padStart(2, "0")}`;
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fill();
@@ -266,7 +292,9 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
       const py = y + Math.sin(angle) * distance - progress * 10; // Drift upward
       const size = 1 * alpha;
 
-      ctx.fillStyle = `${color}${Math.floor(alpha * 200).toString(16).padStart(2, '0')}`;
+      ctx.fillStyle = `${color}${Math.floor(alpha * 200)
+        .toString(16)
+        .padStart(2, "0")}`;
       ctx.beginPath();
       ctx.arc(px, py, size, 0, Math.PI * 2);
       ctx.fill();
@@ -280,21 +308,25 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
     y: number,
     progress: number,
     color: string,
-    strength?: number
+    strength?: number,
   ) => {
     const intensity = (strength || 1) * 0.5 + 0.5;
     const scale = 1 + progress * intensity;
     const alpha = Math.sin(progress * Math.PI) * intensity;
 
     // Impact shockwave
-    ctx.strokeStyle = `${color}${Math.floor(alpha * 150).toString(16).padStart(2, '0')}`;
+    ctx.strokeStyle = `${color}${Math.floor(alpha * 150)
+      .toString(16)
+      .padStart(2, "0")}`;
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.arc(x, y, 15 * scale, 0, Math.PI * 2);
     ctx.stroke();
 
     // Secondary wave
-    ctx.strokeStyle = `${color}${Math.floor(alpha * 80).toString(16).padStart(2, '0')}`;
+    ctx.strokeStyle = `${color}${Math.floor(alpha * 80)
+      .toString(16)
+      .padStart(2, "0")}`;
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(x, y, 25 * scale, 0, Math.PI * 2);
@@ -303,16 +335,16 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
 
   // DOM-based effects (overlays)
   const renderDOMEffect = (effect: PowerUpEffect) => {
-    const progress = 1 - (effect.duration / 1000);
+    const progress = 1 - effect.duration / 1000;
     const color = getEffectColor(effect.powerUpType, effect.variant);
 
     const baseStyle: React.CSSProperties = {
-      position: 'absolute',
+      position: "absolute",
       left: effect.position.x,
       top: effect.position.y,
-      pointerEvents: 'none',
+      pointerEvents: "none",
       zIndex: 1000,
-      transform: 'translate(-50%, -50%)'
+      transform: "translate(-50%, -50%)",
     };
 
     switch (effect.type) {
@@ -322,20 +354,22 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
             key={effect.id}
             style={{
               ...baseStyle,
-              animation: 'powerUpCollect 0.6s ease-out forwards'
+              animation: "powerUpCollect 0.6s ease-out forwards",
             }}
           >
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              background: `radial-gradient(circle, ${color}80, ${color}00)`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '20px',
-              transform: `scale(${1 - progress})`
-            }}>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: `radial-gradient(circle, ${color}80, ${color}00)`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "20px",
+                transform: `scale(${1 - progress})`,
+              }}
+            >
               ✨
             </div>
           </div>
@@ -347,16 +381,18 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
             key={effect.id}
             style={{
               ...baseStyle,
-              animation: 'powerUpActivate 0.8s ease-out forwards'
+              animation: "powerUpActivate 0.8s ease-out forwards",
             }}
           >
-            <div style={{
-              color,
-              fontSize: '24px',
-              textShadow: `0 0 10px ${color}`,
-              fontWeight: 'bold',
-              transform: `scale(${0.5 + progress * 1.5})`
-            }}>
+            <div
+              style={{
+                color,
+                fontSize: "24px",
+                textShadow: `0 0 10px ${color}`,
+                fontWeight: "bold",
+                transform: `scale(${0.5 + progress * 1.5})`,
+              }}
+            >
               POWER UP!
             </div>
           </div>
@@ -368,16 +404,16 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
   };
 
   return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
       {Array.from(activeEffects.values()).map(renderDOMEffect)}
-      
+
       <style>{`
         @keyframes powerUpCollect {
           0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
           50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
           100% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
         }
-        
+
         @keyframes powerUpActivate {
           0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
           50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }

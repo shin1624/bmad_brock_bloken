@@ -2,6 +2,11 @@ import { create } from "zustand";
 import { devtools, subscribeWithSelector } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
+const clampVolume = (value: number): number => Math.max(0, Math.min(1, value));
+
+export const linearToLogarithmic = (value: number): number =>
+  Math.pow(Math.max(0, Math.min(1, value)), 2);
+
 /**
  * UI状態のインターフェース定義
  */
@@ -23,10 +28,19 @@ export interface UIState {
   settings: {
     soundEnabled: boolean;
     musicEnabled: boolean;
-    volume: number;
+    audioEnabled: boolean;
+    volume: number; // Legacy master volume alias
+    masterVolume: number;
+    sfxVolume: number;
+    bgmVolume: number;
     theme: "light" | "dark";
     difficulty: "easy" | "normal" | "hard";
     controls: "keyboard" | "touch" | "mouse";
+    inputSensitivity: {
+      keyboard: number;
+      mouse: number;
+      touch: number;
+    };
   };
 
   // パフォーマンス・デバッグ表示
@@ -85,6 +99,14 @@ export interface UIActions {
   toggleSound: () => void;
   toggleMusic: () => void;
   setVolume: (volume: number) => void;
+  setMasterVolume: (volume: number) => void;
+  setSfxVolume: (volume: number) => void;
+  setBgmVolume: (volume: number) => void;
+  setAudioEnabled: (enabled: boolean) => void;
+  setInputSensitivity: (
+    device: "keyboard" | "mouse" | "touch",
+    value: number,
+  ) => void;
   setTheme: (theme: UIState["settings"]["theme"]) => void;
   setDifficulty: (difficulty: UIState["settings"]["difficulty"]) => void;
   setControls: (controls: UIState["settings"]["controls"]) => void;
@@ -129,10 +151,19 @@ const initialState: UIState = {
   settings: {
     soundEnabled: true,
     musicEnabled: true,
+    audioEnabled: true,
     volume: 0.7,
+    masterVolume: 0.7,
+    sfxVolume: 0.7,
+    bgmVolume: 0.6,
     theme: "light",
     difficulty: "normal",
     controls: "keyboard",
+    inputSensitivity: {
+      keyboard: 1.0,
+      mouse: 1.0,
+      touch: 1.0,
+    },
   },
 
   showDebugInfo: process.env.NODE_ENV === "development",
@@ -263,7 +294,53 @@ export const useUIStore = create<UIState & UIActions>()(
         // 設定更新
         updateSettings: (newSettings) =>
           set((state) => {
-            Object.assign(state.settings, newSettings);
+            if (typeof newSettings.volume === "number") {
+              const clamped = clampVolume(newSettings.volume);
+              state.settings.volume = clamped;
+              state.settings.masterVolume = clamped;
+            }
+
+            if (typeof newSettings.masterVolume === "number") {
+              const clamped = clampVolume(newSettings.masterVolume);
+              state.settings.masterVolume = clamped;
+              state.settings.volume = clamped;
+            }
+
+            if (typeof newSettings.sfxVolume === "number") {
+              state.settings.sfxVolume = clampVolume(newSettings.sfxVolume);
+            }
+
+            if (typeof newSettings.bgmVolume === "number") {
+              state.settings.bgmVolume = clampVolume(newSettings.bgmVolume);
+            }
+
+            if (typeof newSettings.audioEnabled === "boolean") {
+              state.settings.audioEnabled = newSettings.audioEnabled;
+            }
+
+            if (newSettings.inputSensitivity) {
+              const { keyboard, mouse, touch } = newSettings.inputSensitivity;
+              if (typeof keyboard === "number") {
+                state.settings.inputSensitivity.keyboard = keyboard;
+              }
+              if (typeof mouse === "number") {
+                state.settings.inputSensitivity.mouse = mouse;
+              }
+              if (typeof touch === "number") {
+                state.settings.inputSensitivity.touch = touch;
+              }
+            }
+
+            const {
+              volume: _legacyVolume,
+              masterVolume: _master,
+              sfxVolume: _sfx,
+              bgmVolume: _bgm,
+              inputSensitivity: _input,
+              ...rest
+            } = newSettings;
+
+            Object.assign(state.settings, rest);
           }),
 
         toggleSound: () =>
@@ -278,7 +355,36 @@ export const useUIStore = create<UIState & UIActions>()(
 
         setVolume: (volume) =>
           set((state) => {
-            state.settings.volume = Math.max(0, Math.min(1, volume));
+            const clamped = clampVolume(volume);
+            state.settings.volume = clamped;
+            state.settings.masterVolume = clamped;
+          }),
+
+        setMasterVolume: (volume) =>
+          set((state) => {
+            const clamped = clampVolume(volume);
+            state.settings.masterVolume = clamped;
+            state.settings.volume = clamped;
+          }),
+
+        setSfxVolume: (volume) =>
+          set((state) => {
+            state.settings.sfxVolume = clampVolume(volume);
+          }),
+
+        setBgmVolume: (volume) =>
+          set((state) => {
+            state.settings.bgmVolume = clampVolume(volume);
+          }),
+
+        setAudioEnabled: (enabled) =>
+          set((state) => {
+            state.settings.audioEnabled = enabled;
+          }),
+
+        setInputSensitivity: (device, value) =>
+          set((state) => {
+            state.settings.inputSensitivity[device] = Math.max(0.1, Math.min(2, value));
           }),
 
         setTheme: (theme) =>
@@ -431,4 +537,9 @@ export const uiActions = {
   pauseGame: () => useUIStore.getState().pauseGame(),
   resumeGame: () => useUIStore.getState().resumeGame(),
   togglePause: () => useUIStore.getState().togglePause(),
+
+  setMasterVolume: (volume: number) => useUIStore.getState().setMasterVolume(volume),
+  setSfxVolume: (volume: number) => useUIStore.getState().setSfxVolume(volume),
+  setBgmVolume: (volume: number) => useUIStore.getState().setBgmVolume(volume),
+  setAudioEnabled: (enabled: boolean) => useUIStore.getState().setAudioEnabled(enabled),
 };

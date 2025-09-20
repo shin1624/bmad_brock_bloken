@@ -1,226 +1,66 @@
 {
   "testModules": [
     {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemStable.test.ts",
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/AudioSystem.test.ts",
       "tests": [
         {
-          "name": "should handle FPS fluctuations without flaky assertions",
-          "fullName": "ParticleSystem - Stable Tests > Timing-Stable Tests > should handle FPS fluctuations without flaky assertions",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Assertion failed after retries",
-              "stack": "Error: Assertion failed after retries\n    at TestStabilizers.retryAssertion (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleTestHelpers.ts:162:11)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemStable.test.ts:41:7\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20"
-            }
-          ]
-        },
-        {
-          "name": "should emit events consistently",
-          "fullName": "ParticleSystem - Stable Tests > Timing-Stable Tests > should emit events consistently",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Condition not met within timeout",
-              "stack": "Error: Condition not met within timeout\n    at TestStabilizers.waitForCondition (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleTestHelpers.ts:179:11)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemStable.test.ts:65:7\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20"
-            }
-          ]
-        },
-        {
-          "name": "should maintain consistent memory usage",
-          "fullName": "ParticleSystem - Stable Tests > Memory-Stable Tests > should maintain consistent memory usage",
+          "name": "initializes audio service and preloads assets",
+          "fullName": "AudioSystem > initializes audio service and preloads assets",
           "state": "passed"
         },
         {
-          "name": "should handle concurrent effect creation safely",
-          "fullName": "ParticleSystem - Stable Tests > Concurrent Operations > should handle concurrent effect creation safely",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "expected 25 to be less than or equal to 0",
-              "stack": "AssertionError: expected 25 to be less than or equal to 0\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemStable.test.ts:119:37\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20",
-              "expected": "0",
-              "actual": "25"
-            }
-          ]
-        },
-        {
-          "name": "should meet particle creation benchmark",
-          "fullName": "ParticleSystem - Stable Tests > Performance Benchmarks > should meet particle creation benchmark",
+          "name": "reacts to settings changes from store subscription",
+          "fullName": "AudioSystem > reacts to settings changes from store subscription",
           "state": "passed"
         },
         {
-          "name": "should meet update cycle benchmark",
-          "fullName": "ParticleSystem - Stable Tests > Performance Benchmarks > should meet update cycle benchmark",
+          "name": "plays appropriate sounds for game events",
+          "fullName": "AudioSystem > plays appropriate sounds for game events",
           "state": "passed"
         },
         {
-          "name": "should meet render benchmark",
-          "fullName": "ParticleSystem - Stable Tests > Performance Benchmarks > should meet render benchmark",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "ctx.moveTo is not a function",
-              "stack": "TypeError: ctx.moveTo is not a function\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/rendering/ParticleBatchRenderer.ts:147:11\n    at Array.forEach (<anonymous>)\n    at ParticleBatchRenderer.renderBatch (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/rendering/ParticleBatchRenderer.ts:139:21)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/rendering/ParticleBatchRenderer.ts:111:12\n    at Array.forEach (<anonymous>)\n    at ParticleBatchRenderer.renderBatches (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/rendering/ParticleBatchRenderer.ts:110:19)\n    at ParticleSystem.render (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/ParticleSystem.ts:548:26)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemStable.test.ts:154:16\n    at PerformanceTestUtils.runWithTiming (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleTestHelpers.ts:120:26)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemStable.test.ts:153:55"
-            }
-          ]
+          "name": "controls BGM on game lifecycle events",
+          "fullName": "AudioSystem > controls BGM on game lifecycle events",
+          "state": "passed"
+        },
+        {
+          "name": "cleans up subscriptions on destroy",
+          "fullName": "AudioSystem > cleans up subscriptions on destroy",
+          "state": "passed"
         }
       ]
     },
     {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemEdgeCases.test.ts",
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/services/__tests__/AudioService.test.ts",
       "tests": [
         {
-          "name": "should handle exact maximum particle limit (1000)",
-          "fullName": "ParticleSystem Edge Cases > Boundary Conditions > should handle exact maximum particle limit (1000)",
+          "name": "initializes audio graph and applies volume defaults",
+          "fullName": "AudioService > initializes audio graph and applies volume defaults",
           "state": "passed"
         },
         {
-          "name": "should handle particle limit +1 gracefully",
-          "fullName": "ParticleSystem Edge Cases > Boundary Conditions > should handle particle limit +1 gracefully",
+          "name": "loads and caches audio buffers",
+          "fullName": "AudioService > loads and caches audio buffers",
           "state": "passed"
         },
         {
-          "name": "should handle zero particle emission",
-          "fullName": "ParticleSystem Edge Cases > Boundary Conditions > should handle zero particle emission",
+          "name": "respects audio flags when playing sound effects",
+          "fullName": "AudioService > respects audio flags when playing sound effects",
           "state": "passed"
         },
         {
-          "name": "should handle negative coordinates",
-          "fullName": "ParticleSystem Edge Cases > Boundary Conditions > should handle negative coordinates",
+          "name": "controls BGM playback based on enable flags",
+          "fullName": "AudioService > controls BGM playback based on enable flags",
           "state": "passed"
         },
         {
-          "name": "should handle extremely large coordinates",
-          "fullName": "ParticleSystem Edge Cases > Boundary Conditions > should handle extremely large coordinates",
-          "state": "passed"
-        },
-        {
-          "name": "should stabilize quality during rapid FPS changes",
-          "fullName": "ParticleSystem Edge Cases > Rapid FPS Fluctuations > should stabilize quality during rapid FPS changes",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Test timed out in 5000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".",
-              "stack": "Error: STACK_TRACE_ERROR\n    at task (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:638:27)\n    at Object.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:662:16)\n    at Object.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:458:28)\n    at chain (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:369:14)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemEdgeCases.test.ts:91:5\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:734:40\n    at runWithSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1849:8)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:734:10)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:738:54)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:738:46)\n    at collectTests (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1179:25)\n    at startTests (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1817:17)\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:117:26\n    at withEnv (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:84:3)"
-            }
-          ]
-        },
-        {
-          "name": "should handle sine wave FPS pattern",
-          "fullName": "ParticleSystem Edge Cases > Rapid FPS Fluctuations > should handle sine wave FPS pattern",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "this.performanceCallbacks.forEach is not a function",
-              "stack": "TypeError: this.performanceCallbacks.forEach is not a function\n    at ParticleSystem.updateQualityLevel (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/ParticleSystem.ts:651:33)\n    at ParticleSystem.update (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/ParticleSystem.ts:490:14)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemEdgeCases.test.ts:124:16\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
-            }
-          ]
-        },
-        {
-          "name": "should handle instant FPS drops",
-          "fullName": "ParticleSystem Edge Cases > Rapid FPS Fluctuations > should handle instant FPS drops",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "expected 1 to be less than 1",
-              "stack": "AssertionError: expected 1 to be less than 1\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemEdgeCases.test.ts:156:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
-              "expected": "1",
-              "actual": "1"
-            }
-          ]
-        },
-        {
-          "name": "should handle simultaneous multi-point emissions",
-          "fullName": "ParticleSystem Edge Cases > Concurrent Operations > should handle simultaneous multi-point emissions",
-          "state": "passed"
-        },
-        {
-          "name": "should handle rapid burst creation and clearing",
-          "fullName": "ParticleSystem Edge Cases > Concurrent Operations > should handle rapid burst creation and clearing",
-          "state": "passed"
-        },
-        {
-          "name": "should handle effect creation during update cycle",
-          "fullName": "ParticleSystem Edge Cases > Concurrent Operations > should handle effect creation during update cycle",
-          "state": "passed"
-        },
-        {
-          "name": "should handle theme switch with active particles",
-          "fullName": "ParticleSystem Edge Cases > Theme Switching Edge Cases > should handle theme switch with active particles",
-          "state": "passed"
-        },
-        {
-          "name": "should handle null theme gracefully",
-          "fullName": "ParticleSystem Edge Cases > Theme Switching Edge Cases > should handle null theme gracefully",
-          "state": "passed"
-        },
-        {
-          "name": "should handle malformed theme data",
-          "fullName": "ParticleSystem Edge Cases > Theme Switching Edge Cases > should handle malformed theme data",
-          "state": "passed"
-        },
-        {
-          "name": "should not leak memory during extended operation",
-          "fullName": "ParticleSystem Edge Cases > Memory and Resource Management > should not leak memory during extended operation",
-          "state": "passed"
-        },
-        {
-          "name": "should handle particle pool exhaustion gracefully",
-          "fullName": "ParticleSystem Edge Cases > Memory and Resource Management > should handle particle pool exhaustion gracefully",
-          "state": "passed"
-        },
-        {
-          "name": "should recover from performance critical state",
-          "fullName": "ParticleSystem Edge Cases > Memory and Resource Management > should recover from performance critical state",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Test timed out in 5000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".",
-              "stack": "Error: STACK_TRACE_ERROR\n    at task (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:638:27)\n    at Object.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:662:16)\n    at Object.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:458:28)\n    at chain (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:369:14)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemEdgeCases.test.ts:353:5\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:734:40\n    at runWithSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1849:8)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:734:10)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:738:54)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:738:46)\n    at collectTests (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1179:25)\n    at startTests (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1817:17)\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:117:26\n    at withEnv (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:84:3)"
-            }
-          ]
-        },
-        {
-          "name": "should handle Infinity values",
-          "fullName": "ParticleSystem Edge Cases > Numerical Edge Cases > should handle Infinity values",
-          "state": "passed"
-        },
-        {
-          "name": "should handle NaN values",
-          "fullName": "ParticleSystem Edge Cases > Numerical Edge Cases > should handle NaN values",
-          "state": "passed"
-        },
-        {
-          "name": "should handle extremely small delta times",
-          "fullName": "ParticleSystem Edge Cases > Numerical Edge Cases > should handle extremely small delta times",
-          "state": "passed"
-        },
-        {
-          "name": "should handle extremely large delta times",
-          "fullName": "ParticleSystem Edge Cases > Numerical Edge Cases > should handle extremely large delta times",
-          "state": "passed"
-        },
-        {
-          "name": "should handle mixed operation chaos",
-          "fullName": "ParticleSystem Edge Cases > Integration Stress Tests > should handle mixed operation chaos",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "expected [Function] to not throw an error but 'TypeError: this.performanceCallbacks.…' was thrown",
-              "stack": "AssertionError: expected [Function] to not throw an error but 'TypeError: this.performanceCallbacks.…' was thrown\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1420:16)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/ParticleSystemEdgeCases.test.ts:444:32\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
-              "expected": "undefined",
-              "actual": "TypeError: this.performanceCallbacks.forEach is not a function"
-            }
-          ]
-        },
-        {
-          "name": "should maintain performance under sustained load",
-          "fullName": "ParticleSystem Edge Cases > Integration Stress Tests > should maintain performance under sustained load",
+          "name": "releases audio resources on dispose",
+          "fullName": "AudioService > releases audio resources on dispose",
           "state": "passed"
         }
       ]
     }
   ],
   "unhandledErrors": [],
-  "reason": "failed"
+  "reason": "passed"
 }

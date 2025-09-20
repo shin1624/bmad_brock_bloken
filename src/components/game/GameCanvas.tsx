@@ -34,6 +34,41 @@ export function GameCanvas({
   const [canvasSize, setCanvasSize] = useState({ width, height });
   const [isReady, setIsReady] = useState(false);
 
+  // Update canvas size and handle pixel ratio for crisp rendering
+  const updateCanvasSize = useCallback(
+    (newWidth: number, newHeight: number) => {
+      const canvas = canvasRef.current;
+      const context = contextRef.current;
+      if (!canvas || !context) return;
+
+      // Get device pixel ratio for high-DPI displays
+      const devicePixelRatio = window.devicePixelRatio || 1;
+
+      // Set actual canvas size in memory
+      canvas.width = newWidth * devicePixelRatio;
+      canvas.height = newHeight * devicePixelRatio;
+
+      // Set display size using CSS
+      canvas.style.width = `${newWidth}px`;
+      canvas.style.height = `${newHeight}px`;
+
+      // Scale the drawing context to match device pixel ratio
+      context.scale(devicePixelRatio, devicePixelRatio);
+
+      // Restore context settings after resize
+      context.imageSmoothingEnabled = false;
+      context.textBaseline = "top";
+
+      setCanvasSize({ width: newWidth, height: newHeight });
+
+      // Notify parent of size change
+      if (onResize) {
+        onResize(newWidth, newHeight);
+      }
+    },
+    [onResize],
+  );
+
   // Initialize canvas and context
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -62,37 +97,6 @@ export function GameCanvas({
       onCanvasReady(canvas, context);
     }
   }, [canvasSize.width, canvasSize.height, onCanvasReady, updateCanvasSize]);
-
-  // Update canvas size and handle pixel ratio for crisp rendering
-  const updateCanvasSize = useCallback(
-    (newWidth: number, newHeight: number) => {
-      const canvas = canvasRef.current;
-      const context = contextRef.current;
-      if (!canvas || !context) return;
-
-      // Get device pixel ratio for high-DPI displays
-      const devicePixelRatio = window.devicePixelRatio || 1;
-
-      // Set actual canvas size in memory
-      canvas.width = newWidth * devicePixelRatio;
-      canvas.height = newHeight * devicePixelRatio;
-
-      // Set display size using CSS
-      canvas.style.width = `${newWidth}px`;
-      canvas.style.height = `${newHeight}px`;
-
-      // Scale the drawing context to match device pixel ratio
-      context.scale(devicePixelRatio, devicePixelRatio);
-
-      setCanvasSize({ width: newWidth, height: newHeight });
-
-      // Notify parent of size change
-      if (onResize) {
-        onResize(newWidth, newHeight);
-      }
-    },
-    [onResize],
-  );
 
   // Handle window resize for responsive canvas
   useEffect(() => {
