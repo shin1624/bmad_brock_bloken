@@ -24,13 +24,25 @@ describe("UIStore", () => {
       expect(state.isGameOverModalOpen).toBe(false);
       expect(state.notifications).toEqual([]);
 
-      expect(state.settings).toEqual({
-        soundEnabled: true,
-        musicEnabled: true,
-        volume: 0.7,
-        theme: "light",
-        difficulty: "normal",
-        controls: "keyboard",
+      expect(state.settings).toEqual(
+        expect.objectContaining({
+          soundEnabled: true,
+          musicEnabled: true,
+          audioEnabled: true,
+          volume: 0.7,
+          masterVolume: 0.7,
+          sfxVolume: 0.7,
+          bgmVolume: 0.6,
+          theme: "light",
+          difficulty: "normal",
+          controls: "keyboard",
+        }),
+      );
+
+      expect(state.settings.inputSensitivity).toEqual({
+        keyboard: 1.0,
+        mouse: 1.0,
+        touch: 1.0,
       });
 
       expect(state.inputState).toEqual({
@@ -151,6 +163,7 @@ describe("UIStore", () => {
 
       const settings = useUIStore.getState().settings;
       expect(settings.volume).toBe(0.5);
+      expect(settings.masterVolume).toBe(0.5);
       expect(settings.theme).toBe("dark");
       expect(settings.soundEnabled).toBe(true); // 既存値は保持
     });
@@ -168,16 +181,37 @@ describe("UIStore", () => {
     });
 
     it("音量設定が範囲内に制限される", () => {
-      const { setVolume } = useUIStore.getState();
+      const { setVolume, setMasterVolume, setSfxVolume, setBgmVolume, setAudioEnabled, setInputSensitivity } =
+        useUIStore.getState();
 
       setVolume(1.5);
       expect(useUIStore.getState().settings.volume).toBe(1);
+      expect(useUIStore.getState().settings.masterVolume).toBe(1);
 
       setVolume(-0.5);
       expect(useUIStore.getState().settings.volume).toBe(0);
+      expect(useUIStore.getState().settings.masterVolume).toBe(0);
 
       setVolume(0.3);
       expect(useUIStore.getState().settings.volume).toBe(0.3);
+      expect(useUIStore.getState().settings.masterVolume).toBe(0.3);
+
+      setMasterVolume(0.6);
+      expect(useUIStore.getState().settings.masterVolume).toBe(0.6);
+
+      setSfxVolume(0.4);
+      expect(useUIStore.getState().settings.sfxVolume).toBe(0.4);
+
+      setBgmVolume(0.2);
+      expect(useUIStore.getState().settings.bgmVolume).toBe(0.2);
+
+      setAudioEnabled(false);
+      expect(useUIStore.getState().settings.audioEnabled).toBe(false);
+      setAudioEnabled(true);
+      expect(useUIStore.getState().settings.audioEnabled).toBe(true);
+
+      setInputSensitivity("keyboard", 1.5);
+      expect(useUIStore.getState().settings.inputSensitivity.keyboard).toBe(1.5);
     });
 
     it("個別設定項目を設定できる", () => {
@@ -358,6 +392,10 @@ describe("UIStore", () => {
       expect(state.isMenuOpen).toBe(false);
       expect(state.notifications).toHaveLength(0);
       expect(state.settings.volume).toBe(0.7);
+      expect(state.settings.masterVolume).toBe(0.7);
+      expect(state.settings.sfxVolume).toBe(0.7);
+      expect(state.settings.bgmVolume).toBe(0.6);
+      expect(state.settings.audioEnabled).toBe(true);
       expect(state.settings.theme).toBe("light");
     });
   });

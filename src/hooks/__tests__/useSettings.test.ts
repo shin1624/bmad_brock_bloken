@@ -15,7 +15,11 @@ const mockStoreActions = {
 const mockStoreSettings = {
   soundEnabled: true,
   musicEnabled: true,
+  audioEnabled: true,
   volume: 0.7,
+  masterVolume: 0.7,
+  sfxVolume: 0.7,
+  bgmVolume: 0.6,
   theme: 'light' as const,
   difficulty: 'normal' as const,
   controls: 'keyboard' as const,
@@ -70,6 +74,7 @@ describe('useSettings Hook', () => {
     });
 
     expect(result.current.settings.volume).toBe(0.5);
+    expect(result.current.settings.masterVolume).toBe(0.5);
     expect(result.current.hasUnsavedChanges).toBe(true);
   });
 
@@ -93,6 +98,7 @@ describe('useSettings Hook', () => {
       JSON.stringify({
         ...mockStoreSettings,
         volume: 0.8,
+        masterVolume: 0.8,
         theme: 'dark'
       })
     );
@@ -100,6 +106,7 @@ describe('useSettings Hook', () => {
     expect(mockStoreActions.updateSettings).toHaveBeenCalledWith({
       ...mockStoreSettings,
       volume: 0.8,
+      masterVolume: 0.8,
       theme: 'dark'
     });
   });
@@ -108,6 +115,7 @@ describe('useSettings Hook', () => {
     const savedSettings = {
       ...mockStoreSettings,
       volume: 0.9,
+      masterVolume: 0.9,
       theme: 'dark' as const
     };
 
@@ -139,6 +147,9 @@ describe('useSettings Hook', () => {
       soundEnabled: true,
       musicEnabled: true,
       volume: 0.7,
+      masterVolume: 0.7,
+      sfxVolume: 0.7,
+      bgmVolume: 0.6,
       theme: 'light',
       difficulty: 'normal',
       controls: 'keyboard'
@@ -161,7 +172,11 @@ describe('useSettings Hook', () => {
     expect(result.current.settings).toEqual(expect.objectContaining({
       soundEnabled: true,
       musicEnabled: true,
+      audioEnabled: true,
       volume: 0.7,
+      masterVolume: 0.7,
+      sfxVolume: 0.7,
+      bgmVolume: 0.6,
       theme: 'light',
       difficulty: 'normal'
     }));
@@ -187,6 +202,7 @@ describe('useSettings Hook', () => {
 
     expect(result.current.settings).toEqual(expect.objectContaining({
       volume: 0.5,
+      masterVolume: 0.5,
       theme: 'dark',
       soundEnabled: true, // Default value
       inputSensitivity: { // Default structure

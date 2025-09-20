@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -27,7 +27,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={false} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText("No error")).toBeInTheDocument();
@@ -37,12 +37,16 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText("Something went wrong")).toBeInTheDocument();
-    expect(screen.getByText("We're sorry, but something unexpected happened.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Try Again" })).toBeInTheDocument();
+    expect(
+      screen.getByText("We're sorry, but something unexpected happened."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Try Again" }),
+    ).toBeInTheDocument();
   });
 
   it("renders custom fallback when provided", () => {
@@ -51,7 +55,7 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary fallback={customFallback}>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText("Custom error message")).toBeInTheDocument();
@@ -64,24 +68,24 @@ describe("ErrorBoundary", () => {
     render(
       <ErrorBoundary onError={onError}>
         <ThrowError shouldThrow={true} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(onError).toHaveBeenCalled();
     expect(onError).toHaveBeenCalledWith(
       expect.any(Error),
       expect.objectContaining({
-        componentStack: expect.any(String)
-      })
+        componentStack: expect.any(String),
+      }),
     );
   });
 
   it("recovers when retry button is clicked", async () => {
     const user = userEvent.setup();
-    
+
     const ComponentWithState = () => {
       const [shouldThrow, setShouldThrow] = useState(true);
-      
+
       return (
         <ErrorBoundary>
           <div>
@@ -104,6 +108,8 @@ describe("ErrorBoundary", () => {
 
     // Should recover (though component will still throw unless state changes)
     // This tests the retry mechanism works
-    expect(screen.getByRole("button", { name: "Try Again" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Try Again" }),
+    ).toBeInTheDocument();
   });
 });

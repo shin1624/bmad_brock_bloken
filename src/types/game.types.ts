@@ -17,6 +17,22 @@ export interface Vector2D {
   y: number;
 }
 
+export interface AudioSettings {
+  audioEnabled: boolean;
+  soundEnabled: boolean;
+  musicEnabled: boolean;
+  masterVolume: number;
+  sfxVolume: number;
+  bgmVolume: number;
+  volume?: number;
+}
+
+export interface AudioMetrics {
+  activeSources: number;
+  estimatedMemoryBytes: number;
+  latencyMs: number;
+}
+
 // Input types
 export type InputDevice = 'keyboard' | 'mouse' | 'touch';
 

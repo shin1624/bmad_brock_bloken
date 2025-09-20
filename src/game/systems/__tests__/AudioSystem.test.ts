@@ -1,388 +1,158 @@
-/**
- * Unit Tests for AudioSystem
- * Story 4.2, Task 6: Test power-up audio feedback functionality
- */
-import { AudioSystem, AudioEvent } from '../AudioSystem';
-import { PowerUpType } from '../../entities/PowerUp';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { AudioSystem } from '../AudioSystem';
+import { GameEventType, eventBus } from '../../core/EventBus';
+import type { AudioService } from '../../../services/AudioService';
 
-// Mock Web Audio API
-class MockAudioContext {
-  public state = 'running';
-  public currentTime = 0;
-  public destination = {};
+const mockSettings = {
+  audioEnabled: true,
+  soundEnabled: true,
+  musicEnabled: true,
+  masterVolume: 0.7,
+  sfxVolume: 0.7,
+  bgmVolume: 0.6,
+};
 
-  async resume() {
-    this.state = 'running';
-  }
+let settingsListener: ((settings: typeof mockSettings) => void) | null = null;
 
-  async close() {
-    this.state = 'closed';
-  }
-
-  createOscillator() {
-    return new MockOscillator();
-  }
-
-  createGain() {
-    return new MockGainNode();
-  }
-
-  createStereoPanner() {
-    return new MockStereoPanner();
-  }
-}
-
-class MockOscillator {
-  public type = 'sine';
-  public frequency = { setValueAtTime: jest.fn() };
-  public onended: (() => void) | null = null;
-
-  connect() {}
-  start() {}
-  stop() {
-    // Simulate async completion
-    setTimeout(() => {
-      if (this.onended) this.onended();
-    }, 0);
-  }
-}
-
-class MockGainNode {
-  public gain = {
-    setValueAtTime: jest.fn(),
-    linearRampToValueAtTime: jest.fn()
+vi.mock('../../../stores/uiStore', () => {
+  const mockUseUIStore: any = vi.fn(() => ({ settings: mockSettings }));
+  mockUseUIStore.subscribe = (_selector: any, listener: any) => {
+    settingsListener = listener;
+    listener(mockSettings);
+    return () => {
+      settingsListener = null;
+    };
   };
+  mockUseUIStore.getState = () => ({ settings: mockSettings });
+  return { useUIStore: mockUseUIStore };
+});
 
-  connect() {}
-}
+const createMockAudioService = () => ({
+  initialize: vi.fn().mockResolvedValue(undefined),
+  loadSound: vi.fn().mockResolvedValue({} as AudioBuffer),
+  playSound: vi.fn().mockResolvedValue(undefined),
+  playBGM: vi.fn().mockResolvedValue(undefined),
+  pauseBGM: vi.fn(),
+  resumeBGM: vi.fn().mockResolvedValue(undefined),
+  stopBgm: vi.fn(),
+  setAudioEnabled: vi.fn(),
+  setSoundEnabled: vi.fn(),
+  setMusicEnabled: vi.fn(),
+  setMasterVolume: vi.fn(),
+  setSfxVolume: vi.fn(),
+  setBgmVolume: vi.fn(),
+  getMonitor: vi.fn().mockReturnValue({}),
+  getActiveSfxCount: vi.fn().mockReturnValue(0),
+  getEstimatedMemoryUsage: vi.fn().mockReturnValue(0),
+  getLatency: vi.fn().mockReturnValue(0),
+}) as unknown as AudioService;
 
-class MockStereoPanner {
-  public pan = { setValueAtTime: jest.fn() };
-  connect() {}
-}
-
-// Mock global AudioContext
-(global as any).AudioContext = MockAudioContext;
-(global as any).webkitAudioContext = MockAudioContext;
+const expectLoadCalls = (mockService: AudioService) => {
+  const keys = [
+    'sfx:paddle-hit',
+    'sfx:wall-hit',
+    'sfx:block-hit',
+    'sfx:block-destroy-1',
+    'sfx:block-destroy-2',
+    'sfx:powerup',
+    'bgm:main',
+  ];
+  keys.forEach((key) => {
+    expect(mockService.loadSound).toHaveBeenCalledWith(key, expect.any(String));
+  });
+};
 
 describe('AudioSystem', () => {
-  let audioSystem: AudioSystem;
-  let mockContext: MockAudioContext;
+  let mockService: AudioService;
+  let system: AudioSystem;
 
-  beforeEach(async () => {
-    mockContext = new MockAudioContext();
-    audioSystem = new AudioSystem({ audioContext: mockContext as any });
-    await audioSystem.initialize();
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockService = createMockAudioService();
+    system = new AudioSystem({ service: mockService });
+    eventBus.removeAllListeners();
   });
 
   afterEach(() => {
-    audioSystem.dispose();
+    system.destroy();
+    eventBus.removeAllListeners();
   });
 
-  describe('Initialization', () => {
-    it('should initialize successfully', async () => {
-      const newSystem = new AudioSystem();
-      await newSystem.initialize();
+  it('initializes audio service and preloads assets', async () => {
+    await system.initialize();
 
-      const status = newSystem.getStatus();
-      expect(status.isInitialized).toBe(true);
-      
-      newSystem.dispose();
-    });
-
-    it('should handle suspended audio context', async () => {
-      const suspendedContext = new MockAudioContext();
-      suspendedContext.state = 'suspended';
-      const resumeSpy = jest.spyOn(suspendedContext, 'resume');
-
-      const system = new AudioSystem({ audioContext: suspendedContext as any });
-      await system.initialize();
-
-      expect(resumeSpy).toHaveBeenCalled();
-      system.dispose();
-    });
-
-    it('should handle initialization errors gracefully', async () => {
-      const errorContext = {
-        ...new MockAudioContext(),
-        resume: jest.fn().mockRejectedValue(new Error('Audio context error'))
-      };
-
-      const system = new AudioSystem({ audioContext: errorContext as any });
-      
-      await expect(system.initialize()).rejects.toThrow('Audio context error');
-    });
+    expect(mockService.initialize).toHaveBeenCalled();
+    expectLoadCalls(mockService);
+    expect(mockService.setAudioEnabled).toHaveBeenCalledWith(true);
+    expect(mockService.setMasterVolume).toHaveBeenCalledWith(mockSettings.masterVolume);
+    expect(mockService.setSfxVolume).toHaveBeenCalledWith(mockSettings.sfxVolume);
+    expect(mockService.setBgmVolume).toHaveBeenCalledWith(mockSettings.bgmVolume);
+    expect(mockService.setSoundEnabled).toHaveBeenCalledWith(mockSettings.soundEnabled);
+    expect(mockService.setMusicEnabled).toHaveBeenCalledWith(mockSettings.musicEnabled);
   });
 
-  describe('Power-Up Sound Effects', () => {
-    it('should play collection sound', () => {
-      const createOscillatorSpy = jest.spyOn(mockContext, 'createOscillator');
-      const createGainSpy = jest.spyOn(mockContext, 'createGain');
+  it('reacts to settings changes from store subscription', async () => {
+    await system.initialize();
 
-      audioSystem.playPowerUpSound(AudioEvent.PowerUpCollect);
+    const newSettings = {
+      ...mockSettings,
+      audioEnabled: false,
+      soundEnabled: false,
+      musicEnabled: false,
+      masterVolume: 0.5,
+      sfxVolume: 0.4,
+      bgmVolume: 0.3,
+    };
 
-      expect(createOscillatorSpy).toHaveBeenCalled();
-      expect(createGainSpy).toHaveBeenCalled();
-    });
+    settingsListener?.(newSettings);
 
-    it('should play activation sound with power-up type', () => {
-      const createOscillatorSpy = jest.spyOn(mockContext, 'createOscillator');
-
-      audioSystem.playPowerUpSound(
-        AudioEvent.PowerUpActivate,
-        PowerUpType.MultiBall
-      );
-
-      expect(createOscillatorSpy).toHaveBeenCalled();
-    });
-
-    it('should play variant-specific sounds', () => {
-      const createOscillatorSpy = jest.spyOn(mockContext, 'createOscillator');
-
-      audioSystem.playPowerUpSound(
-        AudioEvent.PowerUpActivate,
-        PowerUpType.PaddleSize,
-        'large'
-      );
-
-      audioSystem.playPowerUpSound(
-        AudioEvent.PowerUpActivate,
-        PowerUpType.PaddleSize,
-        'small'
-      );
-
-      expect(createOscillatorSpy).toHaveBeenCalledTimes(2);
-    });
-
-    it('should apply power-up specific audio modifications', () => {
-      const mockOscillator = new MockOscillator();
-      jest.spyOn(mockContext, 'createOscillator').mockReturnValue(mockOscillator as any);
-
-      audioSystem.playPowerUpSound(
-        AudioEvent.PowerUpActivate,
-        PowerUpType.MultiBall
-      );
-
-      expect(mockOscillator.frequency.setValueAtTime).toHaveBeenCalledWith(
-        1200, // MultiBall frequency
-        expect.any(Number)
-      );
-    });
-
-    it('should handle ball speed variants correctly', () => {
-      const mockOscillator = new MockOscillator();
-      jest.spyOn(mockContext, 'createOscillator').mockReturnValue(mockOscillator as any);
-
-      // Fast variant
-      audioSystem.playPowerUpSound(
-        AudioEvent.SpeedChange,
-        PowerUpType.BallSpeed,
-        'fast'
-      );
-
-      expect(mockOscillator.frequency.setValueAtTime).toHaveBeenCalledWith(
-        800, // Fast ball frequency
-        expect.any(Number)
-      );
-
-      // Slow variant
-      audioSystem.playPowerUpSound(
-        AudioEvent.SpeedChange,
-        PowerUpType.BallSpeed,
-        'slow'
-      );
-
-      expect(mockOscillator.frequency.setValueAtTime).toHaveBeenCalledWith(
-        300, // Slow ball frequency
-        expect.any(Number)
-      );
-    });
+    expect(mockService.setAudioEnabled).toHaveBeenLastCalledWith(false);
+    expect(mockService.setMasterVolume).toHaveBeenLastCalledWith(0.5);
+    expect(mockService.setSfxVolume).toHaveBeenLastCalledWith(0.4);
+    expect(mockService.setBgmVolume).toHaveBeenLastCalledWith(0.3);
+    expect(mockService.setSoundEnabled).toHaveBeenLastCalledWith(false);
+    expect(mockService.setMusicEnabled).toHaveBeenLastCalledWith(false);
   });
 
-  describe('Volume and Configuration', () => {
-    it('should apply master and SFX volume settings', () => {
-      const mockGain = new MockGainNode();
-      jest.spyOn(mockContext, 'createGain').mockReturnValue(mockGain as any);
+  it('plays appropriate sounds for game events', async () => {
+    await system.initialize();
+    mockService.playSound = vi.fn().mockResolvedValue(undefined);
 
-      audioSystem.updateConfig({ masterVolume: 0.5, sfxVolume: 0.6 });
-      audioSystem.playPowerUpSound(AudioEvent.PowerUpCollect);
+    eventBus.emit(GameEventType.BALL_PADDLE_COLLISION, { paddlePosition: 0.25 });
+    eventBus.emit(GameEventType.BALL_WALL_COLLISION, { wall: 'right' });
+    eventBus.emit(GameEventType.BALL_BLOCK_COLLISION, { ballId: 'ball', blockId: 'block' });
+    eventBus.emit(GameEventType.BLOCK_DESTROYED, { position: { x: 200, y: 100 } });
+    eventBus.emit(GameEventType.POWERUP_COLLECTED, { type: 'speed', id: 'p1' });
 
-      // Should apply combined volume (0.5 * 0.6 * original = 0.3 * original)
-      expect(mockGain.gain.linearRampToValueAtTime).toHaveBeenCalledWith(
-        expect.any(Number), // The calculated volume
-        expect.any(Number)
-      );
-    });
-
-    it('should update configuration correctly', () => {
-      const newConfig = {
-        masterVolume: 0.8,
-        sfxVolume: 0.9,
-        maxSimultaneousSounds: 12
-      };
-
-      audioSystem.updateConfig(newConfig);
-
-      const status = audioSystem.getStatus();
-      expect(status.masterVolume).toBe(0.8);
-      expect(status.sfxVolume).toBe(0.9);
-      expect(status.maxSounds).toBe(12);
-    });
+    expect(mockService.playSound).toHaveBeenCalledWith('sfx:paddle-hit', expect.objectContaining({ pan: expect.any(Number) }));
+    expect(mockService.playSound).toHaveBeenCalledWith('sfx:wall-hit', expect.objectContaining({ pan: 0.8 }));
+    expect(mockService.playSound).toHaveBeenCalledWith('sfx:block-hit', expect.objectContaining({ volume: 0.6 }));
+    expect(mockService.playSound).toHaveBeenCalledWith(expect.stringMatching(/sfx:block-destroy/), expect.any(Object));
+    expect(mockService.playSound).toHaveBeenCalledWith('sfx:powerup', expect.any(Object));
   });
 
-  describe('Spatial Audio', () => {
-    it('should apply spatial audio when enabled', () => {
-      const mockPanner = new MockStereoPanner();
-      jest.spyOn(mockContext, 'createStereoPanner').mockReturnValue(mockPanner as any);
+  it('controls BGM on game lifecycle events', async () => {
+    await system.initialize();
 
-      audioSystem.updateConfig({ enableSpatialAudio: true });
-      audioSystem.playPowerUpSound(
-        AudioEvent.PowerUpCollect,
-        undefined,
-        undefined,
-        { x: 600, y: 300 } // Right side of screen
-      );
+    eventBus.emit(GameEventType.GAME_START, undefined);
+    expect(mockService.playBGM).toHaveBeenCalledWith('bgm:main', { fadeIn: 1.2 });
 
-      expect(mockPanner.pan.setValueAtTime).toHaveBeenCalledWith(
-        0.5, // Panned to the right
-        expect.any(Number)
-      );
-    });
+    eventBus.emit(GameEventType.GAME_PAUSE, undefined);
+    expect(mockService.pauseBGM).toHaveBeenCalled();
 
-    it('should handle left side positioning', () => {
-      const mockPanner = new MockStereoPanner();
-      jest.spyOn(mockContext, 'createStereoPanner').mockReturnValue(mockPanner as any);
+    eventBus.emit(GameEventType.GAME_RESUME, undefined);
+    expect(mockService.resumeBGM).toHaveBeenCalled();
 
-      audioSystem.updateConfig({ enableSpatialAudio: true });
-      audioSystem.playPowerUpSound(
-        AudioEvent.PowerUpCollect,
-        undefined,
-        undefined,
-        { x: 200, y: 300 } // Left side of screen
-      );
-
-      expect(mockPanner.pan.setValueAtTime).toHaveBeenCalledWith(
-        -0.5, // Panned to the left
-        expect.any(Number)
-      );
-    });
-
-    it('should not apply spatial audio when disabled', () => {
-      const createPannerSpy = jest.spyOn(mockContext, 'createStereoPanner');
-
-      audioSystem.updateConfig({ enableSpatialAudio: false });
-      audioSystem.playPowerUpSound(
-        AudioEvent.PowerUpCollect,
-        undefined,
-        undefined,
-        { x: 600, y: 300 }
-      );
-
-      expect(createPannerSpy).not.toHaveBeenCalled();
-    });
+    eventBus.emit(GameEventType.GAME_OVER, { score: 0, level: 1 });
+    expect(mockService.stopBgm).toHaveBeenCalled();
   });
 
-  describe('Sound Management', () => {
-    it('should limit simultaneous sounds', () => {
-      audioSystem.updateConfig({ maxSimultaneousSounds: 2 });
+  it('cleans up subscriptions on destroy', async () => {
+    await system.initialize();
+    system.destroy();
 
-      // Play 3 sounds (should limit to 2)
-      audioSystem.playPowerUpSound(AudioEvent.PowerUpCollect);
-      audioSystem.playPowerUpSound(AudioEvent.PowerUpActivate);
-      audioSystem.playPowerUpSound(AudioEvent.PowerUpExpire);
-
-      const status = audioSystem.getStatus();
-      expect(status.activeSounds).toBeLessThanOrEqual(2);
-    });
-
-    it('should stop all sounds', () => {
-      // Play some sounds
-      audioSystem.playPowerUpSound(AudioEvent.PowerUpCollect);
-      audioSystem.playPowerUpSound(AudioEvent.PowerUpActivate);
-
-      audioSystem.stopAllSounds();
-
-      const status = audioSystem.getStatus();
-      expect(status.activeSounds).toBe(0);
-    });
-
-    it('should clean up finished sounds automatically', (done) => {
-      audioSystem.playPowerUpSound(AudioEvent.PowerUpCollect);
-
-      // Wait for sound to finish and clean up
-      setTimeout(() => {
-        const status = audioSystem.getStatus();
-        expect(status.activeSounds).toBe(0);
-        done();
-      }, 10);
-    });
-  });
-
-  describe('Error Handling', () => {
-    it('should handle playback errors gracefully', () => {
-      // Mock error in oscillator creation
-      jest.spyOn(mockContext, 'createOscillator').mockImplementation(() => {
-        throw new Error('Oscillator creation failed');
-      });
-
-      expect(() => {
-        audioSystem.playPowerUpSound(AudioEvent.PowerUpCollect);
-      }).not.toThrow();
-    });
-
-    it('should not play sounds when not initialized', () => {
-      const uninitializedSystem = new AudioSystem();
-      const createOscillatorSpy = jest.spyOn(mockContext, 'createOscillator');
-
-      uninitializedSystem.playPowerUpSound(AudioEvent.PowerUpCollect);
-
-      expect(createOscillatorSpy).not.toHaveBeenCalled();
-    });
-
-    it('should handle missing spatial audio support', () => {
-      // Remove createStereoPanner method
-      delete (mockContext as any).createStereoPanner;
-
-      audioSystem.updateConfig({ enableSpatialAudio: true });
-
-      expect(() => {
-        audioSystem.playPowerUpSound(
-          AudioEvent.PowerUpCollect,
-          undefined,
-          undefined,
-          { x: 400, y: 300 }
-        );
-      }).not.toThrow();
-    });
-  });
-
-  describe('Factory Method', () => {
-    it('should create and initialize audio system', async () => {
-      const system = await AudioSystem.create({
-        masterVolume: 0.8,
-        sfxVolume: 0.7
-      });
-
-      const status = system.getStatus();
-      expect(status.isInitialized).toBe(true);
-      expect(status.masterVolume).toBe(0.8);
-      expect(status.sfxVolume).toBe(0.7);
-
-      system.dispose();
-    });
-  });
-
-  describe('Disposal', () => {
-    it('should dispose resources properly', () => {
-      const closeSpy = jest.spyOn(mockContext, 'close');
-
-      audioSystem.dispose();
-
-      expect(closeSpy).toHaveBeenCalled();
-
-      const status = audioSystem.getStatus();
-      expect(status.isInitialized).toBe(false);
-      expect(status.activeSounds).toBe(0);
-    });
+    mockService.playSound = vi.fn();
+    eventBus.emit(GameEventType.BALL_PADDLE_COLLISION, { paddlePosition: 0.5 });
+    expect(mockService.playSound).not.toHaveBeenCalled();
   });
 });

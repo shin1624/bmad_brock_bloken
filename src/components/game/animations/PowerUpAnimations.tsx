@@ -3,15 +3,15 @@
  * Handles spawn, pickup, and effect activation animations for power-ups
  * Story 4.1, Task 4: Power-up spawn and pickup animations
  */
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { PowerUpType } from '../HUD/PowerUpStatus';
+import React, { useEffect, useState, useCallback, useRef } from "react";
+import { PowerUpType } from "../HUD/PowerUpStatus";
 
 // Animation types
 export enum PowerUpAnimationType {
-  Spawn = 'spawn',
-  Pickup = 'pickup',
-  Activate = 'activate',
-  Expire = 'expire'
+  Spawn = "spawn",
+  Pickup = "pickup",
+  Activate = "activate",
+  Expire = "expire",
 }
 
 // Animation event interface
@@ -42,14 +42,13 @@ interface AnimationItemProps {
 const AnimationItem: React.FC<AnimationItemProps> = ({
   animation,
   onComplete,
-  containerBounds
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const animationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const duration = animation.duration || getDefaultDuration(animation.type);
-    
+
     const timer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(() => onComplete(animation.id), 100); // Small delay for fade out
@@ -60,51 +59,59 @@ const AnimationItem: React.FC<AnimationItemProps> = ({
 
   const getDefaultDuration = (type: PowerUpAnimationType): number => {
     switch (type) {
-      case PowerUpAnimationType.Spawn: return 1000;
-      case PowerUpAnimationType.Pickup: return 800;
-      case PowerUpAnimationType.Activate: return 600;
-      case PowerUpAnimationType.Expire: return 500;
-      default: return 800;
+      case PowerUpAnimationType.Spawn:
+        return 1000;
+      case PowerUpAnimationType.Pickup:
+        return 800;
+      case PowerUpAnimationType.Activate:
+        return 600;
+      case PowerUpAnimationType.Expire:
+        return 500;
+      default:
+        return 800;
     }
   };
 
   const getAnimationStyles = (): React.CSSProperties => {
     const baseStyles: React.CSSProperties = {
-      position: 'absolute',
+      position: "absolute",
       left: animation.position.x,
       top: animation.position.y,
-      pointerEvents: 'none',
+      pointerEvents: "none",
       zIndex: 1000,
-      transform: 'translate(-50%, -50%)',
+      transform: "translate(-50%, -50%)",
       opacity: isVisible ? 1 : 0,
-      transition: 'opacity 0.1s ease-out'
+      transition: "opacity 0.1s ease-out",
     };
 
     switch (animation.type) {
       case PowerUpAnimationType.Spawn:
         return {
           ...baseStyles,
-          animation: 'powerUpSpawnEffect 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          animation:
+            "powerUpSpawnEffect 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
         };
-      
+
       case PowerUpAnimationType.Pickup:
         return {
           ...baseStyles,
-          animation: 'powerUpPickupEffect 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+          animation:
+            "powerUpPickupEffect 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         };
-      
+
       case PowerUpAnimationType.Activate:
         return {
           ...baseStyles,
-          animation: 'powerUpActivateEffect 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+          animation:
+            "powerUpActivateEffect 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
         };
-      
+
       case PowerUpAnimationType.Expire:
         return {
           ...baseStyles,
-          animation: 'powerUpExpireEffect 0.5s ease-out'
+          animation: "powerUpExpireEffect 0.5s ease-out",
         };
-      
+
       default:
         return baseStyles;
     }
@@ -112,10 +119,10 @@ const AnimationItem: React.FC<AnimationItemProps> = ({
 
   const getIconStyles = (): React.CSSProperties => {
     return {
-      fontSize: '24px',
+      fontSize: "24px",
       color: animation.color,
       textShadow: `0 0 12px ${animation.color}`,
-      filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))'
+      filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))",
     };
   };
 
@@ -126,13 +133,13 @@ const AnimationItem: React.FC<AnimationItemProps> = ({
         <div
           key={i}
           style={{
-            position: 'absolute',
-            width: '4px',
-            height: '4px',
+            position: "absolute",
+            width: "4px",
+            height: "4px",
             backgroundColor: animation.color,
-            borderRadius: '50%',
+            borderRadius: "50%",
             animation: `pickupParticle${i} 0.8s ease-out`,
-            boxShadow: `0 0 4px ${animation.color}`
+            boxShadow: `0 0 4px ${animation.color}`,
           }}
         />
       ));
@@ -143,13 +150,13 @@ const AnimationItem: React.FC<AnimationItemProps> = ({
       return (
         <div
           style={{
-            position: 'absolute',
-            width: '60px',
-            height: '60px',
+            position: "absolute",
+            width: "60px",
+            height: "60px",
             border: `2px solid ${animation.color}`,
-            borderRadius: '50%',
-            animation: 'activateRipple 0.6s ease-out',
-            opacity: 0.7
+            borderRadius: "50%",
+            animation: "activateRipple 0.6s ease-out",
+            opacity: 0.7,
           }}
         />
       );
@@ -161,26 +168,25 @@ const AnimationItem: React.FC<AnimationItemProps> = ({
   return (
     <div ref={animationRef} style={getAnimationStyles()}>
       {/* Main icon */}
-      <div style={getIconStyles()}>
-        {animation.icon}
-      </div>
-      
+      <div style={getIconStyles()}>{animation.icon}</div>
+
       {/* Particle effects */}
       {getParticleElements()}
-      
+
       {/* Glow effect */}
       <div
         style={{
-          position: 'absolute',
-          width: '40px',
-          height: '40px',
+          position: "absolute",
+          width: "40px",
+          height: "40px",
           backgroundColor: animation.color,
-          borderRadius: '50%',
+          borderRadius: "50%",
           opacity: 0.3,
-          filter: 'blur(8px)',
-          animation: animation.type === PowerUpAnimationType.Spawn 
-            ? 'spawnGlow 1s ease-out' 
-            : 'defaultGlow 0.8s ease-out'
+          filter: "blur(8px)",
+          animation:
+            animation.type === PowerUpAnimationType.Spawn
+              ? "spawnGlow 1s ease-out"
+              : "defaultGlow 0.8s ease-out",
         }}
       />
     </div>
@@ -190,9 +196,11 @@ const AnimationItem: React.FC<AnimationItemProps> = ({
 const PowerUpAnimations: React.FC<PowerUpAnimationsProps> = ({
   animations,
   onAnimationComplete,
-  containerRef
+  containerRef,
 }) => {
-  const [activeAnimations, setActiveAnimations] = useState<PowerUpAnimationEvent[]>([]);
+  const [activeAnimations, setActiveAnimations] = useState<
+    PowerUpAnimationEvent[]
+  >([]);
   const [containerBounds, setContainerBounds] = useState<DOMRect | undefined>();
 
   // Update container bounds when container changes
@@ -201,28 +209,33 @@ const PowerUpAnimations: React.FC<PowerUpAnimationsProps> = ({
       const updateBounds = () => {
         setContainerBounds(containerRef.current?.getBoundingClientRect());
       };
-      
+
       updateBounds();
-      window.addEventListener('resize', updateBounds);
-      return () => window.removeEventListener('resize', updateBounds);
+      window.addEventListener("resize", updateBounds);
+      return () => window.removeEventListener("resize", updateBounds);
     }
   }, [containerRef]);
 
   // Add new animations
   useEffect(() => {
-    setActiveAnimations(prev => {
+    setActiveAnimations((prev) => {
       const newAnimations = animations.filter(
-        anim => !prev.some(existing => existing.id === anim.id)
+        (anim) => !prev.some((existing) => existing.id === anim.id),
       );
       return [...prev, ...newAnimations];
     });
   }, [animations]);
 
   // Handle animation completion
-  const handleAnimationComplete = useCallback((animationId: string) => {
-    setActiveAnimations(prev => prev.filter(anim => anim.id !== animationId));
-    onAnimationComplete?.(animationId);
-  }, [onAnimationComplete]);
+  const handleAnimationComplete = useCallback(
+    (animationId: string) => {
+      setActiveAnimations((prev) =>
+        prev.filter((anim) => anim.id !== animationId),
+      );
+      onAnimationComplete?.(animationId);
+    },
+    [onAnimationComplete],
+  );
 
   if (activeAnimations.length === 0) {
     return null;
@@ -231,7 +244,7 @@ const PowerUpAnimations: React.FC<PowerUpAnimationsProps> = ({
   return (
     <>
       {/* Render active animations */}
-      {activeAnimations.map(animation => (
+      {activeAnimations.map((animation) => (
         <AnimationItem
           key={animation.id}
           animation={animation}

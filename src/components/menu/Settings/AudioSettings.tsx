@@ -7,14 +7,28 @@ export interface AudioSettingsProps {
   disabled?: boolean;
 }
 
+const clamp = (value: number) => Math.max(0, Math.min(1, value));
+
 export const AudioSettings: React.FC<AudioSettingsProps> = ({
   settings,
   onUpdateSettings,
-  disabled = false
+  disabled = false,
 }) => {
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const volume = parseFloat(e.target.value);
-    onUpdateSettings({ volume });
+  const handleMasterVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = clamp(parseFloat(event.target.value));
+    onUpdateSettings({ masterVolume: value, volume: value });
+  };
+
+  const handleSfxVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdateSettings({ sfxVolume: clamp(parseFloat(event.target.value)) });
+  };
+
+  const handleBgmVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onUpdateSettings({ bgmVolume: clamp(parseFloat(event.target.value)) });
+  };
+
+  const handleAudioToggle = () => {
+    onUpdateSettings({ audioEnabled: !settings.audioEnabled });
   };
 
   const handleSoundToggle = () => {
@@ -31,12 +45,53 @@ export const AudioSettings: React.FC<AudioSettingsProps> = ({
 
       <div className="setting-group">
         <div className="setting-item">
-          <label className="toggle-label">
+          <label className="toggle-label" htmlFor="audio-enabled-toggle">
             <input
+              id="audio-enabled-toggle"
+              type="checkbox"
+              checked={settings.audioEnabled}
+              onChange={handleAudioToggle}
+              disabled={disabled}
+              className="toggle-input"
+            />
+            <span className="toggle-slider"></span>
+            <span className="toggle-text">Enable Audio</span>
+          </label>
+        </div>
+
+        <div className="setting-item">
+          <label className="slider-label" htmlFor="audio-master-volume">
+            Master Volume
+          </label>
+          <div className="volume-control">
+            <span className="volume-icon">🔇</span>
+            <input
+              id="audio-master-volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={settings.masterVolume}
+              onChange={handleMasterVolumeChange}
+              disabled={disabled || !settings.audioEnabled}
+              className="volume-slider"
+              aria-label={`Master volume: ${Math.round(settings.masterVolume * 100)}%`}
+            />
+            <span className="volume-icon">🔊</span>
+          </div>
+          <div className="volume-display">
+            {Math.round(settings.masterVolume * 100)}%
+          </div>
+        </div>
+
+        <div className="setting-item">
+          <label className="toggle-label" htmlFor="audio-sfx-toggle">
+            <input
+              id="audio-sfx-toggle"
               type="checkbox"
               checked={settings.soundEnabled}
               onChange={handleSoundToggle}
-              disabled={disabled}
+              disabled={disabled || !settings.audioEnabled}
               className="toggle-input"
             />
             <span className="toggle-slider"></span>
@@ -45,12 +100,38 @@ export const AudioSettings: React.FC<AudioSettingsProps> = ({
         </div>
 
         <div className="setting-item">
-          <label className="toggle-label">
+          <label className="slider-label" htmlFor="audio-sfx-volume">
+            SFX Volume
+          </label>
+          <div className="volume-control">
+            <span className="volume-icon">🎯</span>
             <input
+              id="audio-sfx-volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={settings.sfxVolume}
+              onChange={handleSfxVolumeChange}
+              disabled={disabled || !settings.audioEnabled || !settings.soundEnabled}
+              className="volume-slider"
+              aria-label={`SFX volume: ${Math.round(settings.sfxVolume * 100)}%`}
+            />
+            <span className="volume-icon">💥</span>
+          </div>
+          <div className="volume-display">
+            {Math.round(settings.sfxVolume * 100)}%
+          </div>
+        </div>
+
+        <div className="setting-item">
+          <label className="toggle-label" htmlFor="audio-bgm-toggle">
+            <input
+              id="audio-bgm-toggle"
               type="checkbox"
               checked={settings.musicEnabled}
               onChange={handleMusicToggle}
-              disabled={disabled}
+              disabled={disabled || !settings.audioEnabled}
               className="toggle-input"
             />
             <span className="toggle-slider"></span>
@@ -59,27 +140,27 @@ export const AudioSettings: React.FC<AudioSettingsProps> = ({
         </div>
 
         <div className="setting-item">
-          <label className="slider-label" htmlFor="volume-slider">
-            Master Volume
+          <label className="slider-label" htmlFor="audio-bgm-volume">
+            BGM Volume
           </label>
           <div className="volume-control">
-            <span className="volume-icon">🔇</span>
+            <span className="volume-icon">🎵</span>
             <input
-              id="volume-slider"
+              id="audio-bgm-volume"
               type="range"
               min="0"
               max="1"
-              step="0.1"
-              value={settings.volume}
-              onChange={handleVolumeChange}
-              disabled={disabled}
+              step="0.05"
+              value={settings.bgmVolume}
+              onChange={handleBgmVolumeChange}
+              disabled={disabled || !settings.audioEnabled || !settings.musicEnabled}
               className="volume-slider"
-              aria-label={`Volume: ${Math.round(settings.volume * 100)}%`}
+              aria-label={`Music volume: ${Math.round(settings.bgmVolume * 100)}%`}
             />
-            <span className="volume-icon">🔊</span>
+            <span className="volume-icon">🎶</span>
           </div>
           <div className="volume-display">
-            {Math.round(settings.volume * 100)}%
+            {Math.round(settings.bgmVolume * 100)}%
           </div>
         </div>
       </div>

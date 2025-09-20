@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
@@ -26,8 +26,8 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
-    
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+
     // Call optional error handler
     this.props.onError?.(error, errorInfo);
   }
@@ -48,14 +48,11 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="error-boundary" role="alert">
           <h2>Something went wrong</h2>
           <p>We're sorry, but something unexpected happened.</p>
-          <button 
-            onClick={this.handleRetry}
-            className="retry-button"
-          >
+          <button onClick={this.handleRetry} className="retry-button">
             Try Again
           </button>
-          {process.env.NODE_ENV === 'development' && this.state.error && (
-            <details style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>
+          {process.env.NODE_ENV === "development" && this.state.error && (
+            <details style={{ whiteSpace: "pre-wrap", marginTop: "1rem" }}>
               <summary>Error Details (Development Only)</summary>
               {this.state.error.toString()}
             </details>

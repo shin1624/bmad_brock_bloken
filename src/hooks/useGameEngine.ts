@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useGameLoop } from './useGameLoop';
 import { useGameState, type GameStateBase } from './useGameState';
 import type { GameLoopConfig } from '../types/game.types';
+import { audioSystem } from '../game/systems/AudioSystem';
 
 interface GameEngineConfig<T extends GameStateBase> extends GameLoopConfig {
   initialGameState: T;
@@ -42,6 +43,21 @@ export function useGameEngine<T extends GameStateBase>(config: GameEngineConfig<
   // Initialize game systems
   const gameLoop = useGameLoop(gameLoopConfig);
   const gameState = useGameState(initialGameState);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    audioSystem.initialize().catch((error) => {
+      console.error('Failed to initialize audio system:', error);
+    });
+
+    return () => {
+      if (!cancelled) {
+        audioSystem.destroy();
+        cancelled = true;
+      }
+    };
+  }, []);
   
   // Canvas references
   const canvasRef = useRef<HTMLCanvasElement | null>(null);

@@ -1,0 +1,21 @@
+/**
+ * Tests for Pixel Theme - DISABLED FOR MVP
+ * 
+ * Note: These tests are disabled in MVP version.
+ * Only neon theme tests are active in the initial release.
+ */
+
+// MVP: Commented out for single theme implementation
+/*
+[Original pixel theme tests - disabled for MVP]
+*//**
+ * Tests for Pixel Theme - DISABLED FOR MVP
+ * 
+ * Note: These tests are disabled in MVP version.
+ * Only neon theme tests are active in the initial release.
+ */
+
+// MVP: Commented out for single theme implementation
+/*
+[Original pixel theme tests - disabled for MVP]
+*/

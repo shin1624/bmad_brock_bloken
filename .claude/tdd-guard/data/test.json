@@ -1,106 +1,61 @@
 {
   "testModules": [
     {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/__tests__/useGameStateIntegration.test.ts",
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/AudioSystem.test.ts",
       "tests": [
         {
-          "name": "should initialize with empty state",
-          "fullName": "useGameStateIntegration Hook > Hook Initialization > should initialize with empty state",
+          "name": "initializes audio service and preloads assets",
+          "fullName": "AudioSystem > initializes audio service and preloads assets",
           "state": "passed"
         },
         {
-          "name": "should initialize with custom config",
-          "fullName": "useGameStateIntegration Hook > Hook Initialization > should initialize with custom config",
+          "name": "reacts to settings changes from store subscription",
+          "fullName": "AudioSystem > reacts to settings changes from store subscription",
           "state": "passed"
         },
         {
-          "name": "should handle power-up spawn and create animation",
-          "fullName": "useGameStateIntegration Hook > PowerUp Spawn Events > should handle power-up spawn and create animation",
+          "name": "plays appropriate sounds for game events",
+          "fullName": "AudioSystem > plays appropriate sounds for game events",
           "state": "passed"
         },
         {
-          "name": "should not create animation when disabled",
-          "fullName": "useGameStateIntegration Hook > PowerUp Spawn Events > should not create animation when disabled",
+          "name": "controls BGM on game lifecycle events",
+          "fullName": "AudioSystem > controls BGM on game lifecycle events",
           "state": "passed"
         },
         {
-          "name": "should handle power-up pickup and create pickup animation",
-          "fullName": "useGameStateIntegration Hook > PowerUp Pickup Events > should handle power-up pickup and create pickup animation",
+          "name": "cleans up subscriptions on destroy",
+          "fullName": "AudioSystem > cleans up subscriptions on destroy",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/services/__tests__/AudioService.test.ts",
+      "tests": [
+        {
+          "name": "initializes audio graph and applies volume defaults",
+          "fullName": "AudioService > initializes audio graph and applies volume defaults",
           "state": "passed"
         },
         {
-          "name": "should handle pickup of non-existent power-up gracefully",
-          "fullName": "useGameStateIntegration Hook > PowerUp Pickup Events > should handle pickup of non-existent power-up gracefully",
+          "name": "loads and caches audio buffers",
+          "fullName": "AudioService > loads and caches audio buffers",
           "state": "passed"
         },
         {
-          "name": "should activate power-up and add to active list",
-          "fullName": "useGameStateIntegration Hook > PowerUp Activation Events > should activate power-up and add to active list",
+          "name": "respects audio flags when playing sound effects",
+          "fullName": "AudioService > respects audio flags when playing sound effects",
           "state": "passed"
         },
         {
-          "name": "should replace existing power-up with same ID",
-          "fullName": "useGameStateIntegration Hook > PowerUp Activation Events > should replace existing power-up with same ID",
+          "name": "controls BGM playback based on enable flags",
+          "fullName": "AudioService > controls BGM playback based on enable flags",
           "state": "passed"
         },
         {
-          "name": "should handle power-up expiration and remove from active list",
-          "fullName": "useGameStateIntegration Hook > PowerUp Expiration Events > should handle power-up expiration and remove from active list",
-          "state": "passed"
-        },
-        {
-          "name": "should update power-up durations over time",
-          "fullName": "useGameStateIntegration Hook > Duration Updates > should update power-up durations over time",
-          "state": "passed"
-        },
-        {
-          "name": "should automatically remove expired power-ups",
-          "fullName": "useGameStateIntegration Hook > Duration Updates > should automatically remove expired power-ups",
-          "state": "passed"
-        },
-        {
-          "name": "should clear individual animations",
-          "fullName": "useGameStateIntegration Hook > Animation Management > should clear individual animations",
-          "state": "passed"
-        },
-        {
-          "name": "should clear all animations",
-          "fullName": "useGameStateIntegration Hook > Animation Management > should clear all animations",
-          "state": "passed"
-        },
-        {
-          "name": "should provide debug information",
-          "fullName": "useGameStateIntegration Hook > Debug Information > should provide debug information",
-          "state": "passed"
-        },
-        {
-          "name": "should update debug info periodically",
-          "fullName": "useGameStateIntegration Hook > Debug Information > should update debug info periodically",
-          "state": "passed"
-        },
-        {
-          "name": "should handle large numbers of power-ups efficiently",
-          "fullName": "useGameStateIntegration Hook > Performance and Memory Management > should handle large numbers of power-ups efficiently",
-          "state": "passed"
-        },
-        {
-          "name": "should clean up expired power-ups from registry",
-          "fullName": "useGameStateIntegration Hook > Performance and Memory Management > should clean up expired power-ups from registry",
-          "state": "passed"
-        },
-        {
-          "name": "should handle missing power-up metadata gracefully",
-          "fullName": "useGameStateIntegration Hook > Error Handling > should handle missing power-up metadata gracefully",
-          "state": "passed"
-        },
-        {
-          "name": "should handle activation of non-existent power-up",
-          "fullName": "useGameStateIntegration Hook > Error Handling > should handle activation of non-existent power-up",
-          "state": "passed"
-        },
-        {
-          "name": "should handle expiration of non-existent power-up",
-          "fullName": "useGameStateIntegration Hook > Error Handling > should handle expiration of non-existent power-up",
+          "name": "releases audio resources on dispose",
+          "fullName": "AudioService > releases audio resources on dispose",
           "state": "passed"
         }
       ]

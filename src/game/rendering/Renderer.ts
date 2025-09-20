@@ -12,7 +12,7 @@ export interface RenderableEntity {
 }
 
 export interface SpriteEntity extends RenderableEntity {
-  type: 'sprite';
+  type: "sprite";
   imageSrc: string;
   imageElement?: HTMLImageElement;
   sourceX?: number;
@@ -22,14 +22,14 @@ export interface SpriteEntity extends RenderableEntity {
 }
 
 export interface RectEntity extends RenderableEntity {
-  type: 'rect';
+  type: "rect";
   fillColor?: string;
   strokeColor?: string;
   strokeWidth?: number;
 }
 
 export interface CircleEntity extends RenderableEntity {
-  type: 'circle';
+  type: "circle";
   radius: number;
   fillColor?: string;
   strokeColor?: string;
@@ -37,7 +37,7 @@ export interface CircleEntity extends RenderableEntity {
 }
 
 export interface TextEntity extends RenderableEntity {
-  type: 'text';
+  type: "text";
   text: string;
   font?: string;
   fontSize?: number;
@@ -80,14 +80,14 @@ export class Renderer {
   constructor(
     context: CanvasRenderingContext2D,
     camera: Camera = { x: 0, y: 0, zoom: 1, rotation: 0 },
-    options: RenderOptions = {}
+    options: RenderOptions = {},
   ) {
     this.context = context;
     this.canvas = context.canvas;
     this.camera = camera;
     this.renderOptions = {
       clearCanvas: true,
-      backgroundColor: 'transparent',
+      backgroundColor: "transparent",
       enableCulling: true,
       cullMargin: 100,
       ...options,
@@ -99,9 +99,9 @@ export class Renderer {
    */
   addEntity(entity: Entity): void {
     this.entities.push(entity);
-    
+
     // Pre-load images for sprite entities
-    if (entity.type === 'sprite' && !entity.imageElement) {
+    if (entity.type === "sprite" && !entity.imageElement) {
       this.loadImage(entity.imageSrc);
     }
   }
@@ -159,9 +159,11 @@ export class Renderer {
 
     const margin = this.renderOptions.cullMargin || 0;
     const cameraLeft = this.camera.x - margin;
-    const cameraRight = this.camera.x + this.canvas.width / this.camera.zoom + margin;
+    const cameraRight =
+      this.camera.x + this.canvas.width / this.camera.zoom + margin;
     const cameraTop = this.camera.y - margin;
-    const cameraBottom = this.camera.y + this.canvas.height / this.camera.zoom + margin;
+    const cameraBottom =
+      this.camera.y + this.canvas.height / this.camera.zoom + margin;
 
     const entityRight = entity.x + entity.width;
     const entityBottom = entity.y + entity.height;
@@ -179,18 +181,18 @@ export class Renderer {
    */
   private applyCameraTransform(): void {
     const ctx = this.context;
-    
+
     // Reset transform
     ctx.resetTransform();
-    
+
     // Apply camera zoom and position
     ctx.scale(this.camera.zoom, this.camera.zoom);
     ctx.translate(-this.camera.x, -this.camera.y);
-    
+
     // Apply camera rotation if needed
     if (this.camera.rotation !== 0) {
-      const centerX = this.camera.x + (this.canvas.width / 2) / this.camera.zoom;
-      const centerY = this.camera.y + (this.canvas.height / 2) / this.camera.zoom;
+      const centerX = this.camera.x + this.canvas.width / 2 / this.camera.zoom;
+      const centerY = this.camera.y + this.canvas.height / 2 / this.camera.zoom;
       ctx.translate(centerX, centerY);
       ctx.rotate(this.camera.rotation);
       ctx.translate(-centerX, -centerY);
@@ -202,19 +204,19 @@ export class Renderer {
    */
   private applyEntityTransform(entity: Entity): void {
     const ctx = this.context;
-    
+
     ctx.translate(entity.x, entity.y);
-    
+
     if (entity.rotation) {
       ctx.rotate(entity.rotation);
     }
-    
+
     if (entity.scaleX !== undefined || entity.scaleY !== undefined) {
       const scaleX = entity.scaleX ?? 1;
       const scaleY = entity.scaleY ?? 1;
       ctx.scale(scaleX, scaleY);
     }
-    
+
     if (entity.alpha !== undefined) {
       ctx.globalAlpha = entity.alpha;
     }
@@ -225,14 +227,14 @@ export class Renderer {
    */
   private renderSprite(entity: SpriteEntity): void {
     let image = entity.imageElement;
-    
+
     if (!image) {
       image = this.imageCache.get(entity.imageSrc);
       if (!image) return; // Image not loaded yet
     }
 
     const ctx = this.context;
-    
+
     if (entity.sourceX !== undefined) {
       // Render sprite with source rectangle (sprite sheet)
       ctx.drawImage(
@@ -244,7 +246,7 @@ export class Renderer {
         0,
         0,
         entity.width,
-        entity.height
+        entity.height,
       );
     } else {
       // Render full image
@@ -275,7 +277,7 @@ export class Renderer {
    */
   private renderCircle(entity: CircleEntity): void {
     const ctx = this.context;
-    
+
     ctx.beginPath();
     ctx.arc(entity.width / 2, entity.height / 2, entity.radius, 0, Math.PI * 2);
 
@@ -296,12 +298,12 @@ export class Renderer {
    */
   private renderText(entity: TextEntity): void {
     const ctx = this.context;
-    
+
     // Set font properties
     const fontSize = entity.fontSize || 16;
-    const fontFamily = entity.fontFamily || 'Arial';
+    const fontFamily = entity.fontFamily || "Arial";
     ctx.font = entity.font || `${fontSize}px ${fontFamily}`;
-    
+
     if (entity.textAlign) ctx.textAlign = entity.textAlign;
     if (entity.textBaseline) ctx.textBaseline = entity.textBaseline;
 
@@ -322,30 +324,30 @@ export class Renderer {
    */
   private renderEntity(entity: Entity): void {
     const ctx = this.context;
-    
+
     ctx.save();
-    
+
     try {
       this.applyEntityTransform(entity);
-      
+
       switch (entity.type) {
-        case 'sprite':
+        case "sprite":
           this.renderSprite(entity);
           break;
-        case 'rect':
+        case "rect":
           this.renderRect(entity);
           break;
-        case 'circle':
+        case "circle":
           this.renderCircle(entity);
           break;
-        case 'text':
+        case "text":
           this.renderText(entity);
           break;
       }
     } catch (error) {
-      console.error('Error rendering entity:', error, entity);
+      console.error("Error rendering entity:", error, entity);
     }
-    
+
     ctx.restore();
   }
 
@@ -358,8 +360,11 @@ export class Renderer {
     // Clear canvas if requested
     if (this.renderOptions.clearCanvas) {
       ctx.resetTransform();
-      
-      if (this.renderOptions.backgroundColor && this.renderOptions.backgroundColor !== 'transparent') {
+
+      if (
+        this.renderOptions.backgroundColor &&
+        this.renderOptions.backgroundColor !== "transparent"
+      ) {
         ctx.fillStyle = this.renderOptions.backgroundColor;
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       } else {
@@ -389,8 +394,10 @@ export class Renderer {
    * Get render statistics
    */
   getStats() {
-    const visibleEntities = this.entities.filter(entity => this.isEntityVisible(entity));
-    
+    const visibleEntities = this.entities.filter((entity) =>
+      this.isEntityVisible(entity),
+    );
+
     return {
       totalEntities: this.entities.length,
       visibleEntities: visibleEntities.length,
@@ -398,6 +405,13 @@ export class Renderer {
       imagesInCache: this.imageCache.size,
       camera: { ...this.camera },
     };
+  }
+
+  /**
+   * Apply theme colors to renderer
+   */
+  applyTheme(theme: any): void {
+    this.context.fillStyle = theme.colors.background;
   }
 
   /**

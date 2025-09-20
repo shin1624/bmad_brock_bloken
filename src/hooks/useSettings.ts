@@ -13,10 +13,17 @@ interface UseSettingsReturn {
 
 const SETTINGS_STORAGE_KEY = 'game-settings';
 
+const clamp = (value: number, min = 0, max = 1): number =>
+  Math.max(min, Math.min(max, value));
+
 const DEFAULT_SETTINGS: UIState['settings'] = {
   soundEnabled: true,
   musicEnabled: true,
+  audioEnabled: true,
   volume: 0.7,
+  masterVolume: 0.7,
+  sfxVolume: 0.7,
+  bgmVolume: 0.6,
   theme: 'light',
   difficulty: 'normal',
   controls: 'keyboard',
@@ -27,39 +34,89 @@ const DEFAULT_SETTINGS: UIState['settings'] = {
   },
 };
 
+const normalizeSettings = (settings: UIState['settings']): UIState['settings'] => {
+  const master = clamp(settings.masterVolume ?? settings.volume ?? DEFAULT_SETTINGS.masterVolume);
+  const sfx = clamp(settings.sfxVolume ?? DEFAULT_SETTINGS.sfxVolume);
+  const bgm = clamp(settings.bgmVolume ?? DEFAULT_SETTINGS.bgmVolume);
+
+  return {
+    ...settings,
+    audioEnabled: settings.audioEnabled ?? true,
+    soundEnabled: settings.soundEnabled ?? true,
+    musicEnabled: settings.musicEnabled ?? true,
+    masterVolume: master,
+    volume: master,
+    sfxVolume: sfx,
+    bgmVolume: bgm,
+    inputSensitivity: {
+      ...DEFAULT_SETTINGS.inputSensitivity,
+      ...(settings.inputSensitivity || {}),
+    },
+  };
+};
+
+const mergeSettings = (
+  previous: UIState['settings'],
+  patch: Partial<UIState['settings']>,
+): UIState['settings'] => {
+  const mergedInputSensitivity = patch.inputSensitivity
+    ? {
+        keyboard: patch.inputSensitivity.keyboard ?? previous.inputSensitivity.keyboard,
+        mouse: patch.inputSensitivity.mouse ?? previous.inputSensitivity.mouse,
+        touch: patch.inputSensitivity.touch ?? previous.inputSensitivity.touch,
+      }
+    : previous.inputSensitivity;
+
+  const merged: UIState['settings'] = {
+    ...previous,
+    ...patch,
+    inputSensitivity: mergedInputSensitivity,
+  };
+
+  if (typeof patch.volume === 'number' && typeof patch.masterVolume !== 'number') {
+    merged.masterVolume = patch.volume;
+  }
+
+  if (typeof patch.masterVolume === 'number' && typeof patch.volume !== 'number') {
+    merged.volume = patch.masterVolume;
+  }
+
+  if (typeof patch.sfxVolume === 'number') {
+    merged.sfxVolume = clamp(patch.sfxVolume);
+  }
+
+  if (typeof patch.bgmVolume === 'number') {
+    merged.bgmVolume = clamp(patch.bgmVolume);
+  }
+
+  return normalizeSettings(merged);
+};
+
 export const useSettings = (): UseSettingsReturn => {
   const { settings: storeSettings, updateSettings: updateStoreSettings } = useUIStore();
-  const [localSettings, setLocalSettings] = useState<UIState['settings']>(storeSettings);
+  const [localSettings, setLocalSettings] = useState<UIState['settings']>(normalizeSettings(storeSettings));
   const [isLoading, setIsLoading] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  // Check for unsaved changes
   useEffect(() => {
-    const hasChanges = JSON.stringify(localSettings) !== JSON.stringify(storeSettings);
+    const hasChanges = JSON.stringify(localSettings) !== JSON.stringify(normalizeSettings(storeSettings));
     setHasUnsavedChanges(hasChanges);
   }, [localSettings, storeSettings]);
 
   const updateSettings = useCallback((newSettings: Partial<UIState['settings']>) => {
-    setLocalSettings(prev => ({
-      ...prev,
-      ...newSettings
-    }));
+    setLocalSettings((prev) => mergeSettings(prev, newSettings));
   }, []);
 
   const saveSettings = useCallback(async () => {
     setIsLoading(true);
     
     try {
-      // Save to localStorage
-      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(localSettings));
-      
-      // Update store
-      updateStoreSettings(localSettings);
-      
-      // Apply theme to document
-      document.documentElement.setAttribute('data-theme', localSettings.theme);
-      
-      // Simulate async save operation
+      const normalized = normalizeSettings(localSettings);
+
+      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(normalized));
+      updateStoreSettings(normalized);
+      document.documentElement.setAttribute('data-theme', normalized.theme);
+
       await new Promise(resolve => setTimeout(resolve, 100));
       
     } catch (error) {
@@ -78,44 +135,34 @@ export const useSettings = (): UseSettingsReturn => {
       
       if (savedSettings) {
         const parsed = JSON.parse(savedSettings) as UIState['settings'];
-        
-        // Validate and merge with defaults to handle schema changes
-        const validatedSettings = {
+        const validatedSettings = normalizeSettings({
           ...DEFAULT_SETTINGS,
           ...parsed,
-          inputSensitivity: {
-            ...DEFAULT_SETTINGS.inputSensitivity,
-            ...(parsed.inputSensitivity || {})
-          }
-        };
+        });
         
         setLocalSettings(validatedSettings);
         updateStoreSettings(validatedSettings);
-        
-        // Apply theme
         document.documentElement.setAttribute('data-theme', validatedSettings.theme);
       }
       
-      // Simulate async load operation
       await new Promise(resolve => setTimeout(resolve, 50));
       
     } catch (error) {
       console.error('Failed to load settings:', error);
-      // Fall back to defaults on error
-      setLocalSettings(DEFAULT_SETTINGS);
-      updateStoreSettings(DEFAULT_SETTINGS);
+      const normalizedDefaults = normalizeSettings(DEFAULT_SETTINGS);
+      setLocalSettings(normalizedDefaults);
+      updateStoreSettings(normalizedDefaults);
     } finally {
       setIsLoading(false);
     }
   }, [updateStoreSettings]);
 
   const resetSettings = useCallback(() => {
-    setLocalSettings(DEFAULT_SETTINGS);
+    setLocalSettings(normalizeSettings(DEFAULT_SETTINGS));
   }, []);
 
-  // Initialize with store settings but don't auto-load
   useEffect(() => {
-    setLocalSettings(storeSettings);
+    setLocalSettings(normalizeSettings(storeSettings));
   }, [storeSettings]);
 
   return {
@@ -127,4 +174,4 @@ export const useSettings = (): UseSettingsReturn => {
     isLoading,
     hasUnsavedChanges
   };
-};;
+};
