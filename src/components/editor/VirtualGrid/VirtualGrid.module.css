@@ -1,0 +1,23 @@
+.container {
+  border: 1px solid var(--border-color, #ccc);
+  background-color: var(--bg-grid, #fafafa);
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.cell {
+  transition: background-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.cell:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.gridLines {
+  opacity: 0.5;
+  z-index: 1;
+}

@@ -1,66 +1,67 @@
 {
   "testModules": [
     {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/AudioSystem.test.ts",
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/utils/PerformanceMonitor.test.ts",
       "tests": [
         {
-          "name": "initializes audio service and preloads assets",
-          "fullName": "AudioSystem > initializes audio service and preloads assets",
+          "name": "should initialize with default thresholds",
+          "fullName": "PerformanceMonitor > should initialize with default thresholds",
           "state": "passed"
         },
         {
-          "name": "reacts to settings changes from store subscription",
-          "fullName": "AudioSystem > reacts to settings changes from store subscription",
+          "name": "should start and stop monitoring",
+          "fullName": "PerformanceMonitor > should start and stop monitoring",
           "state": "passed"
         },
         {
-          "name": "plays appropriate sounds for game events",
-          "fullName": "AudioSystem > plays appropriate sounds for game events",
+          "name": "should calculate FPS correctly",
+          "fullName": "PerformanceMonitor > should calculate FPS correctly",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Test timed out in 5000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".",
+              "stack": "Error: STACK_TRACE_ERROR\n    at task (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:638:27)\n    at Object.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:662:16)\n    at Object.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:458:28)\n    at chain (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:369:14)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/utils/PerformanceMonitor.test.ts:58:3\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:734:40\n    at runWithSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1849:8)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:734:10)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:738:54)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at collectTests (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1179:25)\n    at startTests (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1817:17)\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:117:26\n    at withEnv (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:84:3)\n    at run (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:109:2)"
+            }
+          ]
+        },
+        {
+          "name": "should track render times",
+          "fullName": "PerformanceMonitor > should track render times",
           "state": "passed"
         },
         {
-          "name": "controls BGM on game lifecycle events",
-          "fullName": "AudioSystem > controls BGM on game lifecycle events",
+          "name": "should limit render time history to 60 samples",
+          "fullName": "PerformanceMonitor > should limit render time history to 60 samples",
           "state": "passed"
         },
         {
-          "name": "cleans up subscriptions on destroy",
-          "fullName": "AudioSystem > cleans up subscriptions on destroy",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/services/__tests__/AudioService.test.ts",
-      "tests": [
-        {
-          "name": "initializes audio graph and applies volume defaults",
-          "fullName": "AudioService > initializes audio graph and applies volume defaults",
+          "name": "should emit warnings when thresholds are exceeded",
+          "fullName": "PerformanceMonitor > should emit warnings when thresholds are exceeded",
           "state": "passed"
         },
         {
-          "name": "loads and caches audio buffers",
-          "fullName": "AudioService > loads and caches audio buffers",
+          "name": "should reset metrics correctly",
+          "fullName": "PerformanceMonitor > should reset metrics correctly",
           "state": "passed"
         },
         {
-          "name": "respects audio flags when playing sound effects",
-          "fullName": "AudioService > respects audio flags when playing sound effects",
+          "name": "should handle memory usage when available",
+          "fullName": "PerformanceMonitor > should handle memory usage when available",
           "state": "passed"
         },
         {
-          "name": "controls BGM playback based on enable flags",
-          "fullName": "AudioService > controls BGM playback based on enable flags",
+          "name": "should return 0 memory when not available",
+          "fullName": "PerformanceMonitor > should return 0 memory when not available",
           "state": "passed"
         },
         {
-          "name": "releases audio resources on dispose",
-          "fullName": "AudioService > releases audio resources on dispose",
+          "name": "should not start monitoring if already monitoring",
+          "fullName": "PerformanceMonitor > should not start monitoring if already monitoring",
           "state": "passed"
         }
       ]
     }
   ],
   "unhandledErrors": [],
-  "reason": "passed"
+  "reason": "failed"
 }

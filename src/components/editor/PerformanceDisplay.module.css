@@ -1,0 +1,53 @@
+.performanceDisplay {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  z-index: 9999;
+  pointer-events: none;
+  user-select: none;
+  min-width: 150px;
+}
+
+.top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.bottom-left {
+  bottom: 10px;
+  left: 10px;
+}
+
+.bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.metric:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  color: #999;
+  margin-right: 10px;
+}
+
+.value {
+  font-weight: bold;
+  text-align: right;
+}
