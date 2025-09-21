@@ -4,8 +4,9 @@
  */
 import { ObjectPool } from '../utils/ObjectPool';
 import { Ball } from '../entities/Ball';
-import { PowerUp } from '../entities/PowerUp';
+import { PowerUp, PowerUpType } from '../entities/PowerUp';
 import { Particle } from '../entities/Particle';
+import { Vector2D } from '../../types/game.types';
 
 // Performance monitoring interface
 export interface PerformanceMetrics {
@@ -33,6 +34,13 @@ export interface OptimizationConfig {
  * PowerUpOptimization Class
  * Manages performance optimization for power-up related entities
  */
+type OptimizableEntity = {
+  active?: boolean;
+  position?: Vector2D;
+  render?: (ctx: CanvasRenderingContext2D) => void;
+  lodLevel?: number;
+};
+
 export class PowerUpOptimization {
   private ballPool: ObjectPool<Ball>;
   private powerUpPool: ObjectPool<PowerUp>;
@@ -85,8 +93,8 @@ export class PowerUpOptimization {
     // PowerUp pool for spawned power-ups
     this.powerUpPool = new ObjectPool<PowerUp>(
       () => new PowerUp(
-        'MultiBall' as any,
-        PowerUp.getMetadata('MultiBall' as any)
+        PowerUpType.MultiBall,
+        PowerUp.getMetadata(PowerUpType.MultiBall)
       ),
       (powerUp) => {
         powerUp.active = false;
@@ -99,7 +107,13 @@ export class PowerUpOptimization {
 
     // Particle pool for effects
     this.particlePool = new ObjectPool<Particle>(
-      () => new Particle(),
+      () => new Particle({
+        position: { x: 0, y: 0 },
+        velocity: { x: 0, y: 0 },
+        color: '#FFFFFF',
+        size: 1,
+        lifespan: 1
+      }),
       (particle) => {
         particle.active = false;
         particle.position = { x: 0, y: 0 };
@@ -176,7 +190,11 @@ export class PowerUpOptimization {
   /**
    * Update performance metrics
    */
-  public updateMetrics(deltaTime: number, entities: any[], particles: any[]): void {
+  public updateMetrics(
+    deltaTime: number,
+    entities: ReadonlyArray<OptimizableEntity>,
+    particles: ReadonlyArray<Particle>,
+  ): void {
     const now = performance.now();
     
     // Update frame timing
@@ -215,7 +233,7 @@ export class PowerUpOptimization {
   /**
    * Cull off-screen entities for better performance
    */
-  public cullOffscreenEntities<T extends { position: { x: number; y: number }; active: boolean }>(
+  public cullOffscreenEntities<T extends { position: Vector2D; active: boolean }>(
     entities: T[],
     screenBounds: { width: number; height: number },
     margin: number = 50
@@ -238,7 +256,9 @@ export class PowerUpOptimization {
   /**
    * Apply Level of Detail optimization
    */
-  public applyLOD<T extends { position: { x: number; y: number }; render?: (ctx: CanvasRenderingContext2D) => void }>(
+  public applyLOD<
+    T extends { position: Vector2D; render?: (ctx: CanvasRenderingContext2D) => void },
+  >(
     entities: T[],
     cameraPosition: { x: number; y: number },
     maxDetailDistance: number = 200

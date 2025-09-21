@@ -18,6 +18,106 @@ export interface ParticleSystemConfig {
   qualityScale?: number;
 }
 
+type ParticleThemePreset = 'neon' | 'pixel' | 'synthwave' | 'minimal';
+
+interface ParticleThemeColors {
+  particle: string;
+  trail: string;
+}
+
+interface ParticleThemeSizes {
+  min: number;
+  max: number;
+}
+
+interface ParticleThemeEffects {
+  glow: boolean;
+  trail: boolean;
+}
+
+interface ParticleTheme {
+  colors: ParticleThemeColors;
+  sizes: ParticleThemeSizes;
+  effects: ParticleThemeEffects;
+}
+
+type ParticleThemeConfig = {
+  colors?: Partial<ParticleThemeColors>;
+  sizes?: Partial<ParticleThemeSizes>;
+  effects?: Partial<ParticleThemeEffects>;
+};
+
+type ThemeEffect = (particle: Particle) => void;
+
+type PerformanceChangeEvent =
+  | {
+      type: 'qualityChange';
+      previousLevel: number;
+      currentLevel: number;
+      fps: number;
+    }
+  | {
+      type: 'memoryWarning';
+      utilizationRate: number;
+      poolStats: ReturnType<ObjectPool<Particle>['getStats']>;
+    };
+
+type PerformanceChangeCallback = (event: PerformanceChangeEvent) => void;
+
+const THEME_PRESETS: Record<ParticleThemePreset, ParticleTheme> = {
+  neon: {
+    colors: { particle: '#ffffff', trail: '#ffffff80' },
+    sizes: { min: 1, max: 4 },
+    effects: { glow: false, trail: false },
+  },
+  pixel: {
+    colors: { particle: '#4ECDC4', trail: '#F7FFF780' },
+    sizes: { min: 1, max: 3 },
+    effects: { glow: false, trail: false },
+  },
+  synthwave: {
+    colors: { particle: '#FF71CE', trail: '#01CDFE80' },
+    sizes: { min: 1, max: 4 },
+    effects: { glow: true, trail: true },
+  },
+  minimal: {
+    colors: { particle: '#F5F5F5', trail: '#E5E7EB80' },
+    sizes: { min: 1, max: 2 },
+    effects: { glow: false, trail: false },
+  },
+};
+
+const DEFAULT_THEME: ParticleTheme = THEME_PRESETS.neon;
+
+const cloneTheme = (theme: ParticleTheme): ParticleTheme => ({
+  colors: { ...theme.colors },
+  sizes: { ...theme.sizes },
+  effects: { ...theme.effects },
+});
+
+const THEME_COLOR_MAP: Record<ParticleThemePreset, { primary: string; secondary: string; accent: string }> = {
+  neon: {
+    primary: '#00FFFF',
+    secondary: '#FF00FF',
+    accent: '#FFFF00',
+  },
+  pixel: {
+    primary: '#4ECDC4',
+    secondary: '#F7FFF7',
+    accent: '#FF6B6B',
+  },
+  synthwave: {
+    primary: '#FF006E',
+    secondary: '#8338EC',
+    accent: '#FB5607',
+  },
+  minimal: {
+    primary: '#333333',
+    secondary: '#666666',
+    accent: '#0066CC',
+  },
+};
+
 export class ParticleSystem {
   private activeParticles: Set<Particle>;
   private particlePool: ObjectPool<Particle>;
@@ -25,7 +125,7 @@ export class ParticleSystem {
   private config: ParticleSystemConfig;
   private debugMode: boolean;
 
-  private themeEffects: Map<string, (particle: Particle) => void> = new Map();
+  private themeEffects: Map<ParticleThemePreset, ThemeEffect> = new Map();
   private batchRenderer: ParticleBatchRenderer;
   private useBatchRendering: boolean = true;
   private cameraOffset: Vector2D = { x: 0, y: 0 };
@@ -42,15 +142,13 @@ export class ParticleSystem {
   private performanceWarningThreshold: number = 50; // FPS below this triggers warning
   private performanceCriticalThreshold: number = 30; // FPS below this disables effects
   private memoryWarningThreshold: number = 0.8; // 80% pool utilization triggers warning
-  private performanceCallbacks: {
+  private performanceThresholdCallbacks: {
     warning?: () => void;
     critical?: () => void;
   } = {};
-  private currentTheme: any = {
-    colors: { particle: '#ffffff', trail: '#ffffff80' },
-    sizes: { min: 1, max: 4 },
-    effects: { glow: false, trail: false }
-  };
+  private performanceChangeCallbacks: Map<string, PerformanceChangeCallback> = new Map();
+  private activeTheme: ParticleTheme = cloneTheme(DEFAULT_THEME);
+  private activeThemePreset: ParticleThemePreset | null = 'neon';
 
   constructor(eventBus: EventBus, config: Partial<ParticleSystemConfig> = {}) {
     this.eventBus = eventBus;
@@ -139,7 +237,11 @@ export class ParticleSystem {
    * Apply theme-specific effects to a particle
    */
   private applyThemeEffects(particle: Particle): void {
-    const themeEffect = this.themeEffects.get(this.currentTheme);
+    if (!this.activeThemePreset) {
+      return;
+    }
+
+    const themeEffect = this.themeEffects.get(this.activeThemePreset);
     if (themeEffect) {
       themeEffect(particle);
     }
@@ -149,34 +251,20 @@ export class ParticleSystem {
 
   /**
    * Get theme-specific particle colors
-   */
+  */
   private getThemeColors(): { primary: string; secondary: string; accent: string } {
-    // Default neon theme colors
-    const themes: Record<string, { primary: string; secondary: string; accent: string }> = {
-      neon: {
-        primary: '#00FFFF',
-        secondary: '#FF00FF',
-        accent: '#FFFF00'
-      },
-      pixel: {
-        primary: '#4ECDC4',
-        secondary: '#F7FFF7',
-        accent: '#FF6B6B'
-      },
-      synthwave: {
-        primary: '#FF006E',
-        secondary: '#8338EC',
-        accent: '#FB5607'
-      },
-      minimal: {
-        primary: '#333333',
-        secondary: '#666666',
-        accent: '#0066CC'
-      }
-    };
+    if (this.activeThemePreset) {
+      return THEME_COLOR_MAP[this.activeThemePreset];
+    }
 
-    // Return neon theme as default
-    return themes['neon'];
+    const { particle, trail } = this.activeTheme.colors;
+    const accent = this.activeTheme.effects.glow ? trail : particle;
+
+    return {
+      primary: particle,
+      secondary: trail,
+      accent,
+    };
   }
 
   /**
@@ -648,7 +736,7 @@ export class ParticleSystem {
       });
       
       // Trigger callbacks
-      this.performanceCallbacks.forEach(callback => {
+      this.performanceChangeCallbacks.forEach(callback => {
         callback({
           type: 'qualityChange',
           previousLevel: prevQuality,
@@ -675,8 +763,8 @@ export class ParticleSystem {
       });
       
       // Trigger critical callback
-      if (this.performanceCallbacks.critical) {
-        this.performanceCallbacks.critical();
+      if (this.performanceThresholdCallbacks.critical) {
+        this.performanceThresholdCallbacks.critical();
       }
     } else if (this.fps < this.performanceWarningThreshold) {
       this.eventBus.emit('particles:performanceWarning', {
@@ -686,8 +774,8 @@ export class ParticleSystem {
       });
       
       // Trigger warning callback
-      if (this.performanceCallbacks.warning) {
-        this.performanceCallbacks.warning();
+      if (this.performanceThresholdCallbacks.warning) {
+        this.performanceThresholdCallbacks.warning();
       }
     }
     
@@ -730,15 +818,15 @@ export class ParticleSystem {
   /**
    * Register performance callback
    */
-  public onPerformanceChange(id: string, callback: (data: any) => void): void {
-    this.performanceCallbacks.set(id, callback);
+  public onPerformanceChange(id: string, callback: PerformanceChangeCallback): void {
+    this.performanceChangeCallbacks.set(id, callback);
   }
   
   /**
    * Unregister performance callback
    */
   public offPerformanceChange(id: string): void {
-    this.performanceCallbacks.delete(id);
+    this.performanceChangeCallbacks.delete(id);
   }
   
   /**
@@ -754,7 +842,7 @@ export class ParticleSystem {
     updateTime?: number;
     particlePoolUtilization: number;
     poolStats: ReturnType<ObjectPool<Particle>['getStats']>;
-    renderStats: any;
+    renderStats: ReturnType<ParticleBatchRenderer['getRenderStats']>;
     totalParticlesCreated: number;
     autoQualityEnabled: boolean;
     thresholds: {
@@ -890,62 +978,66 @@ export class ParticleSystem {
    * Register a performance warning callback
    */
   public onPerformanceWarning(callback: () => void): void {
-    this.performanceCallbacks.warning = callback;
+    this.performanceThresholdCallbacks.warning = callback;
   }
   
   /**
    * Register a performance critical callback
    */
   public onPerformanceCritical(callback: () => void): void {
-    this.performanceCallbacks.critical = callback;
+    this.performanceThresholdCallbacks.critical = callback;
   }
   
   /**
    * Set the particle theme
    */
-  public setTheme(theme: {
-    colors?: {
-      particle?: string;
-      trail?: string;
-    };
-    sizes?: {
-      min?: number;
-      max?: number;
-    };
-    effects?: {
-      glow?: boolean;
-      trail?: boolean;
-    };
-  } | null): void {
-    if (!theme) {
-      // Use default theme
-      this.currentTheme = {
-        colors: { particle: '#ffffff', trail: '#ffffff80' },
-        sizes: { min: 1, max: 4 },
-        effects: { glow: false, trail: false }
-      };
+  public setTheme(theme: ParticleThemePreset | ParticleThemeConfig | null): void {
+    if (theme === null) {
+      this.activeTheme = cloneTheme(DEFAULT_THEME);
+      this.activeThemePreset = 'neon';
+      this.clear();
       return;
     }
-    
-    // Validate and apply theme
-    this.currentTheme = {
+
+    if (typeof theme === 'string') {
+      const preset = THEME_PRESETS[theme];
+      if (!preset) {
+        return;
+      }
+
+      this.activeTheme = cloneTheme(preset);
+      this.activeThemePreset = theme;
+      this.clear();
+      this.eventBus.emit('particles:themeChanged', { theme });
+      return;
+    }
+
+    this.activeTheme = {
       colors: {
-        particle: theme.colors?.particle || '#ffffff',
-        trail: theme.colors?.trail || '#ffffff80'
+        particle: theme.colors?.particle ?? DEFAULT_THEME.colors.particle,
+        trail: theme.colors?.trail ?? DEFAULT_THEME.colors.trail,
       },
       sizes: {
-        min: Math.max(0, theme.sizes?.min || 1),
-        max: Math.max(1, typeof theme.sizes?.max === 'number' ? theme.sizes.max : 4)
+        min: Math.max(0, theme.sizes?.min ?? DEFAULT_THEME.sizes.min),
+        max: Math.max(1, theme.sizes?.max ?? DEFAULT_THEME.sizes.max),
       },
       effects: {
-        glow: theme.effects?.glow || false,
-        trail: theme.effects?.trail || false
-      }
+        glow: theme.effects?.glow ?? DEFAULT_THEME.effects.glow,
+        trail: theme.effects?.trail ?? DEFAULT_THEME.effects.trail,
+      },
     };
+    this.activeThemePreset = null;
   }
 
   public getParticleCount(): number {
     return this.activeParticles.size;
+  }
+
+  /**
+   * Alias for getPerformanceMetrics for backwards compatibility
+   */
+  public getPerformanceStats(): ReturnType<ParticleSystem['getPerformanceMetrics']> {
+    return this.getPerformanceMetrics();
   }
 
   /**

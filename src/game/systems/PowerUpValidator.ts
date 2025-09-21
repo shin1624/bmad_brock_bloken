@@ -25,7 +25,7 @@ export interface ValidationResult {
   isValid: boolean;
   message?: string;
   suggestedAction?: 'allow' | 'deny' | 'modify' | 'warn';
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export class PowerUpValidator {

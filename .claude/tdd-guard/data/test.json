@@ -1,156 +1,401 @@
 {
   "testModules": [
     {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/stores/editorStore.test.ts",
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts",
       "tests": [
         {
-          "name": "初期状態がデフォルト値になっている",
-          "fullName": "editorStore > 初期状態がデフォルト値になっている",
-          "state": "passed"
+          "name": "should acquire and release balls correctly",
+          "fullName": "PowerUpOptimization > Object Pool Management > should acquire and release balls correctly",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "placeBlockでブロックを配置し履歴が更新される",
-          "fullName": "editorStore > placeBlockでブロックを配置し履歴が更新される",
-          "state": "passed"
+          "name": "should acquire and release power-ups correctly",
+          "fullName": "PowerUpOptimization > Object Pool Management > should acquire and release power-ups correctly",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "removeBlockでブロックを削除し履歴が記録される",
-          "fullName": "editorStore > removeBlockでブロックを削除し履歴が記録される",
-          "state": "passed"
+          "name": "should acquire and release particles correctly",
+          "fullName": "PowerUpOptimization > Object Pool Management > should acquire and release particles correctly",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "undoとredoで履歴通りに状態が戻る",
-          "fullName": "editorStore > undoとredoで履歴通りに状態が戻る",
-          "state": "passed"
+          "name": "should reset objects when acquired from pool",
+          "fullName": "PowerUpOptimization > Object Pool Management > should reset objects when acquired from pool",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "selectSingleCellでブロックを選択できる",
-          "fullName": "editorStore > selectSingleCellでブロックを選択できる",
-          "state": "passed"
+          "name": "should update metrics correctly",
+          "fullName": "PowerUpOptimization > Performance Metrics > should update metrics correctly",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "selectRegionで範囲内のブロックのみ選択する",
-          "fullName": "editorStore > selectRegionで範囲内のブロックのみ選択する",
-          "state": "passed"
+          "name": "should calculate average frame time over multiple updates",
+          "fullName": "PowerUpOptimization > Performance Metrics > should calculate average frame time over multiple updates",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "copySelectionとpasteSelectionで配置を複製できる",
-          "fullName": "editorStore > copySelectionとpasteSelectionで配置を複製できる",
-          "state": "passed"
+          "name": "should track pool utilization",
+          "fullName": "PowerUpOptimization > Performance Metrics > should track pool utilization",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "previewモードの切り替えで再生状態をリセットする",
-          "fullName": "editorStore > previewモードの切り替えで再生状態をリセットする",
-          "state": "passed"
+          "name": "should estimate memory usage",
+          "fullName": "PowerUpOptimization > Performance Metrics > should estimate memory usage",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "startPreviewはプレビューモード中のみ有効",
-          "fullName": "editorStore > startPreviewはプレビューモード中のみ有効",
-          "state": "passed"
+          "name": "should cull off-screen entities",
+          "fullName": "PowerUpOptimization > Culling and LOD > should cull off-screen entities",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "setDimensionsでグリッドサイズが変更され履歴がリセットされる",
-          "fullName": "editorStore > setDimensionsでグリッドサイズが変更され履歴がリセットされる",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/services/__tests__/LevelService.test.ts",
-      "tests": [
-        {
-          "name": "saves and lists levels",
-          "fullName": "LevelService > saves and lists levels",
-          "state": "passed"
+          "name": "should apply margin to culling",
+          "fullName": "PowerUpOptimization > Culling and LOD > should apply margin to culling",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "updates existing level when id is provided",
-          "fullName": "LevelService > updates existing level when id is provided",
-          "state": "passed"
+          "name": "should apply level of detail based on distance",
+          "fullName": "PowerUpOptimization > Culling and LOD > should apply level of detail based on distance",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "loads and deletes a level",
-          "fullName": "LevelService > loads and deletes a level",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/editor/EditorTools/EditorTools.test.tsx",
-      "tests": [
-        {
-          "name": "enables copy and paste actions based on selection state",
-          "fullName": "EditorTools > enables copy and paste actions based on selection state",
-          "state": "passed"
+          "name": "should disable culling when config is false",
+          "fullName": "PowerUpOptimization > Culling and LOD > should disable culling when config is false",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "toggles preview mode and playback controls",
-          "fullName": "EditorTools > toggles preview mode and playback controls",
-          "state": "passed"
+          "name": "should perform batch rendering when enabled",
+          "fullName": "PowerUpOptimization > Batch Rendering > should perform batch rendering when enabled",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "invokes save handler via buttonとショートカット",
-          "fullName": "EditorTools > invokes save handler via buttonとショートカット",
-          "state": "passed"
+          "name": "should skip high LOD entities when performance is poor",
+          "fullName": "PowerUpOptimization > Batch Rendering > should skip high LOD entities when performance is poor",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "invokesショートカットダイアログトグル",
-          "fullName": "EditorTools > invokesショートカットダイアログトグル",
-          "state": "passed"
+          "name": "should fallback to direct rendering when batch rendering is disabled",
+          "fullName": "PowerUpOptimization > Batch Rendering > should fallback to direct rendering when batch rendering is disabled",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "deleteキーで選択セルを削除する",
-          "fullName": "EditorTools > deleteキーで選択セルを削除する",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/editor/EditorCanvas/EditorCanvas.dnd.test.tsx",
-      "tests": [
-        {
-          "name": "places palette block onto canvas when dropped",
-          "fullName": "EditorCanvas drag and drop integration > places palette block onto canvas when dropped",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/editor/EditorCanvas/EditorCanvas.preview.test.tsx",
-      "tests": [
-        {
-          "name": "renders ghost preview using selected block visuals when placing",
-          "fullName": "EditorCanvas placement preview > renders ghost preview using selected block visuals when placing",
-          "state": "passed"
+          "name": "should limit particle count",
+          "fullName": "PowerUpOptimization > Particle Optimization > should limit particle count",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "draws dashed removal outline when erasing",
-          "fullName": "EditorCanvas placement preview > draws dashed removal outline when erasing",
-          "state": "passed"
+          "name": "should remove oldest particles first when over limit",
+          "fullName": "PowerUpOptimization > Particle Optimization > should remove oldest particles first when over limit",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "draws selection outline when cells are selected",
-          "fullName": "EditorCanvas placement preview > draws selection outline when cells are selected",
-          "state": "passed"
+          "name": "should merge nearby particles",
+          "fullName": "PowerUpOptimization > Particle Optimization > should merge nearby particles",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         },
         {
-          "name": "renders paddle and ball when preview mode is enabled",
-          "fullName": "EditorCanvas placement preview > renders paddle and ball when preview mode is enabled",
-          "state": "passed"
-        }
-      ]
-    },
-    {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/editor/EditorWorkspace/EditorWorkspace.test.tsx",
-      "tests": [
+          "name": "should update configuration correctly",
+          "fullName": "PowerUpOptimization > Configuration and Management > should update configuration correctly",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
+        },
         {
-          "name": "saves a level and shows status message",
-          "fullName": "EditorWorkspace > saves a level and shows status message",
-          "state": "passed"
+          "name": "should provide pool statistics",
+          "fullName": "PowerUpOptimization > Configuration and Management > should provide pool statistics",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
+        },
+        {
+          "name": "should dispose resources properly",
+          "fullName": "PowerUpOptimization > Configuration and Management > should dispose resources properly",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
+        },
+        {
+          "name": "should handle OffscreenCanvas not being available",
+          "fullName": "PowerUpOptimization > Error Handling > should handle OffscreenCanvas not being available",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
+        },
+        {
+          "name": "should handle empty entity arrays",
+          "fullName": "PowerUpOptimization > Error Handling > should handle empty entity arrays",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
+        },
+        {
+          "name": "should handle invalid entity data gracefully",
+          "fullName": "PowerUpOptimization > Error Handling > should handle invalid entity data gracefully",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
+        },
+        {
+          "name": "should track render calls",
+          "fullName": "PowerUpOptimization > Performance Monitoring > should track render calls",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
+        },
+        {
+          "name": "should reset render calls after metrics update",
+          "fullName": "PowerUpOptimization > Performance Monitoring > should reset render calls after metrics update",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "Cannot read properties of undefined (reading 'position')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
+            },
+            {
+              "message": "Cannot read properties of undefined (reading 'dispose')",
+              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+            }
+          ]
         }
       ]
     }
   ],
   "unhandledErrors": [],
-  "reason": "passed"
+  "reason": "failed"
 }

@@ -16,7 +16,7 @@ export interface PowerUpPersistence {
   duration: number;
   remainingTime: number;
   activatedAt: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface StateTransitionRule {
