@@ -12,10 +12,15 @@ interface EditorProviderProps {
  * Detects if the device supports touch
  */
 const isTouchDevice = (): boolean => {
-  return ('ontouchstart' in window) ||
-         (navigator.maxTouchPoints > 0) ||
-         // @ts-ignore
-         (navigator.msMaxTouchPoints > 0);
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const navigatorAny = window.navigator as Navigator & {
+    msMaxTouchPoints?: number;
+  };
+
+  return (navigatorAny.maxTouchPoints ?? 0) > 0 || (navigatorAny.msMaxTouchPoints ?? 0) > 0;
 };
 
 /**

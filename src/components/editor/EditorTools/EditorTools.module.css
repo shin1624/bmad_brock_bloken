@@ -1,0 +1,113 @@
+.tools {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(51, 65, 85, 0.35);
+  border: 1px solid transparent;
+  color: #e2e8f0;
+  font-weight: 600;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.tool:hover {
+  transform: translateY(-1px);
+  border-color: rgba(94, 234, 212, 0.45);
+  background: rgba(51, 65, 85, 0.55);
+}
+
+.activeTool {
+  composes: tool;
+  border-color: rgba(129, 140, 248, 0.8);
+  background: rgba(30, 64, 175, 0.65);
+  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.45);
+}
+
+.shortcut {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: rgba(203, 213, 225, 0.85);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.selectionActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.miscActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.actionButton {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(51, 65, 85, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.actionButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dangerButton {
+  composes: actionButton;
+  border-color: rgba(239, 68, 68, 0.55);
+  color: rgba(248, 250, 252, 0.92);
+  background: rgba(127, 29, 29, 0.65);
+}
+
+.previewActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.previewButton {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(96, 165, 250, 0.6);
+  color: #bfdbfe;
+  font-weight: 600;
+}
+
+.previewActive {
+  composes: previewButton;
+  background: rgba(49, 46, 129, 0.6);
+  border-color: rgba(165, 180, 252, 0.85);
+  color: #e0e7ff;
+}

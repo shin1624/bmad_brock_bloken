@@ -1,5 +1,6 @@
 .draggableBlock {
-  display: inline-block;
+  display: block;
+  width: 100%;
   user-select: none;
   -webkit-user-select: none;
   transition: transform 0.2s ease, opacity 0.2s ease;

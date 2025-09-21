@@ -1,48 +1,60 @@
-import React from 'react';
-import { useDrag } from 'react-dnd';
-import { BlockType, DragItem } from '../../types/editor.types';
-import styles from './DraggableBlock.module.css';
+import type { PropsWithChildren } from "react";
+import { useDrag } from "react-dnd";
+
+import type { BlockTypeValue, DragItem } from "../../types/editor.types";
+import styles from "./DraggableBlock.module.css";
+
+type GridOrigin = { x: number; y: number };
 
 interface DraggableBlockProps {
-  blockType: BlockType;
+  blockType: BlockTypeValue;
   fromPalette?: boolean;
-  fromGrid?: { x: number; y: number };
-  children: React.ReactNode;
+  fromGrid?: GridOrigin;
   disabled?: boolean;
 }
 
+const buildDragItem = (
+  blockType: BlockTypeValue,
+  fromPalette: boolean,
+  fromGrid: GridOrigin | undefined,
+): DragItem => ({
+  type: "block",
+  blockType,
+  fromPalette,
+  fromGrid,
+});
+
 /**
- * Draggable block component that can be dragged from palette or grid
+ * Generic draggable wrapper used across palette and grid cells.
  */
-export const DraggableBlock: React.FC<DraggableBlockProps> = ({
+export const DraggableBlock = ({
   blockType,
   fromPalette = false,
   fromGrid,
-  children,
   disabled = false,
-}) => {
-  const [{ isDragging }, drag, preview] = useDrag<DragItem, unknown, { isDragging: boolean }>(() => ({
-    type: 'block',
-    item: {
-      type: 'block',
-      blockType,
-      fromPalette,
-      fromGrid,
-    },
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
+  children,
+}: PropsWithChildren<DraggableBlockProps>): JSX.Element => {
+  const [{ isDragging }, dragRef] = useDrag<DragItem, unknown, { isDragging: boolean }>(
+    () => ({
+      type: "block",
+      item: buildDragItem(blockType, fromPalette, fromGrid),
+      collect: (monitor) => ({
+        isDragging: Boolean(monitor.isDragging()),
+      }),
+      canDrag: !disabled,
     }),
-    canDrag: !disabled,
-  }), [blockType, fromPalette, fromGrid, disabled]);
+    [blockType, fromPalette, fromGrid, disabled],
+  );
 
   return (
     <div
-      ref={drag}
+      ref={dragRef}
       className={styles.draggableBlock}
       style={{
         opacity: isDragging ? 0.5 : 1,
-        cursor: disabled ? 'not-allowed' : 'move',
+        cursor: disabled ? "not-allowed" : "move",
       }}
+      data-dragging={isDragging ? "true" : undefined}
     >
       {children}
     </div>

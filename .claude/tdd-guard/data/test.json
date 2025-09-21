@@ -1,67 +1,156 @@
 {
   "testModules": [
     {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/utils/PerformanceMonitor.test.ts",
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/stores/editorStore.test.ts",
       "tests": [
         {
-          "name": "should initialize with default thresholds",
-          "fullName": "PerformanceMonitor > should initialize with default thresholds",
+          "name": "初期状態がデフォルト値になっている",
+          "fullName": "editorStore > 初期状態がデフォルト値になっている",
           "state": "passed"
         },
         {
-          "name": "should start and stop monitoring",
-          "fullName": "PerformanceMonitor > should start and stop monitoring",
+          "name": "placeBlockでブロックを配置し履歴が更新される",
+          "fullName": "editorStore > placeBlockでブロックを配置し履歴が更新される",
           "state": "passed"
         },
         {
-          "name": "should calculate FPS correctly",
-          "fullName": "PerformanceMonitor > should calculate FPS correctly",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Test timed out in 5000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".",
-              "stack": "Error: STACK_TRACE_ERROR\n    at task (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:638:27)\n    at Object.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:662:16)\n    at Object.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:458:28)\n    at chain (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:369:14)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/utils/PerformanceMonitor.test.ts:58:3\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:734:40\n    at runWithSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1849:8)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:734:10)\n    at Object.collect (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:738:54)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at collectTests (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1179:25)\n    at startTests (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1817:17)\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:117:26\n    at withEnv (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:84:3)\n    at run (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/vitest/dist/chunks/runBaseTests.9Ij9_de-.js:109:2)"
-            }
-          ]
-        },
-        {
-          "name": "should track render times",
-          "fullName": "PerformanceMonitor > should track render times",
+          "name": "removeBlockでブロックを削除し履歴が記録される",
+          "fullName": "editorStore > removeBlockでブロックを削除し履歴が記録される",
           "state": "passed"
         },
         {
-          "name": "should limit render time history to 60 samples",
-          "fullName": "PerformanceMonitor > should limit render time history to 60 samples",
+          "name": "undoとredoで履歴通りに状態が戻る",
+          "fullName": "editorStore > undoとredoで履歴通りに状態が戻る",
           "state": "passed"
         },
         {
-          "name": "should emit warnings when thresholds are exceeded",
-          "fullName": "PerformanceMonitor > should emit warnings when thresholds are exceeded",
+          "name": "selectSingleCellでブロックを選択できる",
+          "fullName": "editorStore > selectSingleCellでブロックを選択できる",
           "state": "passed"
         },
         {
-          "name": "should reset metrics correctly",
-          "fullName": "PerformanceMonitor > should reset metrics correctly",
+          "name": "selectRegionで範囲内のブロックのみ選択する",
+          "fullName": "editorStore > selectRegionで範囲内のブロックのみ選択する",
           "state": "passed"
         },
         {
-          "name": "should handle memory usage when available",
-          "fullName": "PerformanceMonitor > should handle memory usage when available",
+          "name": "copySelectionとpasteSelectionで配置を複製できる",
+          "fullName": "editorStore > copySelectionとpasteSelectionで配置を複製できる",
           "state": "passed"
         },
         {
-          "name": "should return 0 memory when not available",
-          "fullName": "PerformanceMonitor > should return 0 memory when not available",
+          "name": "previewモードの切り替えで再生状態をリセットする",
+          "fullName": "editorStore > previewモードの切り替えで再生状態をリセットする",
           "state": "passed"
         },
         {
-          "name": "should not start monitoring if already monitoring",
-          "fullName": "PerformanceMonitor > should not start monitoring if already monitoring",
+          "name": "startPreviewはプレビューモード中のみ有効",
+          "fullName": "editorStore > startPreviewはプレビューモード中のみ有効",
+          "state": "passed"
+        },
+        {
+          "name": "setDimensionsでグリッドサイズが変更され履歴がリセットされる",
+          "fullName": "editorStore > setDimensionsでグリッドサイズが変更され履歴がリセットされる",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/services/__tests__/LevelService.test.ts",
+      "tests": [
+        {
+          "name": "saves and lists levels",
+          "fullName": "LevelService > saves and lists levels",
+          "state": "passed"
+        },
+        {
+          "name": "updates existing level when id is provided",
+          "fullName": "LevelService > updates existing level when id is provided",
+          "state": "passed"
+        },
+        {
+          "name": "loads and deletes a level",
+          "fullName": "LevelService > loads and deletes a level",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/editor/EditorTools/EditorTools.test.tsx",
+      "tests": [
+        {
+          "name": "enables copy and paste actions based on selection state",
+          "fullName": "EditorTools > enables copy and paste actions based on selection state",
+          "state": "passed"
+        },
+        {
+          "name": "toggles preview mode and playback controls",
+          "fullName": "EditorTools > toggles preview mode and playback controls",
+          "state": "passed"
+        },
+        {
+          "name": "invokes save handler via buttonとショートカット",
+          "fullName": "EditorTools > invokes save handler via buttonとショートカット",
+          "state": "passed"
+        },
+        {
+          "name": "invokesショートカットダイアログトグル",
+          "fullName": "EditorTools > invokesショートカットダイアログトグル",
+          "state": "passed"
+        },
+        {
+          "name": "deleteキーで選択セルを削除する",
+          "fullName": "EditorTools > deleteキーで選択セルを削除する",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/editor/EditorCanvas/EditorCanvas.dnd.test.tsx",
+      "tests": [
+        {
+          "name": "places palette block onto canvas when dropped",
+          "fullName": "EditorCanvas drag and drop integration > places palette block onto canvas when dropped",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/editor/EditorCanvas/EditorCanvas.preview.test.tsx",
+      "tests": [
+        {
+          "name": "renders ghost preview using selected block visuals when placing",
+          "fullName": "EditorCanvas placement preview > renders ghost preview using selected block visuals when placing",
+          "state": "passed"
+        },
+        {
+          "name": "draws dashed removal outline when erasing",
+          "fullName": "EditorCanvas placement preview > draws dashed removal outline when erasing",
+          "state": "passed"
+        },
+        {
+          "name": "draws selection outline when cells are selected",
+          "fullName": "EditorCanvas placement preview > draws selection outline when cells are selected",
+          "state": "passed"
+        },
+        {
+          "name": "renders paddle and ball when preview mode is enabled",
+          "fullName": "EditorCanvas placement preview > renders paddle and ball when preview mode is enabled",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/components/editor/EditorWorkspace/EditorWorkspace.test.tsx",
+      "tests": [
+        {
+          "name": "saves a level and shows status message",
+          "fullName": "EditorWorkspace > saves a level and shows status message",
           "state": "passed"
         }
       ]
     }
   ],
   "unhandledErrors": [],
-  "reason": "failed"
+  "reason": "passed"
 }

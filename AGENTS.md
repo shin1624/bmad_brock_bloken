@@ -17,3 +17,6 @@ Follow the existing conventional style: `<type>: <imperative summary>` (e.g., `f
 
 ## BMAD Method Workflow
 Frame each iteration as a BMAD slice: record the Build goal, intended Measure signals, and planned Adjust checkpoints in the PR description. Archive metrics, screenshots, and coverage artefacts inside `docs/` or `coverage/` after each loop. Deliver only when `npm run lint` and `npm run test:run` are green and reviewers confirm acceptance criteria.
+
+## Language
+思考は英語で、出力は日本語で回答してください。
