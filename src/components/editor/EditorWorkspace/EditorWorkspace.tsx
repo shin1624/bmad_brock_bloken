@@ -115,8 +115,6 @@ const EditorWorkspace = (): JSX.Element => {
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const statusTimerRef = useRef<number | null>(null);
 
-  const previewMode = useEditorStore((state) => state.previewMode);
-
   const dismissStatus = useCallback(() => {
     if (statusTimerRef.current) {
       window.clearTimeout(statusTimerRef.current);

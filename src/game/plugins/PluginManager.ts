@@ -21,8 +21,8 @@ export interface Plugin {
 }
 
 // Plugin execution context for sandboxing
-export interface PluginContext {
-  readonly gameState: any;
+export interface PluginContext<TGameState = unknown> {
+  readonly gameState: TGameState;
   readonly deltaTime: number;
   readonly currentTime: number;
   readonly performance: {
@@ -202,21 +202,24 @@ export class PluginManager {
     }
 
     const startTime = performance.now();
-    
+
     try {
-      // Check if method exists
-      const pluginMethod = metadata.plugin[method] as Function;
+      const pluginMethod = metadata.plugin[method];
       if (typeof pluginMethod !== 'function') {
-        throw new Error(`Method ${String(method)} not found on plugin ${pluginName}`);
+        return {
+          success: false,
+          executionTime: 0,
+          error: new Error(`Method ${String(method)} not found on plugin ${pluginName}`),
+        };
       }
 
-      // Execute with performance context
       if (context) {
         context.performance.startTime = startTime;
         context.performance.maxExecutionTime = this.maxExecutionTimePerFrame;
       }
 
-      const result = pluginMethod.call(metadata.plugin, context);
+      const executionArgs: unknown[] = context ? [context] : [];
+      const result = pluginMethod.apply(metadata.plugin, executionArgs);
       const executionTime = performance.now() - startTime;
 
       // Check time budget

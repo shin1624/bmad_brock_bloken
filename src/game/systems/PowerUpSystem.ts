@@ -5,7 +5,14 @@
  */
 import { PowerUpType, PowerUpEffect, PowerUpMetadata } from '../entities/PowerUp';
 import { PluginManager } from '../plugins/PluginManager';
-import { PowerUpPlugin, PowerUpPluginContext, EffectResult } from '../plugins/PowerUpPlugin';
+import {
+  PowerUpPlugin,
+  PowerUpPluginContext,
+  EffectResult,
+  PowerUpEffectData,
+  GameEntitiesSnapshot,
+  PowerUpSystemState,
+} from '../plugins/PowerUpPlugin';
 import { MemoryManager } from './MemoryManager';
 import { EventBus } from '../core/EventBus';
 
@@ -32,7 +39,7 @@ export interface ActiveEffect {
   stackable: boolean;
   conflictsWith: PowerUpType[];
   metadata: PowerUpMetadata;
-  effectData: any;
+  effectData: PowerUpEffectData;
 }
 
 // Effect stacking rules
@@ -59,7 +66,7 @@ export interface PowerUpSystemConfig {
   cleanupInterval: number; // milliseconds
   defaultStackingRule: StackingRule;
   enableMemoryManagement: boolean;
-  memoryManagerConfig?: any;
+  memoryManagerConfig?: unknown;
 }
 
 /**
@@ -72,7 +79,7 @@ export class PowerUpSystem {
   private pluginManager: PluginManager;
   private config: PowerUpSystemConfig;
   private cleanupTimer?: NodeJS.Timeout;
-  private gameState: any;
+  private gameState: PowerUpSystemState | null = null;
   private timeProvider: TimeProvider;
   private memoryManager?: MemoryManager;
 
@@ -117,8 +124,8 @@ export class PowerUpSystem {
   public async applyEffect(
     powerUpType: PowerUpType,
     powerUpId: string,
-    gameState: any,
-    effectData?: any
+    gameState: PowerUpSystemState,
+    effectData?: PowerUpEffectData
   ): Promise<EffectResult> {
     this.totalEffectsProcessed++;
     this.gameState = gameState;
@@ -182,7 +189,7 @@ export class PowerUpSystem {
         stackable: plugin.effect.stackable,
         conflictsWith: plugin.effect.conflictsWith || [],
         metadata: plugin.getMetadata(),
-        effectData: effectData || {}
+        effectData: effectData ?? {}
       };
 
       // Register the active effect
@@ -253,7 +260,7 @@ export class PowerUpSystem {
   /**
    * Update all active effects (called each frame)
    */
-  public update(deltaTime: number, gameState: any): void {
+  public update(deltaTime: number, gameState: PowerUpSystemState): void {
     this.gameState = gameState;
     const currentTime = this.timeProvider.now();
     const expiredEffects: string[] = [];
@@ -375,8 +382,8 @@ export class PowerUpSystem {
   /**
    * Get memory statistics if memory manager is enabled
    */
-  public getMemoryStats(): any {
-    return this.memoryManager?.getStats() || null;
+  public getMemoryStats(): Record<string, unknown> | null {
+    return (this.memoryManager?.getStats() as Record<string, unknown> | undefined) ?? null;
   }
 
   /**
@@ -391,7 +398,7 @@ export class PowerUpSystem {
   /**
    * Create power-up with memory pooling
    */
-  public createPooledPowerUp(powerUpType: PowerUpType, position?: { x: number; y: number }): any {
+  public createPooledPowerUp(powerUpType: PowerUpType, position?: { x: number; y: number }): unknown {
     if (this.memoryManager) {
       const powerUpPool = this.memoryManager.getPowerUpPool();
       return powerUpPool.acquire(powerUpType, position);
@@ -402,7 +409,7 @@ export class PowerUpSystem {
   /**
    * Release power-up back to pool
    */
-  public releasePooledPowerUp(powerUp: any): void {
+  public releasePooledPowerUp(powerUp: unknown): void {
     if (this.memoryManager && powerUp) {
       const powerUpPool = this.memoryManager.getPowerUpPool();
       powerUpPool.release(powerUp);
@@ -512,25 +519,30 @@ export class PowerUpSystem {
   private createPluginContext(
     powerUpId: string,
     powerUpType: PowerUpType,
-    effectData: any
+    effectData: PowerUpEffectData | undefined
   ): PowerUpPluginContext {
+    const snapshot: PowerUpSystemState = this.gameState ?? {};
+    const gameEntities: GameEntitiesSnapshot = {
+      balls: Array.isArray(snapshot.balls) ? snapshot.balls : [],
+      paddle: snapshot.paddle ?? null,
+      blocks: Array.isArray(snapshot.blocks) ? snapshot.blocks : [],
+      powerUps: Array.isArray(snapshot.powerUps) ? snapshot.powerUps : [],
+    };
+
+    const effectPayload: PowerUpEffectData = effectData ? { ...effectData } : {};
+
     return {
-      gameState: this.gameState,
+      gameState: snapshot,
       deltaTime: 16, // Approximate 60 FPS
       currentTime: this.timeProvider.now(),
       performance: {
         startTime: performance.now(),
-        maxExecutionTime: 2 // 2ms budget
+        maxExecutionTime: 2, // 2ms budget
       },
       powerUpType,
       powerUpId,
-      effectData,
-      gameEntities: {
-        balls: this.gameState?.balls || [],
-        paddle: this.gameState?.paddle || null,
-        blocks: this.gameState?.blocks || [],
-        powerUps: this.gameState?.powerUps || []
-      }
+      effectData: effectPayload,
+      gameEntities,
     };
   }
 

@@ -6,17 +6,29 @@
 import { Plugin, PluginContext } from './PluginManager';
 import { PowerUpType, PowerUpEffect, PowerUpMetadata } from '../entities/PowerUp';
 
+export interface PowerUpSystemState {
+  readonly balls?: unknown[];
+  readonly paddle?: unknown;
+  readonly blocks?: unknown[];
+  readonly powerUps?: unknown[];
+  readonly [key: string]: unknown;
+}
+
+export interface GameEntitiesSnapshot {
+  readonly balls: unknown[];
+  readonly paddle: unknown | null;
+  readonly blocks: unknown[];
+  readonly powerUps: unknown[];
+}
+
+export type PowerUpEffectData = Record<string, unknown>;
+
 // PowerUp plugin specific context
-export interface PowerUpPluginContext extends PluginContext {
+export interface PowerUpPluginContext extends PluginContext<PowerUpSystemState> {
   readonly powerUpType: PowerUpType;
   readonly powerUpId: string;
-  readonly effectData: any;
-  readonly gameEntities: {
-    balls: any[];
-    paddle: any;
-    blocks: any[];
-    powerUps: any[];
-  };
+  readonly effectData: PowerUpEffectData;
+  readonly gameEntities: GameEntitiesSnapshot;
 }
 
 // Effect lifecycle events
@@ -353,15 +365,18 @@ export abstract class PowerUpPlugin implements Plugin {
   /**
    * Create safe game state snapshot for rollback
    */
-  protected createSnapshot(gameState: any): any {
-    // Deep clone the relevant game state for rollback
-    return JSON.parse(JSON.stringify(gameState));
+  protected createSnapshot(gameState: PowerUpSystemState | null): PowerUpSystemState | null {
+    if (!gameState) {
+      return null;
+    }
+
+    return JSON.parse(JSON.stringify(gameState)) as PowerUpSystemState;
   }
 
   /**
    * Create rollback function for effect removal
    */
-  protected createRollback(originalState: any): () => void {
+  protected createRollback(originalState: PowerUpSystemState | null): () => void {
     return () => {
       // Restore game state from snapshot
       // Implementation depends on game state structure
