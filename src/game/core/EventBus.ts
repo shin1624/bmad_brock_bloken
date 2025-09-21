@@ -2,6 +2,7 @@
  * Type-safe Event Bus implementation for game events
  * Provides pub/sub pattern with automatic cleanup
  */
+import { CollisionInfo } from "../../types/game.types";
 
 // Event type definitions
 export enum GameEventType {
@@ -26,6 +27,7 @@ export enum GameEventType {
   BALL_PADDLE_COLLISION = "BALL_PADDLE_COLLISION",
   BALL_WALL_COLLISION = "BALL_WALL_COLLISION",
   BALL_BLOCK_COLLISION = "BALL_BLOCK_COLLISION",
+  COLLISION_DEBUG = "COLLISION_DEBUG",
 
   // UI events
   UI_STATE_CHANGE = "UI_STATE_CHANGE",
@@ -65,6 +67,13 @@ export interface GameEventPayloads {
     wall: "left" | "right" | "top";
   };
   [GameEventType.BALL_BLOCK_COLLISION]: { ballId: string; blockId: string };
+  [GameEventType.COLLISION_DEBUG]: {
+    type: "ball-paddle" | "ball-block" | "ball-boundary";
+    entityIds: [string, string];
+    collisionInfo: CollisionInfo;
+    timestamp: number;
+    position: { x: number; y: number };
+  };
 
   [GameEventType.UI_STATE_CHANGE]: { screen: string; previousScreen: string };
   [GameEventType.THEME_CHANGE]: { theme: string };

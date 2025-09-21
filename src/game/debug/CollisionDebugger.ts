@@ -2,16 +2,10 @@
  * CollisionDebugger for Story 2.4
  * Comprehensive debug system for collision detection visualization and performance monitoring
  */
-import { EventBus } from "../core/EventBus";
+import { EventBus, GameEventPayloads, GameEventType } from "../core/EventBus";
 import { Rectangle, Circle, CollisionInfo } from "../../types/game.types";
 
-export interface DebugCollisionEvent {
-  type: 'ball-paddle' | 'ball-block' | 'ball-boundary';
-  entityIds: string[];
-  collisionInfo: CollisionInfo;
-  timestamp: number;
-  position: { x: number; y: number };
-}
+export type DebugCollisionEvent = GameEventPayloads[GameEventType.COLLISION_DEBUG];
 
 export interface CollisionMetrics {
   totalCollisions: number;
@@ -50,7 +44,7 @@ export class CollisionDebugger {
 
   private setupEventListeners(): void {
     // Listen for collision events
-    this.eventBus.on('collision' as any, (data: DebugCollisionEvent) => {
+    this.eventBus.on(GameEventType.COLLISION_DEBUG, (data) => {
       this.recordCollision(data);
     });
 

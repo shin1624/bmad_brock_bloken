@@ -11,7 +11,18 @@ import {
   BlockState,
   BlockType,
 } from "../../types/game.types";
-import { EventBus, GameEventType } from "../core/EventBus";
+import {
+  EventBus,
+  GameEventPayloads,
+  GameEventType,
+} from "../core/EventBus";
+
+type CollisionDebugPayload = GameEventPayloads[GameEventType.COLLISION_DEBUG];
+
+interface CollisionPriorityEntry {
+  type: "paddle" | "block" | "wall" | string;
+  [key: string]: unknown;
+}
 
 export class CollisionDetector {
   private eventBus: EventBus | null = null;
@@ -26,10 +37,8 @@ export class CollisionDetector {
   /**
    * Emit collision event
    */
-  private emitCollisionEvent(type: GameEventType, payload: any): void {
-    if (this.eventBus) {
-      this.eventBus.emit(type, payload);
-    }
+  private emitDebugCollision(payload: CollisionDebugPayload): void {
+    this.eventBus?.emit(GameEventType.COLLISION_DEBUG, payload);
   }
 
   /**
@@ -364,19 +373,14 @@ export class CollisionDetector {
       let contactPoint: Vector2D;
 
       // Determine which side of the block was hit
-      const ballCenterX = ballPosition.x;
-      const ballCenterY = ballPosition.y;
-      const blockCenterX = blockBounds.x + blockBounds.width / 2;
-      const blockCenterY = blockBounds.y + blockBounds.height / 2;
-
       // Calculate distances to each edge
-      const distanceToLeft = Math.abs(ballCenterX - blockBounds.x);
+      const distanceToLeft = Math.abs(ballPosition.x - blockBounds.x);
       const distanceToRight = Math.abs(
-        ballCenterX - (blockBounds.x + blockBounds.width),
+        ballPosition.x - (blockBounds.x + blockBounds.width),
       );
-      const distanceToTop = Math.abs(ballCenterY - blockBounds.y);
+      const distanceToTop = Math.abs(ballPosition.y - blockBounds.y);
       const distanceToBottom = Math.abs(
-        ballCenterY - (blockBounds.y + blockBounds.height),
+        ballPosition.y - (blockBounds.y + blockBounds.height),
       );
 
       const minDistance = Math.min(
@@ -388,17 +392,20 @@ export class CollisionDetector {
 
       if (minDistance === distanceToLeft) {
         // Hit from left
-        contactPoint = { x: blockBounds.x, y: ballCenterY };
+        contactPoint = { x: blockBounds.x, y: ballPosition.y };
       } else if (minDistance === distanceToRight) {
         // Hit from right
-        contactPoint = { x: blockBounds.x + blockBounds.width, y: ballCenterY };
+        contactPoint = {
+          x: blockBounds.x + blockBounds.width,
+          y: ballPosition.y,
+        };
       } else if (minDistance === distanceToTop) {
         // Hit from top
-        contactPoint = { x: ballCenterX, y: blockBounds.y };
+        contactPoint = { x: ballPosition.x, y: blockBounds.y };
       } else {
         // Hit from bottom
         contactPoint = {
-          x: ballCenterX,
+          x: ballPosition.x,
           y: blockBounds.y + blockBounds.height,
         };
       }
@@ -543,7 +550,9 @@ export class CollisionDetector {
    * Resolve collision priority for multiple simultaneous collisions
    * Story 2.4: Priority handling system (Paddle > Block > Wall)
    */
-  static resolvePriorityCollisions(collisionResults: any[]): any[] {
+  static resolvePriorityCollisions<T extends CollisionPriorityEntry>(
+    collisionResults: T[],
+  ): T[] {
     // Simple priority mapping: lower number = higher priority
     const priorityMap: { [key: string]: number } = {
       paddle: 1,
@@ -551,9 +560,9 @@ export class CollisionDetector {
       wall: 3,
     };
 
-    return collisionResults.sort((a, b) => {
-      const priorityA = priorityMap[a.type] || 999;
-      const priorityB = priorityMap[b.type] || 999;
+    return [...collisionResults].sort((a, b) => {
+      const priorityA = priorityMap[a.type] ?? 999;
+      const priorityB = priorityMap[b.type] ?? 999;
       return priorityA - priorityB;
     });
   }
@@ -599,12 +608,12 @@ export class CollisionDetector {
       });
 
       // Also emit for debug visualization
-      this.eventBus.emit('collision' as any, {
+      this.emitDebugCollision({
         type: 'ball-paddle',
         entityIds: [ball.id, paddle.id],
         collisionInfo: collision,
         timestamp: Date.now(),
-        position: { x: ball.x, y: ball.y }
+        position: { x: ball.x, y: ball.y },
       });
     }
     
@@ -628,12 +637,12 @@ export class CollisionDetector {
       });
 
       // Also emit for debug visualization
-      this.eventBus.emit('collision' as any, {
+      this.emitDebugCollision({
         type: 'ball-block',
         entityIds: [ball.id, block.id],
         collisionInfo: collision,
         timestamp: Date.now(),
-        position: { x: ball.x, y: ball.y }
+        position: { x: ball.x, y: ball.y },
       });
     }
     
@@ -671,12 +680,12 @@ export class CollisionDetector {
           });
 
           // Emit for debug visualization
-          this.eventBus.emit('collision' as any, {
+          this.emitDebugCollision({
             type: 'ball-block',
             entityIds: [ball.id, block.id],
             collisionInfo: collision,
             timestamp: Date.now(),
-            position: { x: ball.x, y: ball.y }
+            position: { x: ball.x, y: ball.y },
           });
         }
       } else {
@@ -743,12 +752,12 @@ export class CollisionDetector {
       });
 
       // Also emit for debug visualization
-      this.eventBus.emit('collision' as any, {
+      this.emitDebugCollision({
         type: 'ball-boundary',
         entityIds: [ball.id, 'wall'],
         collisionInfo: { collided: true, normal: this.getWallNormal(wall) },
         timestamp: Date.now(),
-        position: { x: ball.x, y: ball.y }
+        position: { x: ball.x, y: ball.y },
       });
     }
 
