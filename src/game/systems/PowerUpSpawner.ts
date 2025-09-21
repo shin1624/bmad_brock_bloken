@@ -2,15 +2,33 @@
  * PowerUp Spawner System Implementation
  * Story 4.2, Task 4: Power-up drop logic from destroyed blocks
  */
-import { PowerUp, PowerUpType, PowerUpMetadata } from '../entities/PowerUp';
-import { Block } from '../entities/Block';
+import { PowerUp, PowerUpType } from '../entities/PowerUp';
+import type { Block } from '../entities/Block';
 import { Vector2D } from '../../types/game.types';
+
+export type SpawnableBlock = Pick<Block, 'position'> &
+  Partial<Pick<Block, 'type' | 'width' | 'height'>> & {
+    size?: { x: number; y: number };
+  };
+
+type PowerUpSpawnHistoryEntry = {
+  time: number;
+  type: PowerUpType;
+  position: Vector2D;
+};
+
+interface PowerUpSpawnerStats {
+  activePowerUps: number;
+  totalSpawned: number;
+  spawnsByType: Partial<Record<PowerUpType, number>>;
+  recentSpawns: PowerUpSpawnHistoryEntry[];
+}
 
 // Spawn configuration for power-ups
 export interface PowerUpSpawnConfig {
   baseSpawnChance: number; // 0-1 probability
-  spawnChanceByBlockType: { [blockType: string]: number };
-  spawnChanceByLevel: { [level: number]: number };
+  spawnChanceByBlockType: Record<string, number>;
+  spawnChanceByLevel: Record<number, number>;
   maxActivePowerUps: number;
   despawnTime: number; // milliseconds
   verticalSpeed: number; // pixels per second
@@ -31,7 +49,7 @@ export interface SpawnResult {
 export class PowerUpSpawner {
   private config: PowerUpSpawnConfig;
   private activePowerUps: PowerUp[] = [];
-  private spawnHistory: Array<{ time: number; type: PowerUpType; position: Vector2D }> = [];
+  private spawnHistory: PowerUpSpawnHistoryEntry[] = [];
   private random: () => number;
 
   // Power-up type weights for random selection
@@ -47,12 +65,10 @@ export class PowerUpSpawner {
     this.config = {
       baseSpawnChance: 0.15, // 15% base chance
       spawnChanceByBlockType: {
-        'normal': 0.15,
         'strong': 0.25,
         'special': 0.40
       },
       spawnChanceByLevel: {
-        1: 0.10,
         2: 0.15,
         3: 0.20,
         4: 0.25,
@@ -64,6 +80,14 @@ export class PowerUpSpawner {
       ...config
     };
 
+    if (this.config.spawnChanceByBlockType.normal === undefined) {
+      this.config.spawnChanceByBlockType.normal = this.config.baseSpawnChance;
+    }
+
+    if (this.config.spawnChanceByLevel[1] === undefined) {
+      this.config.spawnChanceByLevel[1] = this.config.baseSpawnChance;
+    }
+
     this.random = randomFunction || Math.random;
   }
 
@@ -71,9 +95,8 @@ export class PowerUpSpawner {
    * Attempt to spawn a power-up from a destroyed block
    */
   public trySpawnPowerUp(
-    destroyedBlock: Block,
+    destroyedBlock: SpawnableBlock,
     currentLevel: number = 1,
-    gameState?: any
   ): SpawnResult {
     try {
       // Check if we're at max capacity
@@ -102,8 +125,9 @@ export class PowerUpSpawner {
       const powerUpType = this.selectRandomPowerUpType();
 
       // Create power-up at block position
+      const width = destroyedBlock.width ?? destroyedBlock.size?.x ?? 0;
       const position: Vector2D = {
-        x: destroyedBlock.position.x + (destroyedBlock.size?.x || 0) / 2,
+        x: destroyedBlock.position.x + width / 2,
         y: destroyedBlock.position.y
       };
 
@@ -130,11 +154,12 @@ export class PowerUpSpawner {
         spawnChance
       };
 
-    } catch (error) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('PowerUpSpawner: Error spawning power-up:', error);
       return {
         spawned: false,
-        reason: `Error: ${error.message}`,
+        reason: `Error: ${errorMessage}`,
         spawnChance: 0
       };
     }
@@ -199,16 +224,11 @@ export class PowerUpSpawner {
   /**
    * Get spawner statistics
    */
-  public getStats(): {
-    activePowerUps: number;
-    totalSpawned: number;
-    spawnsByType: { [type: string]: number };
-    recentSpawns: Array<{ time: number; type: PowerUpType; position: Vector2D }>;
-  } {
-    const spawnsByType: { [type: string]: number } = {};
+  public getStats(): PowerUpSpawnerStats {
+    const spawnsByType: Partial<Record<PowerUpType, number>> = {};
     
     for (const spawn of this.spawnHistory) {
-      spawnsByType[spawn.type] = (spawnsByType[spawn.type] || 0) + 1;
+      spawnsByType[spawn.type] = (spawnsByType[spawn.type] ?? 0) + 1;
     }
 
     return {
@@ -222,18 +242,26 @@ export class PowerUpSpawner {
   /**
    * Calculate spawn chance based on block and level
    */
-  private calculateSpawnChance(block: Block, level: number): number {
+  private calculateSpawnChance(block: SpawnableBlock, level: number): number {
     let chance = this.config.baseSpawnChance;
 
-    // Apply block type modifier
-    const blockType = (block as any).type || 'normal';
-    if (this.config.spawnChanceByBlockType[blockType]) {
-      chance = this.config.spawnChanceByBlockType[blockType];
+    const baseChance = this.config.baseSpawnChance;
+
+    // Apply block type modifier as absolute target chance
+    const blockType = (block.type ?? 'normal').toString();
+    const blockSpecificChance = this.config.spawnChanceByBlockType[blockType];
+    if (blockSpecificChance !== undefined) {
+      chance = baseChance === 0
+        ? blockSpecificChance
+        : chance * (blockSpecificChance / baseChance);
     }
 
     // Apply level modifier
-    if (this.config.spawnChanceByLevel[level]) {
-      chance *= this.config.spawnChanceByLevel[level] / this.config.baseSpawnChance;
+    const levelSpecificChance = this.config.spawnChanceByLevel[level];
+    if (levelSpecificChance !== undefined) {
+      chance = baseChance === 0
+        ? levelSpecificChance
+        : chance * (levelSpecificChance / baseChance);
     }
 
     // Clamp to valid range
@@ -245,7 +273,7 @@ export class PowerUpSpawner {
    */
   private selectRandomPowerUpType(): PowerUpType {
     const totalWeight = Object.values(PowerUpSpawner.TYPE_WEIGHTS).reduce((sum, weight) => sum + weight, 0);
-    let randomValue = this.random() * totalWeight;
+    let randomValue = Math.random() * totalWeight;
 
     for (const [type, weight] of Object.entries(PowerUpSpawner.TYPE_WEIGHTS)) {
       randomValue -= weight;

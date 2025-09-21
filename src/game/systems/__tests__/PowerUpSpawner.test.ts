@@ -2,12 +2,14 @@
  * Unit Tests for PowerUpSpawner System
  * Story 4.2, Task 4: Test power-up spawning and collection functionality
  */
-import { PowerUpSpawner, PowerUpSpawnConfig, SpawnResult } from '../PowerUpSpawner';
+import { vi } from 'vitest';
+
+import { PowerUpSpawner, PowerUpSpawnConfig, SpawnResult, SpawnableBlock } from '../PowerUpSpawner';
 import { Block } from '../../entities/Block';
 import { PowerUpType } from '../../entities/PowerUp';
 
 // Mock Block class for testing
-class MockBlock {
+class MockBlock implements SpawnableBlock {
   public position = { x: 100, y: 100 };
   public size = { x: 40, y: 20 };
   public active = false;
@@ -17,10 +19,10 @@ class MockBlock {
 describe('PowerUpSpawner', () => {
   let spawner: PowerUpSpawner;
   let mockBlock: MockBlock;
-  let mockRandom: jest.Mock;
+  let mockRandom: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    mockRandom = jest.fn();
+    mockRandom = vi.fn();
     mockBlock = new MockBlock();
     
     // Default config for testing
@@ -38,7 +40,7 @@ describe('PowerUpSpawner', () => {
     it('should spawn power-up when random roll succeeds', () => {
       mockRandom.mockReturnValue(0.3); // Below 50% spawn chance
 
-      const result = spawner.trySpawnPowerUp(mockBlock as any);
+      const result = spawner.trySpawnPowerUp(mockBlock);
 
       expect(result.spawned).toBe(true);
       expect(result.powerUp).toBeDefined();
@@ -48,7 +50,7 @@ describe('PowerUpSpawner', () => {
     it('should not spawn power-up when random roll fails', () => {
       mockRandom.mockReturnValue(0.7); // Above 50% spawn chance
 
-      const result = spawner.trySpawnPowerUp(mockBlock as any);
+      const result = spawner.trySpawnPowerUp(mockBlock);
 
       expect(result.spawned).toBe(false);
       expect(result.powerUp).toBeUndefined();
@@ -59,12 +61,12 @@ describe('PowerUpSpawner', () => {
       mockRandom.mockReturnValue(0.1); // Always succeed
 
       // Fill to capacity
-      spawner.trySpawnPowerUp(mockBlock as any);
-      spawner.trySpawnPowerUp(mockBlock as any);
-      spawner.trySpawnPowerUp(mockBlock as any);
+      spawner.trySpawnPowerUp(mockBlock);
+      spawner.trySpawnPowerUp(mockBlock);
+      spawner.trySpawnPowerUp(mockBlock);
 
       // Try to spawn one more
-      const result = spawner.trySpawnPowerUp(mockBlock as any);
+      const result = spawner.trySpawnPowerUp(mockBlock);
 
       expect(result.spawned).toBe(false);
       expect(result.reason).toContain('Maximum active power-ups reached');
@@ -73,7 +75,7 @@ describe('PowerUpSpawner', () => {
     it('should position power-up at block center', () => {
       mockRandom.mockReturnValue(0.1);
       
-      const result = spawner.trySpawnPowerUp(mockBlock as any);
+      const result = spawner.trySpawnPowerUp(mockBlock);
 
       expect(result.spawned).toBe(true);
       expect(result.powerUp?.position.x).toBe(120); // 100 + 40/2
@@ -94,12 +96,12 @@ describe('PowerUpSpawner', () => {
 
       // Normal block (10% chance) - should fail
       mockBlock.type = 'normal';
-      let result = spawner.trySpawnPowerUp(mockBlock as any);
+      let result = spawner.trySpawnPowerUp(mockBlock);
       expect(result.spawned).toBe(false);
 
       // Special block (80% chance) - should succeed
       mockBlock.type = 'special';
-      result = spawner.trySpawnPowerUp(mockBlock as any);
+      result = spawner.trySpawnPowerUp(mockBlock);
       expect(result.spawned).toBe(true);
     });
 
@@ -116,11 +118,11 @@ describe('PowerUpSpawner', () => {
       mockRandom.mockReturnValue(0.15);
 
       // Level 1 (reduced chance) - should fail
-      let result = spawner.trySpawnPowerUp(mockBlock as any, 1);
+      let result = spawner.trySpawnPowerUp(mockBlock, 1);
       expect(result.spawned).toBe(false);
 
       // Level 5 (increased chance) - should succeed
-      result = spawner.trySpawnPowerUp(mockBlock as any, 5);
+      result = spawner.trySpawnPowerUp(mockBlock, 5);
       expect(result.spawned).toBe(true);
     });
   });
@@ -131,7 +133,7 @@ describe('PowerUpSpawner', () => {
     });
 
     it('should update power-up positions', () => {
-      const result = spawner.trySpawnPowerUp(mockBlock as any);
+      const result = spawner.trySpawnPowerUp(mockBlock);
       const initialY = result.powerUp?.position.y || 0;
 
       spawner.update(1000, 800); // 1 second
@@ -141,7 +143,7 @@ describe('PowerUpSpawner', () => {
     });
 
     it('should remove power-ups that fall off screen', () => {
-      spawner.trySpawnPowerUp(mockBlock as any);
+      spawner.trySpawnPowerUp(mockBlock);
       
       // Move power-up off screen
       const powerUp = spawner.getActivePowerUps()[0];
@@ -153,7 +155,7 @@ describe('PowerUpSpawner', () => {
     });
 
     it('should remove power-ups that expire', () => {
-      spawner.trySpawnPowerUp(mockBlock as any);
+      spawner.trySpawnPowerUp(mockBlock);
       
       // Simulate time passing
       const powerUp = spawner.getActivePowerUps()[0];
@@ -171,7 +173,7 @@ describe('PowerUpSpawner', () => {
     });
 
     it('should detect collision with paddle', () => {
-      const result = spawner.trySpawnPowerUp(mockBlock as any);
+      const result = spawner.trySpawnPowerUp(mockBlock);
       const powerUp = result.powerUp!;
       
       // Position power-up to collide with paddle
@@ -187,7 +189,7 @@ describe('PowerUpSpawner', () => {
     });
 
     it('should not detect collision when objects do not overlap', () => {
-      const result = spawner.trySpawnPowerUp(mockBlock as any);
+      const result = spawner.trySpawnPowerUp(mockBlock);
       const powerUp = result.powerUp!;
       
       // Position power-up away from paddle
@@ -203,8 +205,8 @@ describe('PowerUpSpawner', () => {
 
     it('should handle multiple power-ups colliding simultaneously', () => {
       // Spawn multiple power-ups
-      spawner.trySpawnPowerUp(mockBlock as any);
-      spawner.trySpawnPowerUp(mockBlock as any);
+      spawner.trySpawnPowerUp(mockBlock);
+      spawner.trySpawnPowerUp(mockBlock);
 
       const powerUps = spawner.getActivePowerUps();
       
@@ -228,8 +230,8 @@ describe('PowerUpSpawner', () => {
     });
 
     it('should track spawn statistics', () => {
-      spawner.trySpawnPowerUp(mockBlock as any);
-      spawner.trySpawnPowerUp(mockBlock as any);
+      spawner.trySpawnPowerUp(mockBlock);
+      spawner.trySpawnPowerUp(mockBlock);
 
       const stats = spawner.getStats();
 
@@ -240,7 +242,7 @@ describe('PowerUpSpawner', () => {
 
     it('should track spawns by type', () => {
       // Use fixed random to control power-up type selection
-      const fixedRandom = jest.fn()
+      const fixedRandom = vi.fn()
         .mockReturnValueOnce(0.1)  // For spawn roll
         .mockReturnValueOnce(0.05) // For type selection (should select first type)
         .mockReturnValueOnce(0.1)  // For spawn roll
@@ -248,16 +250,16 @@ describe('PowerUpSpawner', () => {
 
       spawner = new PowerUpSpawner(undefined, fixedRandom);
 
-      spawner.trySpawnPowerUp(mockBlock as any);
-      spawner.trySpawnPowerUp(mockBlock as any);
+      spawner.trySpawnPowerUp(mockBlock);
+      spawner.trySpawnPowerUp(mockBlock);
 
       const stats = spawner.getStats();
       expect(Object.keys(stats.spawnsByType).length).toBeGreaterThan(0);
     });
 
     it('should clear all power-ups', () => {
-      spawner.trySpawnPowerUp(mockBlock as any);
-      spawner.trySpawnPowerUp(mockBlock as any);
+      spawner.trySpawnPowerUp(mockBlock);
+      spawner.trySpawnPowerUp(mockBlock);
 
       expect(spawner.getActivePowerUps()).toHaveLength(2);
 
@@ -273,7 +275,7 @@ describe('PowerUpSpawner', () => {
 
       // Test that new config is applied (spawn more than original max)
       for (let i = 0; i < 5; i++) {
-        spawner.trySpawnPowerUp(mockBlock as any);
+        spawner.trySpawnPowerUp(mockBlock);
       }
 
       expect(spawner.getActivePowerUps()).toHaveLength(5);
@@ -285,7 +287,7 @@ describe('PowerUpSpawner', () => {
       // Create a block that will cause an error
       const badBlock = null;
 
-      const result = spawner.trySpawnPowerUp(badBlock as any);
+      const result = spawner.trySpawnPowerUp(badBlock as unknown as SpawnableBlock);
 
       expect(result.spawned).toBe(false);
       expect(result.reason).toContain('Error:');
@@ -310,7 +312,7 @@ describe('PowerUpSpawner', () => {
       // Spawn many power-ups to get variety
       for (let i = 0; i < 50; i++) {
         mockRandom.mockReturnValue(0.1); // Always spawn
-        const result = spawner.trySpawnPowerUp(mockBlock as any);
+        const result = spawner.trySpawnPowerUp(mockBlock);
         if (result.powerUp) {
           types.add(result.powerUp.type);
         }
