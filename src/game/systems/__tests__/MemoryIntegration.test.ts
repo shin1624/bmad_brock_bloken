@@ -47,8 +47,8 @@ describe('Memory Management Integration', () => {
     pluginManager = new PluginManager();
     
     memoryManager = new MemoryManager(eventBus, {
-      maxTotalMemoryMB: 50,
-      gcPressureThreshold: 0.7,
+      maxMemoryMB: 50,
+      warningThreshold: 0.7,
       enableAutoOptimization: true,
       powerUpPoolConfig: {
         maxPowerUpsPerType: 10,
@@ -65,7 +65,7 @@ describe('Memory Management Integration', () => {
       {
         enableMemoryManagement: true,
         memoryManagerConfig: {
-          maxTotalMemoryMB: 50
+          maxMemoryMB: 50
         }
       },
       undefined,

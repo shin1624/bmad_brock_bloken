@@ -4,47 +4,48 @@
  */
 import { PowerUpPool, PowerUpPoolConfig, PowerUpPoolStats } from '../utils/PowerUpPool';
 import { ParticlePool, ParticlePoolConfig, ParticlePoolStats } from '../utils/ParticlePool';
-import { ObjectPool } from '../utils/ObjectPool';
-import { EventBus } from '../core/EventBus';
-import { PowerUpType } from '../entities/PowerUp';
+import { EventBus, type EventSubscription } from '../core/EventBus';
+
+interface PerformanceWarningEvent {
+  type: string;
+  memoryRelated?: boolean;
+  [key: string]: unknown;
+}
+
+interface MemoryPressureEvent {
+  level: number;
+  totalMemory: number;
+}
 
 export interface MemoryManagerConfig {
-  // Global memory settings
-  maxTotalMemoryMB: number;
-  gcPressureThreshold: number; // 0-1 scale
+  maxMemoryMB: number;
+  gcInterval: number;
+  warningThreshold: number;
+  criticalThreshold: number;
   enableAutoOptimization: boolean;
   enablePreemptiveGC: boolean;
-  
-  // Monitoring
   monitoringInterval: number;
-  alertThreshold: number;
   enableProfiling: boolean;
-  
-  // Pool configurations
   powerUpPoolConfig: Partial<PowerUpPoolConfig>;
   particlePoolConfig: Partial<ParticlePoolConfig>;
+  memoryManagerConfig?: Record<string, unknown>;
 }
 
 export interface MemoryStats {
-  totalMemoryMB: number;
   powerUpMemoryMB: number;
   particleMemoryMB: number;
-  otherMemoryMB: number;
+  totalMemoryMB: number;
   gcPressure: number;
   fragmentationRatio: number;
-  
-  // Performance metrics
+  utilizationRate: number;
+  warningMessages: string[];
+  criticalIssues: string[];
+  otherMemoryMB: number;
   allocationsPerSecond: number;
   deallocationsPerSecond: number;
   gcEventsPerMinute: number;
   averagePoolUtilization: number;
-  
-  // Health indicators
   isHealthy: boolean;
-  warningMessages: string[];
-  criticalIssues: string[];
-  
-  // Additional stats for compatibility
   totalPools: number;
   totalAllocated: number;
   totalReused: number;
@@ -53,12 +54,35 @@ export interface MemoryStats {
   utilizationByType: Record<string, number>;
 }
 
+type MemoryEventType = 'warning' | 'critical' | 'optimization' | 'gc';
+
 export interface MemoryEvent {
-  type: 'warning' | 'critical' | 'optimization' | 'gc';
+  type: MemoryEventType;
   message: string;
   timestamp: number;
-  data?: any;
+  data?: Record<string, unknown>;
 }
+
+type MemoryEventName = `memory:${MemoryEventType}`;
+
+type LegacyEventHandler<TPayload> = TPayload extends void
+  ? () => void
+  : (payload: TPayload) => void;
+
+interface LegacyEventEmitter<TEventMap extends Record<string, unknown | void>> {
+  on<TKey extends keyof TEventMap>(
+    event: TKey,
+    listener: LegacyEventHandler<TEventMap[TKey]>,
+  ): EventSubscription;
+  emit<TKey extends keyof TEventMap>(event: TKey, payload: TEventMap[TKey]): void;
+}
+
+type LegacyEventMap = {
+  'game:state:changed': string;
+  'level:changed': void;
+  'performance:warning': PerformanceWarningEvent;
+  'memory:pressure': MemoryPressureEvent;
+} & { [TKey in MemoryEventName]: MemoryEvent };
 
 /**
  * Central Memory Management System
@@ -69,6 +93,7 @@ export class MemoryManager {
   private powerUpPool: PowerUpPool;
   private particlePool: ParticlePool;
   private eventBus: EventBus;
+  private readonly legacyEventBus: LegacyEventEmitter<LegacyEventMap>;
   
   // Monitoring
   private stats: MemoryStats;
@@ -77,24 +102,24 @@ export class MemoryManager {
   private eventHistory: MemoryEvent[] = [];
   
   // Performance tracking
-  private allocationsCount: number = 0;
-  private deallocationsCount: number = 0;
   private lastAllocationCheck: number = 0;
-  private gcEventCount: number = 0;
   private lastGCCheck: number = 0;
 
   constructor(eventBus: EventBus, config?: Partial<MemoryManagerConfig>) {
     this.eventBus = eventBus;
+    this.legacyEventBus = this.eventBus as unknown as LegacyEventEmitter<LegacyEventMap>;
     this.config = {
-      maxTotalMemoryMB: 100,
-      gcPressureThreshold: 0.8,
+      maxMemoryMB: 100,
+      gcInterval: 30000,
+      warningThreshold: 0.8,
+      criticalThreshold: 0.9,
       enableAutoOptimization: true,
       enablePreemptiveGC: true,
       monitoringInterval: 5000, // 5 seconds
-      alertThreshold: 0.9,
       enableProfiling: false,
       powerUpPoolConfig: {},
       particlePoolConfig: {},
+      memoryManagerConfig: {},
       ...config
     };
 
@@ -102,6 +127,8 @@ export class MemoryManager {
     this.initializePools();
     this.startMonitoring();
     this.setupEventListeners();
+    this.updateStats();
+    this.checkMemoryHealth();
   }
 
   /**
@@ -109,19 +136,20 @@ export class MemoryManager {
    */
   private initializeStats(): MemoryStats {
     return {
-      totalMemoryMB: 0,
       powerUpMemoryMB: 0,
       particleMemoryMB: 0,
-      otherMemoryMB: 0,
+      totalMemoryMB: 0,
       gcPressure: 0,
       fragmentationRatio: 0,
+      utilizationRate: 0,
+      warningMessages: [],
+      criticalIssues: [],
+      otherMemoryMB: 0,
       allocationsPerSecond: 0,
       deallocationsPerSecond: 0,
       gcEventsPerMinute: 0,
       averagePoolUtilization: 0,
       isHealthy: true,
-      warningMessages: [],
-      criticalIssues: [],
       totalPools: 0,
       totalAllocated: 0,
       totalReused: 0,
@@ -168,19 +196,19 @@ export class MemoryManager {
    */
   private setupEventListeners(): void {
     // Listen for game state changes that affect memory
-    this.eventBus.on('game:state:changed', (state: string) => {
+    this.legacyEventBus.on('game:state:changed', (state) => {
       if (state === 'menu' || state === 'gameOver') {
         this.performCleanup();
       }
     });
 
     // Listen for level changes
-    this.eventBus.on('level:changed', () => {
+    this.legacyEventBus.on('level:changed', () => {
       this.performLevelTransitionOptimization();
     });
 
     // Listen for performance warnings
-    this.eventBus.on('performance:warning', (data: any) => {
+    this.legacyEventBus.on('performance:warning', (data) => {
       this.handlePerformanceWarning(data);
     });
   }
@@ -200,9 +228,15 @@ export class MemoryManager {
     this.stats.particleMemoryMB = particleStats.memoryUsage;
     this.stats.otherMemoryMB = this.estimateOtherMemoryUsage();
     this.stats.totalMemoryMB = this.stats.powerUpMemoryMB + this.stats.particleMemoryMB + this.stats.otherMemoryMB;
+    this.stats.memoryUsage = this.stats.totalMemoryMB;
+    this.stats.totalPools = powerUpStats.totalPools + 1; // include particle pool
+    this.stats.totalAllocated = powerUpStats.totalAllocated + particleStats.totalParticles;
+    this.stats.totalReused = powerUpStats.totalReused + particleStats.pooledParticles;
+    this.stats.gcEvents = powerUpStats.gcEvents + particleStats.gcEvents;
+    this.stats.utilizationByType = { ...powerUpStats.utilizationByType };
     
     // Calculate GC pressure
-    this.stats.gcPressure = this.stats.totalMemoryMB / this.config.maxTotalMemoryMB;
+    this.stats.gcPressure = this.stats.totalMemoryMB / this.config.maxMemoryMB;
     
     // Calculate fragmentation (rough estimate)
     this.stats.fragmentationRatio = this.calculateFragmentationRatio(powerUpStats, particleStats);
@@ -262,6 +296,7 @@ export class MemoryManager {
     const totalUtilization = Object.values(powerUpStats.utilizationByType).reduce((sum, util) => sum + util, 0) +
                             particleStats.utilizationRate;
     this.stats.averagePoolUtilization = totalUtilization / totalPools;
+    this.stats.utilizationRate = this.stats.averagePoolUtilization;
   }
 
   /**
@@ -272,9 +307,9 @@ export class MemoryManager {
     this.stats.criticalIssues = [];
     
     // Check memory pressure
-    if (this.stats.gcPressure > this.config.alertThreshold) {
+    if (this.stats.gcPressure > this.config.criticalThreshold) {
       this.stats.criticalIssues.push(`High memory pressure: ${(this.stats.gcPressure * 100).toFixed(1)}%`);
-    } else if (this.stats.gcPressure > this.config.gcPressureThreshold) {
+    } else if (this.stats.gcPressure > this.config.warningThreshold) {
       this.stats.warningMessages.push(`Elevated memory pressure: ${(this.stats.gcPressure * 100).toFixed(1)}%`);
     }
     
@@ -307,8 +342,8 @@ export class MemoryManager {
     });
     
     // Emit memory pressure events
-    if (this.stats.gcPressure > this.config.gcPressureThreshold) {
-      this.eventBus.emit('memory:pressure', {
+    if (this.stats.gcPressure > this.config.warningThreshold) {
+      this.legacyEventBus.emit('memory:pressure', {
         level: this.stats.gcPressure,
         totalMemory: this.stats.totalMemoryMB
       });
@@ -318,7 +353,11 @@ export class MemoryManager {
   /**
    * Emit memory event
    */
-  private emitMemoryEvent(type: MemoryEvent['type'], message: string, data?: any): void {
+  private emitMemoryEvent(
+    type: MemoryEvent['type'],
+    message: string,
+    data?: Record<string, unknown>,
+  ): void {
     const event: MemoryEvent = {
       type,
       message,
@@ -334,7 +373,7 @@ export class MemoryManager {
     }
     
     // Emit to event bus
-    this.eventBus.emit(`memory:${type}`, event);
+    this.legacyEventBus.emit(`memory:${type}`, event);
   }
 
   /**
@@ -346,7 +385,7 @@ export class MemoryManager {
     }
     
     // Optimize pools if pressure is high
-    if (this.stats.gcPressure > this.config.gcPressureThreshold) {
+    if (this.stats.gcPressure > this.config.warningThreshold) {
       this.optimizePools();
     }
     
@@ -372,8 +411,9 @@ export class MemoryManager {
   private performPreemptiveGC(): void {
     this.powerUpPool.forceGC();
     // Force browser GC if available
-    if ('gc' in window && typeof (window as any).gc === 'function') {
-      (window as any).gc();
+    const gcCapableWindow = window as Window & { gc?: () => void };
+    if (typeof gcCapableWindow.gc === 'function') {
+      gcCapableWindow.gc();
     }
     
     this.emitMemoryEvent('gc', 'Performed preemptive garbage collection');
@@ -382,7 +422,7 @@ export class MemoryManager {
   /**
    * Handle performance warnings
    */
-  private handlePerformanceWarning(data: any): void {
+  private handlePerformanceWarning(data: PerformanceWarningEvent): void {
     if (data.type === 'memory' || data.memoryRelated) {
       this.performEmergencyOptimization();
     }
@@ -450,6 +490,7 @@ export class MemoryManager {
    * Get overall memory statistics (alias for getStats for backward compatibility)
    */
   public getOverallStats(): MemoryStats {
+    this.updateStats();
     return this.getStats();
   }
 
