@@ -1,7 +1,7 @@
 /**
  * Tests for Theme Plugin System
  */
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { ThemePlugin } from "./ThemePlugin";
 import { neonTheme } from "../../themes/neon";
 

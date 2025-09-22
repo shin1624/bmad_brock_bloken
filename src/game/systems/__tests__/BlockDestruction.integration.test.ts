@@ -2,7 +2,7 @@
  * Integration tests for Block System
  * Tests complete block destruction scenarios with particles, scoring, and events
  */
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from "vitest";
 import { BlockManager, LevelDefinition } from '../BlockManager';
 import { ParticleSystem } from '../ParticleSystem';
 import { ScoreManager } from '../ScoreManager';

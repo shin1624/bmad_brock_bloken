@@ -106,7 +106,7 @@ describe('useGameInput', () => {
       });
 
       const { InputManager } = await import('../../game/systems/InputManager.js');
-      (InputManager as any).mockImplementation(() => mockInputManager);
+      (InputManager as ReturnType<typeof vi.fn>).mockImplementation(() => mockInputManager);
 
       const { result, rerender } = renderHook(() => useGameInput({ canvasRef }));
       

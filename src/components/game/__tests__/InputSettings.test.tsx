@@ -15,7 +15,7 @@ describe("InputSettings", () => {
     vi.clearAllMocks();
 
     // デフォルトのモック実装
-    (useUIStore as any).mockReturnValue({
+    (useUIStore as ReturnType<typeof vi.fn>).mockReturnValue({
       settings: {
         controls: "keyboard",
         inputSensitivity: {

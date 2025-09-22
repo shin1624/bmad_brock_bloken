@@ -38,7 +38,7 @@ const mockStore = {
 describe("Settings", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (useUIStore as any).mockReturnValue(mockStore);
+    (useUIStore as ReturnType<typeof vi.fn>).mockReturnValue(mockStore);
   });
 
   describe("レンダリング", () => {
@@ -163,7 +163,7 @@ describe("Settings", () => {
           },
         },
       };
-      (useUIStore as any).mockReturnValue(customStore);
+      (useUIStore as ReturnType<typeof vi.fn>).mockReturnValue(customStore);
 
       render(<Settings />);
 
@@ -331,7 +331,7 @@ describe("Settings", () => {
           theme: "dark" as const,
         },
       };
-      (useUIStore as any).mockReturnValue(customStore);
+      (useUIStore as ReturnType<typeof vi.fn>).mockReturnValue(customStore);
 
       render(<Settings />);
 

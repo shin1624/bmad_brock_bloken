@@ -134,7 +134,7 @@ class MockPowerUpPlugin extends PowerUpPlugin {
 describe('PowerUpSystem Integration', () => {
   let powerUpSystem: PowerUpSystem;
   let pluginManager: PluginManager;
-  let mockGameState: any;
+  let mockGameState: unknown;
   let mockTimeProvider: MockTimeProvider;
 
   beforeEach(async () => {

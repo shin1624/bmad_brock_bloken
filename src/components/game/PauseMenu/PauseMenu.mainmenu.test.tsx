@@ -67,7 +67,7 @@ describe("PauseMenu - Main Menu Navigation", () => {
     vi.spyOn(mockGameStateManager, "setGameStatus");
 
     // Attach to window for global access
-    (window as any).gameStateManager = mockGameStateManager;
+    window.gameStateManager = mockGameStateManager;
 
     render(<PauseMenu onMainMenu={mockOnMainMenu} />);
 
@@ -104,7 +104,7 @@ describe("PauseMenu - Main Menu Navigation", () => {
     });
 
     // Cleanup
-    delete (window as any).gameStateManager;
+    delete window.gameStateManager;
   });
 
   it("should handle navigation when no gameStateManager is available", async () => {

@@ -1,7 +1,7 @@
 /**
  * CollisionDebugger Tests for Story 2.4
  */
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { CollisionDebugger } from "../CollisionDebugger";
 import { EventBus } from "../../core/EventBus";
 

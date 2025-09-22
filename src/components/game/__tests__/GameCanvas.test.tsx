@@ -30,7 +30,7 @@ class MockResizeObserver {
   disconnect() {}
 }
 
-global.ResizeObserver = MockResizeObserver as any;
+global.ResizeObserver = MockResizeObserver as typeof ResizeObserver;
 
 // Mock Canvas 2D Context
 const mockContext = {
@@ -213,7 +213,12 @@ describe("GameCanvas", () => {
   });
 
   it("calculates canvas position correctly", async () => {
-    let canvasAPI: any = null;
+    let canvasAPI: {
+      getCanvasPosition: (
+        clientX: number,
+        clientY: number,
+      ) => { x: number; y: number };
+    } | null = null;
 
     const onCanvasReady = vi.fn((canvas) => {
       // Mock canvas position methods that would be available
@@ -246,7 +251,7 @@ describe("GameCanvas", () => {
     const OriginalResizeObserver = global.ResizeObserver;
     global.ResizeObserver = class extends MockResizeObserver {
       disconnect = disconnectSpy;
-    } as any;
+    } as typeof ResizeObserver;
 
     const { unmount } = render(<GameCanvas autoResize={true} />);
 

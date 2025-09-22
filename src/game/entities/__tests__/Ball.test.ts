@@ -1,7 +1,7 @@
 /**
  * Unit tests for Ball entity
  */
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from "vitest";
 import { Ball } from '../Ball';
 import { BallConfiguration } from '../../../types/game.types';
 
