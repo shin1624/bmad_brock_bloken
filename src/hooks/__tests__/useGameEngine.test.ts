@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useGameEngine } from "../useGameEngine";
 import type { GameStateBase } from "../useGameState";
 
@@ -86,7 +86,7 @@ const mockContext = {
   save: vi.fn(),
   restore: vi.fn(),
   canvas: { width: 800, height: 600 },
-} as any;
+} as unknown;
 
 describe("useGameEngine", () => {
   const initialGameState: TestGameState = {

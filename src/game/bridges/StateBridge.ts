@@ -252,7 +252,7 @@ export class StateBridge {
   /**
    * UI設定変更のゲームへの反映
    */
-  syncGameSettings(newSettings: any, previousSettings: any): void {
+  syncGameSettings(newSettings: unknown, previousSettings: unknown): void {
     // 音量設定の変更
     if (newSettings.volume !== previousSettings.volume) {
       eventBus.emit(GameEventType.VOLUME_CHANGE, {

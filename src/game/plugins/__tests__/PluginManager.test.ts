@@ -74,7 +74,7 @@ describe('PluginManager', () => {
 
   describe('Plugin Registration', () => {
     it('should register valid plugin successfully', async () => {
-      const result = await pluginManager.register(mockPlugin);
+await pluginManager.register(mockPlugin);
       
       expect(result).toBe(true);
       expect(pluginManager.getPlugin('test-plugin')).toBe(mockPlugin);
@@ -82,8 +82,8 @@ describe('PluginManager', () => {
     });
 
     it('should reject invalid plugin', async () => {
-      const invalidPlugin = new InvalidPlugin() as any;
-      const result = await pluginManager.register(invalidPlugin);
+      const invalidPlugin = new InvalidPlugin() as unknown;
+await pluginManager.register(invalidPlugin);
       
       expect(result).toBe(false);
       expect(pluginManager.getPlugin('invalid')).toBeUndefined();
@@ -93,7 +93,7 @@ describe('PluginManager', () => {
       await pluginManager.register(mockPlugin);
       
       const duplicatePlugin = new MockPlugin('test-plugin', '2.0.0');
-      const result = await pluginManager.register(duplicatePlugin);
+await pluginManager.register(duplicatePlugin);
       
       expect(result).toBe(false);
       expect(pluginManager.getPlugin('test-plugin')).toBe(mockPlugin);
@@ -101,7 +101,7 @@ describe('PluginManager', () => {
 
     it('should validate plugin dependencies', async () => {
       const dependentPlugin = new MockPlugin('dependent', '1.0.0', ['missing-dep']);
-      const result = await pluginManager.register(dependentPlugin);
+await pluginManager.register(dependentPlugin);
       
       expect(result).toBe(false);
     });
@@ -111,7 +111,7 @@ describe('PluginManager', () => {
       const dependentPlugin = new MockPlugin('dependent', '1.0.0', ['base-plugin']);
       
       await pluginManager.register(basePlugin);
-      const result = await pluginManager.register(dependentPlugin);
+await pluginManager.register(dependentPlugin);
       
       expect(result).toBe(true);
     });
@@ -123,7 +123,7 @@ describe('PluginManager', () => {
     });
 
     it('should initialize plugin successfully', async () => {
-      const result = await pluginManager.initializePlugin('test-plugin');
+await pluginManager.initializePlugin('test-plugin');
       
       expect(result).toBe(true);
       expect(mockPlugin.initCalled).toBe(true);
@@ -132,15 +132,14 @@ describe('PluginManager', () => {
 
     it('should handle plugin initialization failure', async () => {
       mockPlugin.shouldFailInit = true;
-      
-      const result = await pluginManager.initializePlugin('test-plugin');
+await pluginManager.initializePlugin('test-plugin');
       
       expect(result).toBe(false);
       expect(pluginManager.hasPlugin('test-plugin')).toBe(false);
     });
 
     it('should handle non-existent plugin initialization', async () => {
-      const result = await pluginManager.initializePlugin('non-existent');
+await pluginManager.initializePlugin('non-existent');
       
       expect(result).toBe(false);
     });
@@ -174,7 +173,7 @@ describe('PluginManager', () => {
       mockPlugin.initDelay = 200; // Longer than timeout
       
       await timeoutManager.register(mockPlugin);
-      const result = await timeoutManager.initializePlugin('test-plugin');
+await timeoutManager.initializePlugin('test-plugin');
       
       expect(result).toBe(false);
     });
@@ -193,22 +192,21 @@ describe('PluginManager', () => {
         currentTime: Date.now(),
         performance: { startTime: performance.now(), maxExecutionTime: 2 }
       };
-      
-      const result = pluginManager.executePlugin('test-plugin', 'init', context);
+pluginManager.executePlugin('test-plugin', 'init', context);
       
       expect(result.success).toBe(true);
       expect(result.executionTime).toBeGreaterThan(0);
     });
 
     it('should handle non-existent method execution', () => {
-      const result = pluginManager.executePlugin('test-plugin', 'nonExistentMethod' as any);
+pluginManager.executePlugin('test-plugin', 'nonExistentMethod' as unknown);
       
       expect(result.success).toBe(false);
       expect(result.error).toBeDefined();
     });
 
     it('should handle inactive plugin execution', () => {
-      const result = pluginManager.executePlugin('non-existent', 'init');
+pluginManager.executePlugin('non-existent', 'init');
       
       expect(result.success).toBe(false);
       expect(result.error).toBeDefined();
@@ -228,7 +226,7 @@ describe('PluginManager', () => {
       };
       
       mockPlugin.init = slowMethod;
-      const result = slowManager.executePlugin('test-plugin', 'init');
+slowManager.executePlugin('test-plugin', 'init');
       
       expect(result.exceeded_budget).toBe(true);
     });
@@ -241,7 +239,7 @@ describe('PluginManager', () => {
     });
 
     it('should destroy plugin successfully', async () => {
-      const result = await pluginManager.destroyPlugin('test-plugin');
+await pluginManager.destroyPlugin('test-plugin');
       
       expect(result).toBe(true);
       expect(mockPlugin.destroyCalled).toBe(true);
@@ -249,8 +247,7 @@ describe('PluginManager', () => {
 
     it('should handle plugin destruction failure', async () => {
       mockPlugin.shouldFailDestroy = true;
-      
-      const result = await pluginManager.destroyPlugin('test-plugin');
+await pluginManager.destroyPlugin('test-plugin');
       
       expect(result).toBe(false);
     });
@@ -279,7 +276,7 @@ describe('PluginManager', () => {
       
       await timeoutManager.register(mockPlugin);
       await timeoutManager.initializePlugin('test-plugin');
-      const result = await timeoutManager.destroyPlugin('test-plugin');
+await timeoutManager.destroyPlugin('test-plugin');
       
       expect(result).toBe(false);
     });
@@ -348,9 +345,8 @@ describe('PluginManager', () => {
         version: '1.0.0',
         init: 'not a function',
         destroy: 'not a function'
-      } as any;
-      
-      const result = await pluginManager.register(malformedPlugin);
+      } as unknown;
+await pluginManager.register(malformedPlugin);
       
       expect(result).toBe(false);
     });

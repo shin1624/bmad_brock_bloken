@@ -145,7 +145,7 @@ describe('MultiBallPowerUp', () => {
       expect(result.success).toBe(true);
       expect(mockContext.effectData).toBeDefined();
       
-      const effectData = mockContext.effectData as any;
+      const effectData = mockContext.effectData as unknown;
       expect(effectData.originalBallCount).toBe(1);
       expect(effectData.addedBallIds).toBeDefined();
       expect(effectData.maxBalls).toBe(MultiBallPowerUp.getMaxBalls());
@@ -292,7 +292,7 @@ describe('MultiBallPowerUp', () => {
     });
 
     it('should handle null/undefined balls array', () => {
-      mockContext.gameEntities.balls = null as any;
+      mockContext.gameEntities.balls = null as unknown;
 
       const result = powerUp.applyEffect(mockContext);
 

@@ -15,8 +15,8 @@ const mockSettings = {
 let settingsListener: ((settings: typeof mockSettings) => void) | null = null;
 
 vi.mock('../../../stores/uiStore', () => {
-  const mockUseUIStore: any = vi.fn(() => ({ settings: mockSettings }));
-  mockUseUIStore.subscribe = (_selector: any, listener: any) => {
+  const mockUseUIStore: unknown = vi.fn(() => ({ settings: mockSettings }));
+  mockUseUIStore.subscribe = (_selector: unknown, listener: unknown) => {
     settingsListener = listener;
     listener(mockSettings);
     return () => {

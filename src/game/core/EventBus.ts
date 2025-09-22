@@ -94,10 +94,10 @@ export interface EventSubscription {
  * EventBus class for managing game events
  */
 export class EventBus {
-  private listeners: Map<GameEventType, Set<EventListener<any>>> = new Map();
+  private listeners: Map<GameEventType, Set<EventListener<unknown>>> = new Map();
   private eventHistory: Array<{
     type: GameEventType;
-    payload: any;
+    payload: unknown;
     timestamp: number;
   }> = [];
   private maxHistorySize = 100;
@@ -231,7 +231,7 @@ export class EventBus {
    */
   getEventHistory(): ReadonlyArray<{
     type: GameEventType;
-    payload: any;
+    payload: unknown;
     timestamp: number;
   }> {
     return [...this.eventHistory];

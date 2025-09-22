@@ -47,7 +47,7 @@ describe('BallSpeedPowerUp', () => {
       powerUpId: 'test-ballspeed',
       effectData: null,
       gameEntities: {
-        balls: mockBalls as any[],
+        balls: mockBalls as unknown[],
         paddle: null,
         blocks: [],
         powerUps: []
@@ -134,7 +134,7 @@ describe('BallSpeedPowerUp', () => {
       fastPowerUp.applyEffect(mockContext);
 
       expect(mockContext.effectData).toBeDefined();
-      const effectData = mockContext.effectData as any;
+      const effectData = mockContext.effectData as unknown;
       expect(effectData.variant).toBe(BallSpeedVariant.Fast);
       expect(effectData.affectedBallIds).toHaveLength(2);
       expect(Object.keys(effectData.originalSpeeds)).toHaveLength(2);
@@ -400,7 +400,7 @@ describe('BallSpeedPowerUp', () => {
     });
 
     it('should handle null balls array', () => {
-      mockContext.gameEntities.balls = null as any;
+      mockContext.gameEntities.balls = null as unknown;
 
       const result = fastPowerUp.applyEffect(mockContext);
 
@@ -428,7 +428,7 @@ describe('BallSpeedPowerUp', () => {
       expect(result.success).toBe(true);
       // Should only affect active balls
       expect(mockContext.effectData).toBeDefined();
-      const effectData = mockContext.effectData as any;
+      const effectData = mockContext.effectData as unknown;
       expect(effectData.affectedBallIds).toHaveLength(1); // Only second ball
     });
 
@@ -440,7 +440,7 @@ describe('BallSpeedPowerUp', () => {
       expect(result.success).toBe(true);
       expect(result.modified).toBe(true);
       
-      const effectData = mockContext.effectData as any;
+      const effectData = mockContext.effectData as unknown;
       expect(effectData.affectedBallIds).toContain('ball_0'); // Generated ID
     });
   });

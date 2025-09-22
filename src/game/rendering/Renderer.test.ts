@@ -1,7 +1,7 @@
 /**
  * Tests for Renderer with theme integration
  */
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Renderer } from "./Renderer";
 
 describe("Renderer", () => {
@@ -14,14 +14,14 @@ describe("Renderer", () => {
       getContext: vi.fn(),
       width: 800,
       height: 600,
-    } as any;
+    } as unknown;
 
     mockContext = {
       fillStyle: "",
       strokeStyle: "",
       fillRect: vi.fn(),
       strokeRect: vi.fn(),
-    } as any;
+    } as unknown;
 
     mockCanvas.getContext = vi.fn().mockReturnValue(mockContext);
     renderer = new Renderer(mockContext);

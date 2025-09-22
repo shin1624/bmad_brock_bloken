@@ -74,9 +74,9 @@ describe('AudioService', () => {
   let mockContext: AudioContextMock;
 
   beforeEach(() => {
-    originalAudioContext = (globalThis as any).AudioContext;
+    originalAudioContext = (globalThis as unknown).AudioContext;
     mockContext = new AudioContextMock();
-    (globalThis as any).AudioContext = vi.fn(() => mockContext);
+    (globalThis as unknown).AudioContext = vi.fn(() => mockContext);
 
     globalThis.fetch = vi.fn(() =>
       Promise.resolve({
@@ -90,9 +90,9 @@ describe('AudioService', () => {
 
   afterEach(() => {
     if (originalAudioContext) {
-      (globalThis as any).AudioContext = originalAudioContext;
+      (globalThis as unknown).AudioContext = originalAudioContext;
     } else {
-      delete (globalThis as any).AudioContext;
+      delete (globalThis as unknown).AudioContext;
     }
     vi.restoreAllMocks();
   });
@@ -156,6 +156,6 @@ describe('AudioService', () => {
     service.dispose();
 
     expect(mockContext.close).toHaveBeenCalled();
-    expect((service as any).audioBuffers.size).toBe(0);
+    expect((service as unknown).audioBuffers.size).toBe(0);
   });
 });

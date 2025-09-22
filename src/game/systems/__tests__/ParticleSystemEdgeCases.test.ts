@@ -268,7 +268,7 @@ describe('ParticleSystem Edge Cases', () => {
 
     it('should handle null theme gracefully', () => {
       expect(() => {
-        system.setTheme(null as any);
+        system.setTheme(null as unknown);
       }).not.toThrow();
       
       // System should continue functioning
@@ -281,13 +281,13 @@ describe('ParticleSystem Edge Cases', () => {
         colors: null,
         sizes: {
           min: -10,  // Invalid negative size
-          max: 'large' as any  // Invalid type
+          max: 'large' as unknown  // Invalid type
         },
-        effects: 'all' as any  // Invalid type
+        effects: 'all' as unknown  // Invalid type
       };
       
       expect(() => {
-        system.setTheme(malformedTheme as any);
+        system.setTheme(malformedTheme as unknown);
       }).not.toThrow();
       
       // System should use defaults
@@ -433,7 +433,7 @@ describe('ParticleSystem Edge Cases', () => {
         () => system.createImpactEffect(200, 200, { count: 15 }),
         () => system.clear(),
         () => system.update(0.016),
-        () => system.setTheme({ colors: { particle: '#' + Math.floor(Math.random()*16777215).toString(16) } } as any),
+        () => system.setTheme({ colors: { particle: '#' + Math.floor(Math.random()*16777215).toString(16) } } as unknown),
         () => system.getPerformanceMetrics(),
         () => vi.advanceTimersByTime(16)
       ];

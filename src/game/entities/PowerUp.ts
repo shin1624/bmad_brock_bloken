@@ -3,7 +3,7 @@
  * Story 4.1, Task 1: PowerUp Entity extending Entity base class
  */
 import { Entity } from './Entity';
-import { Vector2D } from '../../types/game.types';
+
 
 // Power-Up types enumeration (imported from HUD component for consistency)
 export enum PowerUpType {
@@ -32,8 +32,8 @@ export interface PowerUpEffect {
   priority: number; // Higher priority takes precedence in conflicts
   stackable: boolean;
   conflictsWith?: PowerUpType[];
-  apply: (gameState: any) => void;
-  remove: (gameState: any) => void;
+  apply: (gameState: unknown) => void;
+  remove: (gameState: unknown) => void;
 }
 
 // PowerUp configuration interface

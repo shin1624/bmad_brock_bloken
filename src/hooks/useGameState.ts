@@ -48,7 +48,7 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
   }, []);
 
   // Emit event to all listeners
-  const emitEvent = useCallback((type: GameStateEventType, payload?: any) => {
+  const emitEvent = useCallback((type: GameStateEventType, payload?: unknown) => {
     const event: GameStateEvent = {
       type,
       payload,

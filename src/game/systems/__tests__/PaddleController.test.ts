@@ -71,7 +71,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -88,7 +88,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -105,7 +105,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -122,7 +122,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -141,7 +141,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -160,7 +160,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -177,7 +177,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -194,7 +194,7 @@ describe('PaddleController', () => {
         touch: { x: 500, y: 400 }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -214,7 +214,7 @@ describe('PaddleController', () => {
         touch: { x: touchX, y: 400 }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -234,7 +234,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       // First frame - should start interpolation
       paddleController.update(1.0);
@@ -242,7 +242,7 @@ describe('PaddleController', () => {
       
       // Clear mocks for second frame
       vi.clearAllMocks();
-      (mockInputManager.getInputState as any).mockReturnValue({
+      (mockInputManager.getInputState as unknown).mockReturnValue({
         device: 'keyboard',
         keyboard: { left: false, right: false },
         mouse: { x: null, y: null },
@@ -263,7 +263,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -329,7 +329,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(inputState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(inputState);
       
       paddleController.update(1.0);
       
@@ -355,7 +355,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(keyboardState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(keyboardState);
       paddleController.update(1.0);
       expect(mockPaddle.moveLeft).toHaveBeenCalled();
 
@@ -368,7 +368,7 @@ describe('PaddleController', () => {
         touch: { x: null, y: null }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(mouseState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(mouseState);
       paddleController.update(1.0);
       expect(mockPaddle.stopMoving).toHaveBeenCalled();
 
@@ -381,7 +381,7 @@ describe('PaddleController', () => {
         touch: { x: 500, y: 400 }
       };
 
-      (mockInputManager.getInputState as any).mockReturnValue(touchState);
+      (mockInputManager.getInputState as unknown).mockReturnValue(touchState);
       paddleController.update(1.0);
       expect(mockPaddle.stopMoving).toHaveBeenCalled();
     });

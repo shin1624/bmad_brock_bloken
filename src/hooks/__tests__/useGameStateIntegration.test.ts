@@ -3,7 +3,7 @@
  * Story 4.1, Task 5: Integration tests for React-Canvas bridge
  * Tests synchronization between game state and React UI components
  */
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useGameStateIntegration } from "../useGameStateIntegration";
 import { PowerUpType } from "../../components/game/HUD/PowerUpStatus";

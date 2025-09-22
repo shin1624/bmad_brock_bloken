@@ -410,7 +410,7 @@ export class Renderer {
   /**
    * Apply theme colors to renderer
    */
-  applyTheme(theme: any): void {
+  applyTheme(theme: unknown): void {
     this.context.fillStyle = theme.colors.background;
   }
 

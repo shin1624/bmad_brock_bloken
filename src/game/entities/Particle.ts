@@ -3,7 +3,7 @@
  * Used for block destruction, power-up effects, etc.
  */
 import { Entity } from "./Entity";
-import { Vector2D, ParticleConfig } from "../../types/game.types";
+import { Vector2D } from "../../types/game.types";
 import { ParticleState } from "../../types/particle.types";
 
 export interface ParticleOptions {

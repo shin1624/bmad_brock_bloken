@@ -389,7 +389,8 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
     <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
       {Array.from(activeEffects.values()).map(renderDOMEffect)}
 
-      <style>{`
+      <style jsx>{`
+
         @keyframes powerUpCollect {
           0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
           50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
@@ -401,7 +402,8 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
           50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
           100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
         }
-      `}</style>
+      
+`}</style>
     </div>
   );
 };

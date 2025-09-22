@@ -226,7 +226,7 @@ export class BallSpeedPowerUp extends PowerUpPlugin {
       for (const ball of balls) {
         if (!ball || !ball.active) continue;
 
-        const ballId = (ball as any).id || `ball_${balls.indexOf(ball)}`;
+        const ballId = (ball as unknown).id || `ball_${balls.indexOf(ball)}`;
         if (!effectData.affectedBallIds.includes(ballId)) continue;
 
         // Check for physics anomalies
@@ -330,7 +330,7 @@ export class BallSpeedPowerUp extends PowerUpPlugin {
       for (const ball of balls) {
         if (!ball || !ball.active) continue;
 
-        const ballId = (ball as any).id || `ball_${balls.indexOf(ball)}`;
+        const ballId = (ball as unknown).id || `ball_${balls.indexOf(ball)}`;
         if (!effectData.affectedBallIds.includes(ballId)) continue;
 
         const originalSpeed = effectData.originalSpeeds[ballId];

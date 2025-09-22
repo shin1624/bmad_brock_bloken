@@ -1,4 +1,31 @@
-import type { Entity, SpriteEntity, RectEntity, CircleEntity, TextEntity } from './Renderer';
+import type {
+  Entity,
+  SpriteEntity,
+  RectEntity,
+  CircleEntity,
+  TextEntity,
+} from "./Renderer";
+
+/**
+ * Animation configuration type
+ */
+export interface AnimationConfig {
+  frameWidth: number;
+  frameHeight: number;
+  frameCount: number;
+  framesPerRow: number;
+  currentFrame: number;
+}
+
+/**
+ * Particle configuration type
+ */
+export interface ParticleConfig {
+  lifetime: number;
+  age: number;
+  velocityX: number;
+  velocityY: number;
+}
 
 /**
  * Utility functions for creating and manipulating render entities
@@ -22,7 +49,7 @@ export class RenderUtils {
     zIndex?: number;
   }): SpriteEntity {
     return {
-      type: 'sprite',
+      type: "sprite",
       x: config.x,
       y: config.y,
       width: config.width,
@@ -60,7 +87,7 @@ export class RenderUtils {
     zIndex?: number;
   }): RectEntity {
     return {
-      type: 'rect',
+      type: "rect",
       x: config.x,
       y: config.y,
       width: config.width,
@@ -95,7 +122,7 @@ export class RenderUtils {
     zIndex?: number;
   }): CircleEntity {
     return {
-      type: 'circle',
+      type: "circle",
       x: config.x,
       y: config.y,
       width: config.radius * 2,
@@ -141,7 +168,7 @@ export class RenderUtils {
     const approximateHeight = fontSize;
 
     return {
-      type: 'text',
+      type: "text",
       x: config.x,
       y: config.y,
       width: approximateWidth,
@@ -184,14 +211,22 @@ export class RenderUtils {
     alpha?: number;
     visible?: boolean;
     zIndex?: number;
-  }): SpriteEntity & { animation: { frameWidth: number; frameHeight: number; frameCount: number; framesPerRow: number; currentFrame: number } } {
+  }): SpriteEntity & {
+    animation: {
+      frameWidth: number;
+      frameHeight: number;
+      frameCount: number;
+      framesPerRow: number;
+      currentFrame: number;
+    };
+  } {
     const framesPerRow = config.framesPerRow || config.frameCount;
     const currentFrame = config.currentFrame || 0;
     const frameX = (currentFrame % framesPerRow) * config.frameWidth;
     const frameY = Math.floor(currentFrame / framesPerRow) * config.frameHeight;
 
     return {
-      type: 'sprite',
+      type: "sprite",
       x: config.x,
       y: config.y,
       width: config.width,
@@ -221,12 +256,13 @@ export class RenderUtils {
    * Update animated sprite frame
    */
   static updateAnimatedSprite(
-    sprite: SpriteEntity & { animation: any },
-    frame: number
+    sprite: SpriteEntity & { animation: AnimationConfig },
+    frame: number,
   ): void {
-    const { frameWidth, frameHeight, frameCount, framesPerRow } = sprite.animation;
+    const { frameWidth, frameHeight, frameCount, framesPerRow } =
+      sprite.animation;
     const clampedFrame = Math.max(0, Math.min(frame, frameCount - 1));
-    
+
     sprite.animation.currentFrame = clampedFrame;
     sprite.sourceX = (clampedFrame % framesPerRow) * frameWidth;
     sprite.sourceY = Math.floor(clampedFrame / framesPerRow) * frameHeight;
@@ -260,8 +296,9 @@ export class RenderUtils {
    * Get distance between two entities (center to center)
    */
   static getDistance(entity1: Entity, entity2: Entity): number {
-    const dx = (entity1.x + entity1.width / 2) - (entity2.x + entity2.width / 2);
-    const dy = (entity1.y + entity1.height / 2) - (entity2.y + entity2.height / 2);
+    const dx = entity1.x + entity1.width / 2 - (entity2.x + entity2.width / 2);
+    const dy =
+      entity1.y + entity1.height / 2 - (entity2.y + entity2.height / 2);
     return Math.sqrt(dx * dx + dy * dy);
   }
 
@@ -322,19 +359,19 @@ export class RenderUtils {
     velocityY?: number;
     life?: number;
     decay?: number;
-  }): RectEntity & { 
-    particle: { 
-      velocityX: number; 
-      velocityY: number; 
-      life: number; 
-      maxLife: number; 
-      decay: number 
-    } 
+  }): RectEntity & {
+    particle: {
+      velocityX: number;
+      velocityY: number;
+      life: number;
+      maxLife: number;
+      decay: number;
+    };
   } {
     const life = config.life || 1.0;
-    
+
     return {
-      type: 'rect',
+      type: "rect",
       x: config.x,
       y: config.y,
       width: config.size,
@@ -355,16 +392,19 @@ export class RenderUtils {
    * Update particle (returns false if particle should be removed)
    */
   static updateParticle(
-    particle: RectEntity & { particle: any },
-    deltaTime: number
+    particle: RectEntity & { particle: ParticleConfig },
+    deltaTime: number,
   ): boolean {
     particle.x += particle.particle.velocityX * deltaTime;
     particle.y += particle.particle.velocityY * deltaTime;
     particle.particle.life -= particle.particle.decay * deltaTime;
-    
+
     // Update alpha based on remaining life
-    particle.alpha = Math.max(0, particle.particle.life / particle.particle.maxLife);
-    
+    particle.alpha = Math.max(
+      0,
+      particle.particle.life / particle.particle.maxLife,
+    );
+
     return particle.particle.life > 0;
   }
 }

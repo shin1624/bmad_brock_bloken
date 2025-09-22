@@ -248,8 +248,8 @@ export class MultiBallPowerUp extends PowerUpPlugin {
         const ball = balls[i];
         if (
           ball &&
-          (ball as any).id &&
-          effectData.addedBallIds.includes((ball as any).id)
+          (ball as unknown).id &&
+          effectData.addedBallIds.includes((ball as unknown).id)
         ) {
           ball.active = false;
           balls.splice(i, 1);

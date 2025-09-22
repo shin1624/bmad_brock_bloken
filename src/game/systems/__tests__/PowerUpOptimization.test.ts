@@ -23,7 +23,7 @@ class MockCanvasContext {
 }
 
 // Mock global OffscreenCanvas
-(global as any).OffscreenCanvas = MockOffscreenCanvas;
+(global as unknown).OffscreenCanvas = MockOffscreenCanvas;
 
 describe('PowerUpOptimization', () => {
   let optimizer: PowerUpOptimization;
@@ -223,7 +223,7 @@ describe('PowerUpOptimization', () => {
       ];
 
       const mockContext = new MockCanvasContext();
-      optimizer.batchRender(entities, mockContext as any);
+      optimizer.batchRender(entities, mockContext as unknown);
 
       // Should call render on each entity
       entities.forEach(entity => {
@@ -245,7 +245,7 @@ describe('PowerUpOptimization', () => {
       ];
 
       const mockContext = new MockCanvasContext();
-      optimizer.batchRender(entities, mockContext as any);
+      optimizer.batchRender(entities, mockContext as unknown);
 
       expect(entities[0].render).toHaveBeenCalled();
       expect(entities[1].render).toHaveBeenCalled();
@@ -261,7 +261,7 @@ describe('PowerUpOptimization', () => {
       ];
 
       const mockContext = new MockCanvasContext();
-      optimizer.batchRender(entities, mockContext as any);
+      optimizer.batchRender(entities, mockContext as unknown);
 
       // Should call render directly on target context
       entities.forEach(entity => {
@@ -383,8 +383,8 @@ describe('PowerUpOptimization', () => {
   describe('Error Handling', () => {
     it('should handle OffscreenCanvas not being available', () => {
       // Mock OffscreenCanvas to throw error
-      const originalOffscreenCanvas = (global as any).OffscreenCanvas;
-      (global as any).OffscreenCanvas = function() {
+      const originalOffscreenCanvas = (global as unknown).OffscreenCanvas;
+      (global as unknown).OffscreenCanvas = function() {
         throw new Error('OffscreenCanvas not supported');
       };
 
@@ -394,7 +394,7 @@ describe('PowerUpOptimization', () => {
       }).not.toThrow();
 
       // Restore original
-      (global as any).OffscreenCanvas = originalOffscreenCanvas;
+      (global as unknown).OffscreenCanvas = originalOffscreenCanvas;
     });
 
     it('should handle empty entity arrays', () => {
@@ -433,7 +433,7 @@ describe('PowerUpOptimization', () => {
       ];
 
       const mockContext = new MockCanvasContext();
-      optimizer.batchRender(entities, mockContext as any);
+      optimizer.batchRender(entities, mockContext as unknown);
 
       const metrics = optimizer.getMetrics();
       expect(metrics.renderCalls).toBe(2);
@@ -443,7 +443,7 @@ describe('PowerUpOptimization', () => {
       const entities = [{ render: jest.fn() }];
       const mockContext = new MockCanvasContext();
       
-      optimizer.batchRender(entities, mockContext as any);
+      optimizer.batchRender(entities, mockContext as unknown);
       optimizer.updateMetrics(16, [], []);
 
       const metrics = optimizer.getMetrics();

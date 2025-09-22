@@ -13,7 +13,7 @@ describe('PowerUpStateManager', () => {
       addConflictRule: jest.fn(),
       removeConflictRule: jest.fn(),
       getConflictRule: jest.fn()
-    } as any;
+    } as unknown;
 
     stateManager = new PowerUpStateManager(mockConflictResolver);
   });

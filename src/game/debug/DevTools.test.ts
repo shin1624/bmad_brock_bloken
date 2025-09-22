@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { DevTools, devTools } from "./DevTools";
 import { gameStateManager } from "../core/GameState";
 import { eventBus, GameEventType } from "../core/EventBus";
@@ -328,7 +328,7 @@ describe("DevTools", () => {
 
     it("低FPSで色が変わる", () => {
       // FPS計算をモック（低FPS）
-      vi.spyOn(devToolsInstance as any, "calculateCurrentFPS").mockReturnValue(
+      vi.spyOn(devToolsInstance as unknown, "calculateCurrentFPS").mockReturnValue(
         25,
       );
 
@@ -340,7 +340,7 @@ describe("DevTools", () => {
 
     it("中FPSで色が変わる", () => {
       // FPS計算をモック（中FPS）
-      vi.spyOn(devToolsInstance as any, "calculateCurrentFPS").mockReturnValue(
+      vi.spyOn(devToolsInstance as unknown, "calculateCurrentFPS").mockReturnValue(
         45,
       );
 
@@ -352,7 +352,7 @@ describe("DevTools", () => {
 
     it("高FPSで緑色になる", () => {
       // FPS計算をモック（高FPS）
-      vi.spyOn(devToolsInstance as any, "calculateCurrentFPS").mockReturnValue(
+      vi.spyOn(devToolsInstance as unknown, "calculateCurrentFPS").mockReturnValue(
         60,
       );
 
@@ -366,7 +366,7 @@ describe("DevTools", () => {
   describe("エラーハンドリング", () => {
     it("DOM要素が存在しない場合も安全に動作する", () => {
       // DOM操作を無効化
-      vi.spyOn(document, "createElement").mockReturnValue(null as any);
+      vi.spyOn(document, "createElement").mockReturnValue(null as unknown);
 
       expect(() => devToolsInstance.initialize()).not.toThrow();
       expect(() => devToolsInstance.destroy()).not.toThrow();

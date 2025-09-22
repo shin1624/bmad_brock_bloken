@@ -244,7 +244,7 @@ describe('Power-Up Edge Case Integration Tests', () => {
       corruptedPowerUp.id = 'corrupted-powerup';
 
       // Force add corrupted power-up (bypassing normal validation)
-      (stateManager as any).activePowerUps.set(corruptedPowerUp.id, corruptedPowerUp);
+      (stateManager as unknown).activePowerUps.set(corruptedPowerUp.id, corruptedPowerUp);
 
       // Detect corruption
       const validation = stateManager.validateConfiguration();

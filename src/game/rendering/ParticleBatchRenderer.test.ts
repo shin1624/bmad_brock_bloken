@@ -19,7 +19,7 @@ describe('ParticleBatchRenderer', () => {
     
     // Add missing drawImage method for test
     if (!mockCtx.drawImage) {
-      (mockCtx as any).drawImage = vi.fn();
+      (mockCtx as unknown).drawImage = vi.fn();
     }
   });
 

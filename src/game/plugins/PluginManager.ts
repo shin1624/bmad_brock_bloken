@@ -187,7 +187,7 @@ export class PluginManager {
   /**
    * Execute plugin method with performance monitoring and time budget
    */
-  public executePlugin<T>(
+  public executePlugin(
     pluginName: string, 
     method: keyof Plugin, 
     context?: PluginContext
@@ -419,7 +419,7 @@ export class PluginManager {
   /**
    * Execute with timeout wrapper
    */
-  private async executeWithTimeout<T>(
+  private async executeWithTimeout(
     promise: Promise<T> | T,
     timeoutMs: number,
     timeoutMessage: string
@@ -428,7 +428,7 @@ export class PluginManager {
       return promise;
     }
 
-    return new Promise<T>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         reject(new Error(timeoutMessage));
       }, timeoutMs);

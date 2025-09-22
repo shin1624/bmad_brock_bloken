@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GameStateManager } from "./GameState";
 import type { GameState, GameStateSubscriber } from "../../types/game.types";
 
@@ -144,7 +144,7 @@ describe("GameStateManager", () => {
     it("should return immutable state", () => {
       const state = manager.getState();
       expect(() => {
-        (state as any).score = 999;
+        (state as unknown).score = 999;
       }).toThrow();
     });
 

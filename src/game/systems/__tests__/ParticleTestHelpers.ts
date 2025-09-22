@@ -46,7 +46,7 @@ export class ParticleTestFactory {
   /**
    * Create lightweight particle system for testing
    */
-  static createLightweightParticleSystem(config?: Partial<any>): ParticleSystem {
+  static createLightweightParticleSystem(config?: Partial<unknown>): ParticleSystem {
     return new ParticleSystem(this.getEventBus(), {
       maxParticles: 50, // Reduced for faster tests
       preFillCount: 5,  // Minimal pre-fill
@@ -252,7 +252,7 @@ export class EdgeCaseGenerators {
   /**
    * Generate random theme configurations
    */
-  static generateRandomTheme(): any {
+  static generateRandomTheme(): unknown {
     const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
     return {
       colors: {

@@ -134,7 +134,7 @@ describe('InputManager', () => {
       });
       
       // Simulate the mouse event handler directly
-      (inputManager as any).handleMouseMove(mouseEvent);
+      (inputManager as unknown).handleMouseMove(mouseEvent);
       
       const input = inputManager.getCurrentInput();
       expect(input?.device).toBe('mouse');
@@ -142,7 +142,7 @@ describe('InputManager', () => {
     });
 
     it('converts canvas coordinates correctly', () => {
-      (mockCanvas.getBoundingClientRect as any).mockReturnValue({
+      (mockCanvas.getBoundingClientRect as unknown).mockReturnValue({
         left: 10,
         top: 20,
         width: 800,
@@ -154,7 +154,7 @@ describe('InputManager', () => {
         clientY: 70   // 70 - 20 = 50
       });
       
-      (inputManager as any).handleMouseMove(mouseEvent);
+      (inputManager as unknown).handleMouseMove(mouseEvent);
       
       const position = inputManager.getInputPosition();
       expect(position).toEqual({ x: 100, y: 50 });
@@ -177,10 +177,10 @@ describe('InputManager', () => {
       const touchEvent = {
         type: 'touchmove',
         touches: [mockTouch]
-      } as any;
+      } as unknown;
       
       // Simulate the touch event handler directly
-      (inputManager as any).handleTouchMove(touchEvent);
+      (inputManager as unknown).handleTouchMove(touchEvent);
       
       const input = inputManager.getCurrentInput();
       expect(input?.device).toBe('touch');
@@ -199,18 +199,18 @@ describe('InputManager', () => {
       const touchMoveEvent = {
         type: 'touchmove',
         touches: [mockTouch]
-      } as any;
+      } as unknown;
       
-      (inputManager as any).handleTouchMove(touchMoveEvent);
+      (inputManager as unknown).handleTouchMove(touchMoveEvent);
       expect(inputManager.getCurrentInput()?.device).toBe('touch');
       
       // End touch
       const touchEndEvent = {
         type: 'touchend',
         touches: []
-      } as any;
+      } as unknown;
       
-      (inputManager as any).handleTouchEnd(touchEndEvent);
+      (inputManager as unknown).handleTouchEnd(touchEndEvent);
       expect(inputManager.getCurrentInput()).toBeNull();
     });
   });
@@ -226,7 +226,7 @@ describe('InputManager', () => {
         clientX: 100,
         clientY: 50
       });
-      (inputManager as any).handleMouseMove(mouseEvent);
+      (inputManager as unknown).handleMouseMove(mouseEvent);
       expect(inputManager.getCurrentInput()?.device).toBe('mouse');
       
       // Then touch input (should override)
@@ -238,8 +238,8 @@ describe('InputManager', () => {
           clientX: 200,
           clientY: 100
         }]
-      } as any;
-      (inputManager as any).handleTouchMove(touchEvent);
+      } as unknown;
+      (inputManager as unknown).handleTouchMove(touchEvent);
       expect(inputManager.getCurrentInput()?.device).toBe('touch');
     });
 
@@ -254,7 +254,7 @@ describe('InputManager', () => {
         clientX: 100,
         clientY: 50
       });
-      (inputManager as any).handleMouseMove(mouseEvent);
+      (inputManager as unknown).handleMouseMove(mouseEvent);
       expect(inputManager.getCurrentInput()?.device).toBe('mouse');
     });
 
@@ -268,8 +268,8 @@ describe('InputManager', () => {
           clientX: 200,
           clientY: 100
         }]
-      } as any;
-      (inputManager as any).handleTouchMove(touchEvent);
+      } as unknown;
+      (inputManager as unknown).handleTouchMove(touchEvent);
       expect(inputManager.getCurrentInput()?.device).toBe('touch');
       
       // Mouse input should not override
@@ -277,7 +277,7 @@ describe('InputManager', () => {
         clientX: 100,
         clientY: 50
       });
-      (inputManager as any).handleMouseMove(mouseEvent);
+      (inputManager as unknown).handleMouseMove(mouseEvent);
       expect(inputManager.getCurrentInput()?.device).toBe('touch');
     });
   });

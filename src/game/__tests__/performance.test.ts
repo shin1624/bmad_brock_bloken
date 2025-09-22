@@ -98,10 +98,11 @@ describe("Power-Up System Performance", () => {
 
       // Create PowerUps at different positions
       for (let i = 0; i < PERFORMANCE_CONFIG.MAX_POWERUPS; i++) {
-        const powerUp = PowerUp.create(
-          Object.values(PowerUpType)[i % Object.values(PowerUpType).length],
-          { x: i * 15, y: i * 10 },
-        );
+        const powerUpTypes = Object.values(PowerUpType) as PowerUpType[];
+        const powerUp = PowerUp.create(powerUpTypes[i % powerUpTypes.length], {
+          x: i * 15,
+          y: i * 10,
+        });
         powerUps.push(powerUp);
       }
 
@@ -247,7 +248,7 @@ describe("Power-Up System Performance", () => {
 
       // Register all plugins
       for (const plugin of mockPlugins) {
-        await pluginManager.register(plugin as any);
+        await pluginManager.register(plugin as unknown);
       }
       await pluginManager.initializeAll();
 
@@ -311,7 +312,7 @@ describe("Power-Up System Performance", () => {
       }));
 
       for (const plugin of mockPlugins) {
-        await pluginManager.register(plugin as any);
+        await pluginManager.register(plugin as unknown);
       }
       await pluginManager.initializeAll();
 
@@ -356,7 +357,13 @@ describe("Power-Up System Performance", () => {
 
   describe("Memory Performance", () => {
     it("should not leak memory during power-up lifecycle", async () => {
-      const initialMemory = (performance as any).memory?.usedJSHeapSize || 0;
+      interface PerformanceWithMemory extends Performance {
+        memory?: {
+          usedJSHeapSize: number;
+        };
+      }
+      const initialMemory =
+        (performance as PerformanceWithMemory).memory?.usedJSHeapSize || 0;
 
       // Create and destroy many power-ups
       for (let cycle = 0; cycle < 10; cycle++) {
@@ -381,11 +388,14 @@ describe("Power-Up System Performance", () => {
       }
 
       // Force garbage collection if available
-      if ((global as any).gc) {
-        (global as any).gc();
+      interface GlobalWithGC extends typeof globalThis {
+        gc?: () => void;
+      }
+      if ((global as GlobalWithGC).gc) {
+        (global as GlobalWithGC).gc();
       }
 
-      const finalMemory = (performance as any).memory?.usedJSHeapSize || 0;
+      const finalMemory = (performance as PerformanceWithMemory).memory?.usedJSHeapSize || 0;
       const memoryIncrease = finalMemory - initialMemory;
 
       // Memory increase should be minimal (less than 1MB)
@@ -429,7 +439,7 @@ describe("Power-Up System Performance", () => {
         }),
       };
 
-      await pluginManager.register(mockPlugin as any);
+      await pluginManager.register(mockPlugin as unknown);
       await pluginManager.initializePlugin("test-plugin");
 
       // Apply many short-lived effects

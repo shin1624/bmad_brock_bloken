@@ -8,6 +8,7 @@ import { MultiBallPowerUp } from "./MultiBallPowerUp";
 import { PaddleSizePowerUp } from "./PaddleSizePowerUp";
 import { BallSpeedPowerUp } from "./BallSpeedPowerUp";
 import { PowerUpType } from "../../entities/PowerUp";
+import { PowerUpPlugin } from "../PowerUpPlugin";
 
 /**
  * PowerUpRegistry Class
@@ -16,7 +17,7 @@ import { PowerUpType } from "../../entities/PowerUp";
 export class PowerUpRegistry {
   private pluginManager: PluginManager;
   private powerUpSystem: PowerUpSystem;
-  private registeredPlugins: Map<string, any> = new Map();
+  private registeredPlugins: Map<string, PowerUpPlugin> = new Map();
 
   constructor(pluginManager: PluginManager, powerUpSystem: PowerUpSystem) {
     this.pluginManager = pluginManager;
@@ -59,7 +60,7 @@ export class PowerUpRegistry {
   /**
    * Register a single power-up plugin
    */
-  private async registerPlugin(id: string, plugin: any): Promise<void> {
+  private async registerPlugin(id: string, plugin: PowerUpPlugin): Promise<void> {
     try {
       // Register with PluginManager
       await this.pluginManager.register(plugin);
@@ -82,7 +83,7 @@ export class PowerUpRegistry {
   /**
    * Get a registered plugin by ID
    */
-  public getPlugin(id: string): any | null {
+  public getPlugin(id: string): PowerUpPlugin | null {
     return this.registeredPlugins.get(id) || null;
   }
 
@@ -96,7 +97,7 @@ export class PowerUpRegistry {
   /**
    * Get plugin by power-up type
    */
-  public getPluginByType(type: PowerUpType, variant?: string): any | null {
+  public getPluginByType(type: PowerUpType, variant?: string): PowerUpPlugin | null {
     switch (type) {
       case PowerUpType.MultiBall:
         return this.getPlugin("multiball");

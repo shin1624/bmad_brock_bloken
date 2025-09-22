@@ -4,7 +4,7 @@
  * Story 4.1, Task 4: Power-up spawn and pickup animations
  */
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { PowerUpType } from "../HUD/PowerUpStatus";
+
 import {
   PowerUpAnimationType,
   PowerUpAnimationEvent,

@@ -53,7 +53,7 @@ describe('PaddleSizePowerUp', () => {
       effectData: null,
       gameEntities: {
         balls: [],
-        paddle: mockPaddle as any,
+        paddle: mockPaddle as unknown,
         blocks: [],
         powerUps: []
       },
@@ -130,7 +130,7 @@ describe('PaddleSizePowerUp', () => {
       largePowerUp.applyEffect(mockContext);
 
       expect(mockContext.effectData).toBeDefined();
-      const effectData = mockContext.effectData as any;
+      const effectData = mockContext.effectData as unknown;
       expect(effectData.originalWidth).toBe(originalWidth);
       expect(effectData.originalHeight).toBe(originalHeight);
       expect(effectData.variant).toBe(PaddleSizeVariant.Large);

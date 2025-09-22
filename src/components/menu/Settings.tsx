@@ -316,7 +316,7 @@ export const Settings: React.FC = () => {
                 {["light", "dark"].map((theme) => (
                   <button
                     key={theme}
-                    onClick={() => updateSettings({ theme: theme as any })}
+                    onClick={() => updateSettings({ theme: theme as unknown })}
                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       settings.theme === theme
                         ? "bg-blue-500 text-white"

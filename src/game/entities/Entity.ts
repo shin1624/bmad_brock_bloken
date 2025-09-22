@@ -20,7 +20,7 @@ export abstract class Entity {
   /**
    * Update entity state - to be implemented by subclasses
    */
-  abstract update(deltaTime: number): void;
+  abstract update(_deltaTime: number): void;
 
   /**
    * Render entity - to be implemented by subclasses

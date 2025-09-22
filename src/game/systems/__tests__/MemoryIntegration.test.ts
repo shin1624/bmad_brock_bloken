@@ -22,7 +22,7 @@ class MockEventBus extends EventBus {
     this.listeners.get(event)!.push(callback);
   }
 
-  emit(event: string, data?: any): void {
+  emit(event: string, data?: unknown): void {
     const callbacks = this.listeners.get(event) || [];
     callbacks.forEach(callback => callback(data));
   }
@@ -306,7 +306,7 @@ describe('Memory Management Integration', () => {
         fill: vi.fn()
       };
       
-      particlePool.render(mockCtx as any);
+      particlePool.render(mockCtx as unknown);
       
       // Should have called batch rendering methods
       expect(mockCtx.save).toHaveBeenCalled();
@@ -422,11 +422,11 @@ describe('Memory Management Integration', () => {
       
       // Try to release non-pooled object
       expect(() => {
-        powerUpPool.release(null as any);
+        powerUpPool.release(null as unknown);
       }).not.toThrow();
       
       expect(() => {
-        powerUpPool.release({} as any);
+        powerUpPool.release({} as unknown);
       }).not.toThrow();
     });
 

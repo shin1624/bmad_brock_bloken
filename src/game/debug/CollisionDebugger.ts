@@ -3,7 +3,7 @@
  * Comprehensive debug system for collision detection visualization and performance monitoring
  */
 import { EventBus, GameEventPayloads, GameEventType } from "../core/EventBus";
-import { Rectangle, Circle, CollisionInfo } from "../../types/game.types";
+import { Rectangle, Circle } from "../../types/game.types";
 
 export type DebugCollisionEvent = GameEventPayloads[GameEventType.COLLISION_DEBUG];
 

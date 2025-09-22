@@ -1,5 +1,5 @@
 import { gameStateManager } from "../core/GameState";
-import { eventBus, GameEventType } from "../core/EventBus";
+import { eventBus } from "../core/EventBus";
 import { stateBridge } from "../bridges/StateBridge";
 import { useUIStore } from "../../stores/uiStore";
 import type { PerformanceMetrics } from "../../types/game.types";
@@ -34,7 +34,7 @@ export interface DebugInfo {
   eventHistory: Array<{
     type: string;
     timestamp: number;
-    payload?: any;
+    payload?: unknown;
   }>;
   sync: {
     initialized: boolean;
@@ -309,7 +309,7 @@ export class DevTools {
   private renderDebugPanel(info: DebugInfo): void {
     if (!this.debugElement) return;
 
-    const memoryInfo = (performance as any).memory;
+    const memoryInfo = (performance as unknown).memory;
 
     this.debugElement.innerHTML = `
       <div style="border-bottom: 1px solid #00ff00; margin-bottom: 10px; padding-bottom: 5px;">
@@ -438,7 +438,7 @@ export class DevTools {
    */
   getPerformanceStats(): PerformanceStats {
     const currentFps = this.calculateCurrentFPS();
-    const memoryInfo = (performance as any).memory;
+    const memoryInfo = (performance as unknown).memory;
 
     return {
       averageFps: this.calculateAverageFPS(),

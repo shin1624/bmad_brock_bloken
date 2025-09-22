@@ -31,7 +31,7 @@ const mockContext = {
   font: '',
   textAlign: 'start' as CanvasTextAlign,
   textBaseline: 'alphabetic' as CanvasTextBaseline,
-} as any;
+} as unknown;
 
 // Mock Image constructor
 global.Image = class {
@@ -45,7 +45,7 @@ global.Image = class {
       if (this.onload) this.onload();
     }, 0);
   }
-} as any;
+} as unknown;
 
 describe('Renderer', () => {
   let renderer: Renderer;

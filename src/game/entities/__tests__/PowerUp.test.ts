@@ -29,7 +29,7 @@ describe('PowerUp Entity', () => {
       stroke: vi.fn(),
       fillText: vi.fn(),
       measureText: vi.fn(() => ({ width: 10 }))
-    } as any;
+    } as unknown;
 
     // Reset time for consistent testing
     vi.useFakeTimers();
