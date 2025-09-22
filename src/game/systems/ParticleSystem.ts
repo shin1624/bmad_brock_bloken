@@ -171,7 +171,7 @@ export class ParticleSystem {
         size: 1,
         lifespan: 1
       }),
-      (particle) => {
+      (_particle) => {
         // Reset function - particle will be reset when acquired
       },
       this.config.maxParticles

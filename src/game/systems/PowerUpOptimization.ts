@@ -139,7 +139,7 @@ export class PowerUpOptimization {
     try {
       this.renderBatch = new OffscreenCanvas(800, 600);
       this.renderContext = this.renderBatch.getContext('2d');
-    } catch (error) {
+    } catch (_error) {
       console.warn('PowerUpOptimization: OffscreenCanvas not available, falling back to direct rendering');
       this.config.batchRendering = false;
     }

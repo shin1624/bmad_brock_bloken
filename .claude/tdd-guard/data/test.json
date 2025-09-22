@@ -1,6 +1,421 @@
 {
   "testModules": [
     {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts",
+      "tests": [
+        {
+          "name": "should validate power-up within limits",
+          "fullName": "PowerUpValidator > Default Validation Rules > should validate power-up within limits",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected false to be true // Object.is equality",
+              "stack": "AssertionError: expected false to be true // Object.is equality\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:34:30\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
+              "expected": "true",
+              "actual": "false"
+            }
+          ]
+        },
+        {
+          "name": "should reject power-up exceeding maximum limit",
+          "fullName": "PowerUpValidator > Default Validation Rules > should reject power-up exceeding maximum limit",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected 'Validation rule max_active_limit thre…' to contain 'Maximum power-ups limit reached'",
+              "stack": "AssertionError: expected 'Validation rule max_active_limit thre…' to contain 'Maximum power-ups limit reached'\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:51:32\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
+              "expected": "Maximum power-ups limit reached",
+              "actual": "Validation rule max_active_limit threw an error: ReferenceError: context is not defined"
+            }
+          ]
+        },
+        {
+          "name": "should reject invalid power-up type",
+          "fullName": "PowerUpValidator > Default Validation Rules > should reject invalid power-up type",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [ …(2) ] to have a length of 1 but got 2",
+              "stack": "AssertionError: expected [ …(2) ] to have a length of 1 but got 2\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1257:20)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:59:29\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
+              "expected": "1",
+              "actual": "2"
+            }
+          ]
+        },
+        {
+          "name": "should warn about negative duration",
+          "fullName": "PowerUpValidator > Default Validation Rules > should warn about negative duration",
+          "state": "passed"
+        },
+        {
+          "name": "should warn about excessive duration",
+          "fullName": "PowerUpValidator > Default Validation Rules > should warn about excessive duration",
+          "state": "passed"
+        },
+        {
+          "name": "should warn about negative position coordinates",
+          "fullName": "PowerUpValidator > Default Validation Rules > should warn about negative position coordinates",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [] to have a length of 1 but got +0",
+              "stack": "AssertionError: expected [] to have a length of 1 but got +0\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1257:20)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:90:31\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
+              "expected": "1",
+              "actual": "0"
+            }
+          ]
+        },
+        {
+          "name": "should reject remaining time exceeding duration",
+          "fullName": "PowerUpValidator > Default Validation Rules > should reject remaining time exceeding duration",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [ …(2) ] to have a length of 1 but got 2",
+              "stack": "AssertionError: expected [ …(2) ] to have a length of 1 but got 2\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1257:20)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:102:29\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
+              "expected": "1",
+              "actual": "2"
+            }
+          ]
+        },
+        {
+          "name": "should warn when stacking is disabled",
+          "fullName": "PowerUpValidator > Default Validation Rules > should warn when stacking is disabled",
+          "state": "passed"
+        },
+        {
+          "name": "should warn about maximum lives limit",
+          "fullName": "PowerUpValidator > Default Validation Rules > should warn about maximum lives limit",
+          "state": "passed"
+        },
+        {
+          "name": "should warn about excessive score multiplier",
+          "fullName": "PowerUpValidator > Default Validation Rules > should warn about excessive score multiplier",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [] to have a length of 1 but got +0",
+              "stack": "AssertionError: expected [] to have a length of 1 but got +0\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1257:20)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:140:31\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
+              "expected": "1",
+              "actual": "0"
+            }
+          ]
+        },
+        {
+          "name": "should allow adding custom validation rules",
+          "fullName": "PowerUpValidator > Custom Validation Rules > should allow adding custom validation rules",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [ Array(1) ] to include 'X position must be less than 100'",
+              "stack": "AssertionError: expected [ Array(1) ] to include 'X position must be less than 100'\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1191:15)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:162:29\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
+              "expected": "undefined",
+              "actual": "Array [\n  \"Validation rule max_active_limit threw an error: ReferenceError: context is not defined\",\n]"
+            }
+          ]
+        },
+        {
+          "name": "should allow removing validation rules",
+          "fullName": "PowerUpValidator > Custom Validation Rules > should allow removing validation rules",
+          "state": "passed"
+        },
+        {
+          "name": "should list all validation rules",
+          "fullName": "PowerUpValidator > Custom Validation Rules > should list all validation rules",
+          "state": "passed"
+        },
+        {
+          "name": "should validate multiple power-ups",
+          "fullName": "PowerUpValidator > Batch Validation > should validate multiple power-ups",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected false to be true // Object.is equality",
+              "stack": "AssertionError: expected false to be true // Object.is equality\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:198:35\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
+              "expected": "true",
+              "actual": "false"
+            }
+          ]
+        },
+        {
+          "name": "should detect batch-level errors",
+          "fullName": "PowerUpValidator > Batch Validation > should detect batch-level errors",
+          "state": "passed"
+        },
+        {
+          "name": "should auto-fix negative duration",
+          "fullName": "PowerUpValidator > Auto-Fix Functionality > should auto-fix negative duration",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected -1000 to be +0 // Object.is equality",
+              "stack": "AssertionError: expected -1000 to be +0 // Object.is equality\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:230:49\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
+              "expected": "0",
+              "actual": "-1000"
+            }
+          ]
+        },
+        {
+          "name": "should auto-fix negative position",
+          "fullName": "PowerUpValidator > Auto-Fix Functionality > should auto-fix negative position",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected false to be true // Object.is equality",
+              "stack": "AssertionError: expected false to be true // Object.is equality\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpValidator.test.ts:238:28\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
+              "expected": "true",
+              "actual": "false"
+            }
+          ]
+        },
+        {
+          "name": "should auto-fix remaining time inconsistency",
+          "fullName": "PowerUpValidator > Auto-Fix Functionality > should auto-fix remaining time inconsistency",
+          "state": "passed"
+        },
+        {
+          "name": "should not fix when no auto-fix available",
+          "fullName": "PowerUpValidator > Auto-Fix Functionality > should not fix when no auto-fix available",
+          "state": "passed"
+        },
+        {
+          "name": "should handle validation rule exceptions",
+          "fullName": "PowerUpValidator > Error Handling > should handle validation rule exceptions",
+          "state": "passed"
+        },
+        {
+          "name": "should continue validation after rule exception",
+          "fullName": "PowerUpValidator > Error Handling > should continue validation after rule exception",
+          "state": "passed"
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts",
+      "tests": [
+        {
+          "name": "should add power-up during gameplay",
+          "fullName": "PowerUpStateManager > Power-Up Management > should add power-up during gameplay",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should reject power-up when not in playing state",
+          "fullName": "PowerUpStateManager > Power-Up Management > should reject power-up when not in playing state",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should handle conflict resolution",
+          "fullName": "PowerUpStateManager > Power-Up Management > should handle conflict resolution",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should retrieve power-ups by type",
+          "fullName": "PowerUpStateManager > Power-Up Queries > should retrieve power-ups by type",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should check power-up type existence",
+          "fullName": "PowerUpStateManager > Power-Up Queries > should check power-up type existence",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should get correct stack count",
+          "fullName": "PowerUpStateManager > Power-Up Queries > should get correct stack count",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should update power-up remaining time",
+          "fullName": "PowerUpStateManager > Power-Up Updates > should update power-up remaining time",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should remove expired power-ups",
+          "fullName": "PowerUpStateManager > Power-Up Updates > should remove expired power-ups",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should not update when paused",
+          "fullName": "PowerUpStateManager > Power-Up Updates > should not update when paused",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should pause power-ups when transitioning to paused state",
+          "fullName": "PowerUpStateManager > State Transitions > should pause power-ups when transitioning to paused state",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should restore power-ups when transitioning from paused to playing",
+          "fullName": "PowerUpStateManager > State Transitions > should restore power-ups when transitioning from paused to playing",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should clear power-ups when transitioning to game over",
+          "fullName": "PowerUpStateManager > State Transitions > should clear power-ups when transitioning to game over",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should transfer only specific power-ups on level complete",
+          "fullName": "PowerUpStateManager > State Transitions > should transfer only specific power-ups on level complete",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should clear power-ups when transitioning to menu",
+          "fullName": "PowerUpStateManager > State Transitions > should clear power-ups when transitioning to menu",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should validate configuration correctly",
+          "fullName": "PowerUpStateManager > Validation > should validate configuration correctly",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should detect invalid power-up configuration",
+          "fullName": "PowerUpStateManager > Validation > should detect invalid power-up configuration",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should detect state inconsistency - paused without paused power-ups",
+          "fullName": "PowerUpStateManager > Validation > should detect state inconsistency - paused without paused power-ups",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should perform emergency reset",
+          "fullName": "PowerUpStateManager > Emergency Recovery > should perform emergency reset",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should emergency deactivate specific power-up",
+          "fullName": "PowerUpStateManager > Emergency Recovery > should emergency deactivate specific power-up",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        },
+        {
+          "name": "should emergency deactivate all power-ups of a type",
+          "fullName": "PowerUpStateManager > Emergency Recovery > should emergency deactivate all power-ups of a type",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpStateManager.test.ts:11:24\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1429:21)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1566:26)"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts",
       "tests": [
         {
@@ -9,149 +424,57 @@
           "state": "failed",
           "errors": [
             {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              "message": "expected Ball{ id: '08azskgzt', …(8) } to be Ball{ id: 'afg0c2o5f', …(8) } // Object.is equality",
+              "stack": "AssertionError: expected Ball{ id: '08azskgzt', …(8) } to be Ball{ id: 'afg0c2o5f', …(8) } // Object.is equality\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:58:21\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)",
+              "expected": "Ball {\n  \"active\": false,\n  \"bounceDamping\": 0.95,\n  \"id\": \"afg0c2o5f\",\n  \"maxSpeed\": 400,\n  \"minSpeed\": 50,\n  \"position\": Object {\n    \"x\": 0,\n    \"y\": 0,\n  },\n  \"radius\": 10,\n  \"speed\": 200,\n  \"velocity\": Object {\n    \"x\": 0,\n    \"y\": 0,\n  },\n}",
+              "actual": "Ball {\n  \"active\": false,\n  \"bounceDamping\": 0.95,\n  \"id\": \"08azskgzt\",\n  \"maxSpeed\": 400,\n  \"minSpeed\": 50,\n  \"position\": Object {\n    \"x\": 0,\n    \"y\": 0,\n  },\n  \"radius\": 10,\n  \"speed\": 200,\n  \"velocity\": Object {\n    \"x\": 0,\n    \"y\": 0,\n  },\n}"
             }
           ]
         },
         {
           "name": "should acquire and release power-ups correctly",
           "fullName": "PowerUpOptimization > Object Pool Management > should acquire and release power-ups correctly",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should acquire and release particles correctly",
           "fullName": "PowerUpOptimization > Object Pool Management > should acquire and release particles correctly",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should reset objects when acquired from pool",
           "fullName": "PowerUpOptimization > Object Pool Management > should reset objects when acquired from pool",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should update metrics correctly",
           "fullName": "PowerUpOptimization > Performance Metrics > should update metrics correctly",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should calculate average frame time over multiple updates",
           "fullName": "PowerUpOptimization > Performance Metrics > should calculate average frame time over multiple updates",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should track pool utilization",
           "fullName": "PowerUpOptimization > Performance Metrics > should track pool utilization",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should estimate memory usage",
           "fullName": "PowerUpOptimization > Performance Metrics > should estimate memory usage",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should cull off-screen entities",
           "fullName": "PowerUpOptimization > Culling and LOD > should cull off-screen entities",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should apply margin to culling",
           "fullName": "PowerUpOptimization > Culling and LOD > should apply margin to culling",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should apply level of detail based on distance",
@@ -159,29 +482,15 @@
           "state": "failed",
           "errors": [
             {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:190:49\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
             }
           ]
         },
         {
           "name": "should disable culling when config is false",
           "fullName": "PowerUpOptimization > Culling and LOD > should disable culling when config is false",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should perform batch rendering when enabled",
@@ -189,12 +498,8 @@
           "state": "failed",
           "errors": [
             {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:221:19\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
             }
           ]
         },
@@ -204,12 +509,8 @@
           "state": "failed",
           "errors": [
             {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:242:19\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
             }
           ]
         },
@@ -219,134 +520,50 @@
           "state": "failed",
           "errors": [
             {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:259:19\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
             }
           ]
         },
         {
           "name": "should limit particle count",
           "fullName": "PowerUpOptimization > Particle Optimization > should limit particle count",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should remove oldest particles first when over limit",
           "fullName": "PowerUpOptimization > Particle Optimization > should remove oldest particles first when over limit",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should merge nearby particles",
           "fullName": "PowerUpOptimization > Particle Optimization > should merge nearby particles",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should update configuration correctly",
           "fullName": "PowerUpOptimization > Configuration and Management > should update configuration correctly",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should provide pool statistics",
           "fullName": "PowerUpOptimization > Configuration and Management > should provide pool statistics",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should dispose resources properly",
           "fullName": "PowerUpOptimization > Configuration and Management > should dispose resources properly",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should handle OffscreenCanvas not being available",
           "fullName": "PowerUpOptimization > Error Handling > should handle OffscreenCanvas not being available",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should handle empty entity arrays",
           "fullName": "PowerUpOptimization > Error Handling > should handle empty entity arrays",
-          "state": "failed",
-          "errors": [
-            {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
-            }
-          ]
+          "state": "passed"
         },
         {
           "name": "should handle invalid entity data gracefully",
@@ -354,12 +571,10 @@
           "state": "failed",
           "errors": [
             {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              "message": "expected [Function] to not throw an error but 'TypeError: Cannot destructure propert…' was thrown",
+              "stack": "AssertionError: expected [Function] to not throw an error but 'TypeError: Cannot destructure propert…' was thrown\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1420:16)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:424:14\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
+              "expected": "undefined",
+              "actual": "TypeError: Cannot destructure property 'x' of 'entity.position' as it is null."
             }
           ]
         },
@@ -369,12 +584,8 @@
           "state": "failed",
           "errors": [
             {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:431:19\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
             }
           ]
         },
@@ -384,14 +595,142 @@
           "state": "failed",
           "errors": [
             {
-              "message": "Cannot read properties of undefined (reading 'position')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'position')\n    at new Particle (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/entities/Particle.ts:37:34)\n    at ObjectPool.particlePool.__vite_ssr_import_0__.ObjectPool.particle.active [as createFn] (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:110:13)\n    at ObjectPool.preFill (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/utils/ObjectPool.ts:57:24)\n    at PowerUpOptimization.initializePools (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:124:23)\n    at new PowerUpOptimization (/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/PowerUpOptimization.ts:67:10)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:32:17\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)"
-            },
-            {
-              "message": "Cannot read properties of undefined (reading 'dispose')",
-              "stack": "TypeError: Cannot read properties of undefined (reading 'dispose')\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:41:15\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1436:51)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1442:25)\n    at callSuiteHook (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1449:27)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1597:11)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              "message": "jest is not defined",
+              "stack": "ReferenceError: jest is not defined\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpOptimization.test.ts:443:35\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)\n    at runSuite (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1729:8)"
             }
           ]
+        }
+      ]
+    },
+    {
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpSystem.test.ts",
+      "tests": [
+        {
+          "name": "should apply effect successfully with plugin",
+          "fullName": "PowerUpSystem Integration > Effect Application > should apply effect successfully with plugin",
+          "state": "passed"
+        },
+        {
+          "name": "should reject effect when no plugin found",
+          "fullName": "PowerUpSystem Integration > Effect Application > should reject effect when no plugin found",
+          "state": "passed"
+        },
+        {
+          "name": "should handle plugin apply effect failure",
+          "fullName": "PowerUpSystem Integration > Effect Application > should handle plugin apply effect failure",
+          "state": "passed"
+        },
+        {
+          "name": "should allow stacking when plugin is stackable",
+          "fullName": "PowerUpSystem Integration > Effect Stacking Management > should allow stacking when plugin is stackable",
+          "state": "passed"
+        },
+        {
+          "name": "should reject stacking when plugin is not stackable",
+          "fullName": "PowerUpSystem Integration > Effect Stacking Management > should reject stacking when plugin is not stackable",
+          "state": "passed"
+        },
+        {
+          "name": "should respect maximum active effects limit",
+          "fullName": "PowerUpSystem Integration > Effect Stacking Management > should respect maximum active effects limit",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected true to be false // Object.is equality",
+              "stack": "AssertionError: expected true to be false // Object.is equality\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpSystem.test.ts:258:30\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20",
+              "expected": "false",
+              "actual": "true"
+            }
+          ]
+        },
+        {
+          "name": "should replace lower priority effect with higher priority",
+          "fullName": "PowerUpSystem Integration > Conflict Resolution > should replace lower priority effect with higher priority",
+          "state": "passed"
+        },
+        {
+          "name": "should reject lower priority effect when higher priority exists",
+          "fullName": "PowerUpSystem Integration > Conflict Resolution > should reject lower priority effect when higher priority exists",
+          "state": "passed"
+        },
+        {
+          "name": "should update active effects and track remaining time",
+          "fullName": "PowerUpSystem Integration > Duration Management > should update active effects and track remaining time",
+          "state": "passed"
+        },
+        {
+          "name": "should automatically remove expired effects",
+          "fullName": "PowerUpSystem Integration > Duration Management > should automatically remove expired effects",
+          "state": "passed"
+        },
+        {
+          "name": "should handle manual effect removal",
+          "fullName": "PowerUpSystem Integration > Duration Management > should handle manual effect removal",
+          "state": "passed"
+        },
+        {
+          "name": "should track performance statistics",
+          "fullName": "PowerUpSystem Integration > Performance Monitoring > should track performance statistics",
+          "state": "passed"
+        },
+        {
+          "name": "should track rejection statistics",
+          "fullName": "PowerUpSystem Integration > Performance Monitoring > should track rejection statistics",
+          "state": "passed"
+        },
+        {
+          "name": "should clear all effects on shutdown",
+          "fullName": "PowerUpSystem Integration > System Lifecycle > should clear all effects on shutdown",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [ { id: 'powerup-1', …(9) } ] to have a length of 2 but got 1",
+              "stack": "AssertionError: expected [ { id: 'powerup-1', …(9) } ] to have a length of 2 but got 1\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1257:20)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpSystem.test.ts:407:48\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20",
+              "expected": "2",
+              "actual": "1"
+            }
+          ]
+        },
+        {
+          "name": "should handle auto-cleanup when enabled",
+          "fullName": "PowerUpSystem Integration > System Lifecycle > should handle auto-cleanup when enabled",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [ { id: 'powerup-1', …(9) } ] to have a length of +0 but got 1",
+              "stack": "AssertionError: expected [ { id: 'powerup-1', …(9) } ] to have a length of +0 but got 1\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1257:20)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpSystem.test.ts:432:52\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20",
+              "expected": "0",
+              "actual": "1"
+            }
+          ]
+        },
+        {
+          "name": "should provide correct active effects for UI",
+          "fullName": "PowerUpSystem Integration > React-Canvas Bridge Integration > should provide correct active effects for UI",
+          "state": "passed"
+        },
+        {
+          "name": "should support filtering effects by type",
+          "fullName": "PowerUpSystem Integration > React-Canvas Bridge Integration > should support filtering effects by type",
+          "state": "passed"
+        },
+        {
+          "name": "should handle plugin errors gracefully during update",
+          "fullName": "PowerUpSystem Integration > Error Recovery > should handle plugin errors gracefully during update",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [ { id: 'powerup-1', …(9) } ] to have a length of +0 but got 1",
+              "stack": "AssertionError: expected [ { id: 'powerup-1', …(9) } ] to have a length of +0 but got 1\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1257:20)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/game/systems/__tests__/PowerUpSystem.test.ts:492:48\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:20",
+              "expected": "0",
+              "actual": "1"
+            }
+          ]
+        },
+        {
+          "name": "should continue processing other effects when one fails",
+          "fullName": "PowerUpSystem Integration > Error Recovery > should continue processing other effects when one fails",
+          "state": "passed"
         }
       ]
     }

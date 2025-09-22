@@ -3,7 +3,7 @@
  * Story 4.1, Task 3: Effect stacking management and duration tracking system
  * Manages active power-up effects with conflict resolution and cleanup
  */
-import { PowerUpType, PowerUpEffect, PowerUpMetadata } from '../entities/PowerUp';
+import { PowerUpType, PowerUpMetadata } from '../entities/PowerUp';
 import { PluginManager } from '../plugins/PluginManager';
 import {
   PowerUpPlugin,

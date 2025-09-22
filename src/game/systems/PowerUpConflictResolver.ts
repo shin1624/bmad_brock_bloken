@@ -147,7 +147,7 @@ export class PowerUpConflictResolver {
 
   private handleReject(
     newPowerUp: PowerUp,
-    conflictingPowerUps: PowerUp[]
+    _conflictingPowerUps: PowerUp[]
   ): ConflictResolution {
     return {
       action: 'rejected',

@@ -196,9 +196,7 @@ export class PowerUpStateManager {
   }
 
   private pauseAllPowerUps(): void {
-    const currentTime = Date.now();
-    
-    this.activePowerUps.forEach((powerUp, id) => {
+  this.activePowerUps.forEach((powerUp, id) => {
       const persistence: PowerUpPersistence = {
         type: powerUp.type,
         variant: powerUp.variant,

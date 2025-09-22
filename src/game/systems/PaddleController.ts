@@ -1,6 +1,6 @@
 import { Paddle } from '../entities/Paddle.js';
 import { InputManager } from './InputManager.js';
-import { InputState, Vector2D } from '../../types/game.types.js';
+import { InputState } from '../../types/game.types.js';
 
 export interface PaddleControllerConfig {
   paddle: Paddle;

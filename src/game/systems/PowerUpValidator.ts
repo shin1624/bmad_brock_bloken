@@ -40,7 +40,7 @@ export class PowerUpValidator {
     this.addValidationRule({
       name: 'max_active_limit',
       severity: 'error',
-      validate: (powerUp: PowerUp, context: ValidationContext): ValidationResult => {
+      validate: (powerUp: PowerUp, _context: ValidationContext): ValidationResult => {
         if (context.activePowerUps.length >= context.gameConfig.maxPowerUpsActive) {
           return {
             isValid: false,
@@ -56,7 +56,7 @@ export class PowerUpValidator {
     this.addValidationRule({
       name: 'valid_type',
       severity: 'error',
-      validate: (powerUp: PowerUp, context: ValidationContext): ValidationResult => {
+      validate: (powerUp: PowerUp, _context: ValidationContext): ValidationResult => {
         if (!Object.values(PowerUpType).includes(powerUp.type)) {
           return {
             isValid: false,
@@ -72,7 +72,7 @@ export class PowerUpValidator {
     this.addValidationRule({
       name: 'valid_duration',
       severity: 'warning',
-      validate: (powerUp: PowerUp, context: ValidationContext): ValidationResult => {
+      validate: (powerUp: PowerUp, _context: ValidationContext): ValidationResult => {
         if (powerUp.duration < 0) {
           return {
             isValid: false,
@@ -99,7 +99,7 @@ export class PowerUpValidator {
     this.addValidationRule({
       name: 'valid_position',
       severity: 'warning',
-      validate: (powerUp: PowerUp, context: ValidationContext): ValidationResult => {
+      validate: (powerUp: PowerUp, _context: ValidationContext): ValidationResult => {
         if (powerUp.position.x < 0 || powerUp.position.y < 0) {
           return {
             isValid: false,
@@ -121,7 +121,7 @@ export class PowerUpValidator {
     this.addValidationRule({
       name: 'remaining_time_consistency',
       severity: 'error',
-      validate: (powerUp: PowerUp, context: ValidationContext): ValidationResult => {
+      validate: (powerUp: PowerUp, _context: ValidationContext): ValidationResult => {
         if (powerUp.remainingTime > powerUp.duration) {
           return {
             isValid: false,
