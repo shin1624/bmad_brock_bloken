@@ -2,13 +2,13 @@
  * Custom hook for Block System integration
  * Manages block state, particle effects, and score updates in React
  */
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { BlockManager, LevelDefinition } from '../game/systems/BlockManager';
-import { ParticleSystem } from '../game/systems/ParticleSystem';
-import { ScoreManager } from '../game/systems/ScoreManager';
-import { Block } from '../game/entities/Block';
-import { EventBus } from '../game/core/EventBus';
-import { BlockType, BlockState, Vector2D } from '../types/game.types';
+import { useState, useEffect, useCallback, useRef } from "react";
+import { BlockManager, LevelDefinition } from "../game/systems/BlockManager";
+import { ParticleSystem } from "../game/systems/ParticleSystem";
+import { ScoreManager } from "../game/systems/ScoreManager";
+import { Block } from "../game/entities/Block";
+import { EventBus } from "../game/core/EventBus";
+import { BlockType, BlockState, Vector2D } from "../types/game.types";
 
 export interface BlockSystemState {
   blocks: BlockState[];
@@ -30,17 +30,21 @@ export interface BlockSystemState {
 export interface BlockSystemHook {
   // State
   blockState: BlockSystemState;
-  
+
   // Actions
   loadLevel: (levelDefinition: LevelDefinition) => void;
   loadDefaultLevel: () => void;
   clearAllBlocks: () => void;
   resetLevel: () => void;
-  
+
   // Block interactions
-  handleBlockHit: (blockId: string) => { destroyed: boolean; score: number; combo: number };
+  handleBlockHit: (blockId: string) => {
+    destroyed: boolean;
+    score: number;
+    combo: number;
+  };
   getBlockAt: (row: number, column: number) => Block | undefined;
-  
+
   // System references (for advanced usage)
   blockManager: BlockManager | null;
   particleSystem: ParticleSystem | null;
@@ -49,7 +53,7 @@ export interface BlockSystemHook {
 
 export const useBlockSystem = (
   eventBus: EventBus,
-  canvasRef: React.RefObject<HTMLCanvasElement>
+  canvasRef: React.RefObject<HTMLCanvasElement>,
 ): BlockSystemHook => {
   // State
   const [blockState, setBlockState] = useState<BlockSystemState>({
@@ -65,8 +69,8 @@ export const useBlockSystem = (
       cellHeight: 25,
       spacing: 5,
       offsetX: 50,
-      offsetY: 100
-    }
+      offsetY: 100,
+    },
   });
 
   // System references
@@ -82,12 +86,12 @@ export const useBlockSystem = (
 
     // Initialize Block Manager
     blockManagerRef.current = new BlockManager(eventBus);
-    
+
     // Initialize Particle System
     particleSystemRef.current = new ParticleSystem(eventBus, {
       maxParticles: 500,
       preFillCount: 50,
-      enableDebugMode: process.env.NODE_ENV === 'development'
+      enableDebugMode: process.env.NODE_ENV === "development",
     });
 
     // Initialize Score Manager
@@ -111,7 +115,7 @@ export const useBlockSystem = (
   useEffect(() => {
     if (!eventBus) return;
 
-    const handleBlockDestroyed = (data: {
+    const handleBlockDestroyed = (_data: {
       blockId: string;
       type: BlockType;
       position: Vector2D;
@@ -121,14 +125,14 @@ export const useBlockSystem = (
       updateBlockState();
     };
 
-    const handleLevelLoaded = (data: {
+    const handleLevelLoaded = (_data: {
       levelName: string;
       blockCount: number;
     }) => {
-      setBlockState(prev => ({
+      setBlockState((prev) => ({
         ...prev,
         isLoading: false,
-        isLevelComplete: false
+        isLevelComplete: false,
       }));
       updateBlockState();
     };
@@ -138,21 +142,21 @@ export const useBlockSystem = (
       totalScore: number;
       finalCombo: number;
     }) => {
-      setBlockState(prev => ({
+      setBlockState((prev) => ({
         ...prev,
-        isLevelComplete: true
+        isLevelComplete: true,
       }));
     };
 
     // Subscribe to events
-    eventBus.on('block:destroyed', handleBlockDestroyed);
-    eventBus.on('level:loaded', handleLevelLoaded);
-    eventBus.on('level:cleared', handleLevelCleared);
+    eventBus.on("block:destroyed", handleBlockDestroyed);
+    eventBus.on("level:loaded", handleLevelLoaded);
+    eventBus.on("level:cleared", handleLevelCleared);
 
     return () => {
-      eventBus.off('block:destroyed', handleBlockDestroyed);
-      eventBus.off('level:loaded', handleLevelLoaded);
-      eventBus.off('level:cleared', handleLevelCleared);
+      eventBus.off("block:destroyed", handleBlockDestroyed);
+      eventBus.off("level:loaded", handleLevelLoaded);
+      eventBus.off("level:cleared", handleLevelCleared);
     };
   }, [eventBus]);
 
@@ -174,17 +178,17 @@ export const useBlockSystem = (
       }
 
       // Render to canvas
-      if (canvasRef.current && canvasRef.current.getContext('2d')) {
-        const ctx = canvasRef.current.getContext('2d')!;
-        
+      if (canvasRef.current && canvasRef.current.getContext("2d")) {
+        const ctx = canvasRef.current.getContext("2d")!;
+
         // Clear previous frame
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        
+
         // Render blocks
         if (blockManagerRef.current) {
           blockManagerRef.current.render(ctx);
         }
-        
+
         // Render particles
         if (particleSystemRef.current) {
           particleSystemRef.current.render(ctx);
@@ -208,15 +212,16 @@ export const useBlockSystem = (
     if (!blockManagerRef.current) return;
 
     const blocks = blockManagerRef.current.getBlockStates();
-    const remainingBlocks = blockManagerRef.current.getRemainingDestructibleBlocks();
+    const remainingBlocks =
+      blockManagerRef.current.getRemainingDestructibleBlocks();
     const gridLayout = blockManagerRef.current.getGridLayout();
 
-    setBlockState(prev => ({
+    setBlockState((prev) => ({
       ...prev,
       blocks,
       remainingBlocks,
       gridLayout,
-      isLevelComplete: remainingBlocks === 0
+      isLevelComplete: remainingBlocks === 0,
     }));
   }, []);
 
@@ -224,9 +229,9 @@ export const useBlockSystem = (
   const loadLevel = useCallback((levelDefinition: LevelDefinition) => {
     if (!blockManagerRef.current) return;
 
-    setBlockState(prev => ({ ...prev, isLoading: true }));
+    setBlockState((prev) => ({ ...prev, isLoading: true }));
     blockManagerRef.current.loadLevel(levelDefinition);
-    
+
     // Clear particles when loading new level
     if (particleSystemRef.current) {
       particleSystemRef.current.clear();
@@ -236,7 +241,7 @@ export const useBlockSystem = (
   const loadDefaultLevel = useCallback(() => {
     if (!blockManagerRef.current) return;
 
-    setBlockState(prev => ({ ...prev, isLoading: true }));
+    setBlockState((prev) => ({ ...prev, isLoading: true }));
     blockManagerRef.current.loadDefaultLevel();
   }, []);
 
@@ -252,15 +257,18 @@ export const useBlockSystem = (
     loadDefaultLevel();
   }, [clearAllBlocks, loadDefaultLevel]);
 
-  const handleBlockHit = useCallback((blockId: string) => {
-    if (!blockManagerRef.current) {
-      return { destroyed: false, score: 0, combo: 0 };
-    }
+  const handleBlockHit = useCallback(
+    (blockId: string) => {
+      if (!blockManagerRef.current) {
+        return { destroyed: false, score: 0, combo: 0 };
+      }
 
-    const result = blockManagerRef.current.handleBlockHit(blockId);
-    updateBlockState();
-    return result;
-  }, [updateBlockState]);
+      const result = blockManagerRef.current.handleBlockHit(blockId);
+      updateBlockState();
+      return result;
+    },
+    [updateBlockState],
+  );
 
   const getBlockAt = useCallback((row: number, column: number) => {
     if (!blockManagerRef.current) return undefined;
@@ -277,6 +285,6 @@ export const useBlockSystem = (
     getBlockAt,
     blockManager: blockManagerRef.current,
     particleSystem: particleSystemRef.current,
-    scoreManager: scoreManagerRef.current
+    scoreManager: scoreManagerRef.current,
   };
 };

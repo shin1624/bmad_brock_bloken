@@ -1,20 +1,26 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { usePauseMenuNavigation } from './usePauseMenuNavigation';
+import { renderHook, act } from "@testing-library/react";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { usePauseMenuNavigation } from "./usePauseMenuNavigation";
 
-describe('usePauseMenuNavigation', () => {
+describe("usePauseMenuNavigation", () => {
   const mockOnSelect = vi.fn();
   const mockOnEscape = vi.fn();
-  const menuItems = ['resume', 'settings', 'mainMenu'];
+  const menuItems = ["resume", "settings", "mainMenu"];
 
   // Mock keyboard events
-  let dispatchKeyboardEvent: (key: string, options?: Partial<KeyboardEvent>) => void;
+  let dispatchKeyboardEvent: (
+    key: string,
+    options?: Partial<KeyboardEvent>,
+  ) => void;
 
   beforeEach(() => {
     vi.clearAllMocks();
-    
-    dispatchKeyboardEvent = (key: string, options: Partial<KeyboardEvent> = {}) => {
-      const event = new KeyboardEvent('keydown', {
+
+    dispatchKeyboardEvent = (
+      key: string,
+      options: Partial<KeyboardEvent> = {},
+    ) => {
+      const event = new KeyboardEvent("keydown", {
         key,
         bubbles: true,
         cancelable: true,
@@ -28,21 +34,21 @@ describe('usePauseMenuNavigation', () => {
     vi.clearAllTimers();
   });
 
-  it('should initialize with default values', () => {
-    const { result } = renderHook(() =>
+  it("should initialize with default values", () => {
+    renderHook(() =>
       usePauseMenuNavigation({
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
         initialFocusIndex: 1,
-      })
+      }),
     );
 
     expect(result.current.focusedIndex).toBe(1);
     expect(result.current.isNavigationActive).toBe(false);
   });
 
-  it('should activate navigation automatically after timeout', async () => {
+  it("should activate navigation automatically after timeout", async () => {
     vi.useFakeTimers();
 
     const { result } = renderHook(() =>
@@ -50,7 +56,7 @@ describe('usePauseMenuNavigation', () => {
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     expect(result.current.isNavigationActive).toBe(false);
@@ -65,7 +71,7 @@ describe('usePauseMenuNavigation', () => {
     vi.useRealTimers();
   });
 
-  it('should handle arrow key navigation', () => {
+  it("should handle arrow key navigation", () => {
     vi.useFakeTimers();
 
     const { result } = renderHook(() =>
@@ -73,7 +79,7 @@ describe('usePauseMenuNavigation', () => {
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     // Activate navigation
@@ -83,32 +89,32 @@ describe('usePauseMenuNavigation', () => {
 
     // Arrow down should move to next item
     act(() => {
-      dispatchKeyboardEvent('ArrowDown');
+      dispatchKeyboardEvent("ArrowDown");
     });
     expect(result.current.focusedIndex).toBe(1);
 
     // Arrow down again should move to next item
     act(() => {
-      dispatchKeyboardEvent('ArrowDown');
+      dispatchKeyboardEvent("ArrowDown");
     });
     expect(result.current.focusedIndex).toBe(2);
 
     // Arrow down at last item should wrap to first
     act(() => {
-      dispatchKeyboardEvent('ArrowDown');
+      dispatchKeyboardEvent("ArrowDown");
     });
     expect(result.current.focusedIndex).toBe(0);
 
     // Arrow up should move to previous item
     act(() => {
-      dispatchKeyboardEvent('ArrowUp');
+      dispatchKeyboardEvent("ArrowUp");
     });
     expect(result.current.focusedIndex).toBe(2);
 
     vi.useRealTimers();
   });
 
-  it('should handle Tab key navigation', () => {
+  it("should handle Tab key navigation", () => {
     vi.useFakeTimers();
 
     const { result } = renderHook(() =>
@@ -116,7 +122,7 @@ describe('usePauseMenuNavigation', () => {
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     // Activate navigation
@@ -126,20 +132,20 @@ describe('usePauseMenuNavigation', () => {
 
     // Tab should move forward
     act(() => {
-      dispatchKeyboardEvent('Tab');
+      dispatchKeyboardEvent("Tab");
     });
     expect(result.current.focusedIndex).toBe(1);
 
     // Shift+Tab should move backward
     act(() => {
-      dispatchKeyboardEvent('Tab', { shiftKey: true });
+      dispatchKeyboardEvent("Tab", { shiftKey: true });
     });
     expect(result.current.focusedIndex).toBe(0);
 
     vi.useRealTimers();
   });
 
-  it('should handle Enter key selection', () => {
+  it("should handle Enter key selection", () => {
     vi.useFakeTimers();
 
     const { result } = renderHook(() =>
@@ -147,39 +153,39 @@ describe('usePauseMenuNavigation', () => {
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
-    // Activate navigation 
+    // Activate navigation
     act(() => {
       vi.advanceTimersByTime(100);
     });
 
     // Move to index 1 and verify
     act(() => {
-      dispatchKeyboardEvent('ArrowDown');
+      dispatchKeyboardEvent("ArrowDown");
     });
 
     // Enter should trigger onSelect with current focused index
     act(() => {
-      dispatchKeyboardEvent('Enter');
+      dispatchKeyboardEvent("Enter");
     });
-    
+
     // The onSelect should be called with the currently focused index
     expect(mockOnSelect).toHaveBeenCalledWith(result.current.focusedIndex);
 
     vi.useRealTimers();
   });
 
-  it('should handle Space key selection', () => {
+  it("should handle Space key selection", () => {
     vi.useFakeTimers();
 
-    const { result } = renderHook(() =>
+    renderHook(() =>
       usePauseMenuNavigation({
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     // Activate navigation
@@ -189,22 +195,22 @@ describe('usePauseMenuNavigation', () => {
 
     // Space should trigger onSelect with current index
     act(() => {
-      dispatchKeyboardEvent(' ');
+      dispatchKeyboardEvent(" ");
     });
     expect(mockOnSelect).toHaveBeenCalledWith(0);
 
     vi.useRealTimers();
   });
 
-  it('should handle Escape key', () => {
+  it("should handle Escape key", () => {
     vi.useFakeTimers();
 
-    const { result } = renderHook(() =>
+    renderHook(() =>
       usePauseMenuNavigation({
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     // Activate navigation
@@ -214,14 +220,14 @@ describe('usePauseMenuNavigation', () => {
 
     // Escape should trigger onEscape
     act(() => {
-      dispatchKeyboardEvent('Escape');
+      dispatchKeyboardEvent("Escape");
     });
     expect(mockOnEscape).toHaveBeenCalledOnce();
 
     vi.useRealTimers();
   });
 
-  it('should provide correct focus props', () => {
+  it("should provide correct focus props", () => {
     vi.useFakeTimers();
 
     const { result } = renderHook(() =>
@@ -229,7 +235,7 @@ describe('usePauseMenuNavigation', () => {
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     // Activate navigation
@@ -241,27 +247,27 @@ describe('usePauseMenuNavigation', () => {
     const focusProps1 = result.current.getFocusProps(1);
 
     expect(focusProps0).toEqual({
-      'data-focused': true,
-      'aria-selected': true,
+      "data-focused": true,
+      "aria-selected": true,
       tabIndex: 0,
     });
 
     expect(focusProps1).toEqual({
-      'data-focused': false,
-      'aria-selected': false,
+      "data-focused": false,
+      "aria-selected": false,
       tabIndex: -1,
     });
 
     vi.useRealTimers();
   });
 
-  it('should not respond to keys when navigation is inactive', () => {
+  it("should not respond to keys when navigation is inactive", () => {
     const { result } = renderHook(() =>
       usePauseMenuNavigation({
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     // Navigation is not active yet
@@ -269,9 +275,9 @@ describe('usePauseMenuNavigation', () => {
 
     // Key events should not affect focused index
     act(() => {
-      dispatchKeyboardEvent('ArrowDown');
-      dispatchKeyboardEvent('Enter');
-      dispatchKeyboardEvent('Escape');
+      dispatchKeyboardEvent("ArrowDown");
+      dispatchKeyboardEvent("Enter");
+      dispatchKeyboardEvent("Escape");
     });
 
     expect(result.current.focusedIndex).toBe(0); // Still at initial value
@@ -279,13 +285,13 @@ describe('usePauseMenuNavigation', () => {
     expect(mockOnEscape).not.toHaveBeenCalled();
   });
 
-  it('should manually activate and deactivate navigation', () => {
+  it("should manually activate and deactivate navigation", () => {
     const { result } = renderHook(() =>
       usePauseMenuNavigation({
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     expect(result.current.isNavigationActive).toBe(false);
@@ -301,13 +307,13 @@ describe('usePauseMenuNavigation', () => {
     expect(result.current.isNavigationActive).toBe(false);
   });
 
-  it('should handle selectItem method', () => {
+  it("should handle selectItem method", () => {
     const { result } = renderHook(() =>
       usePauseMenuNavigation({
         menuItems,
         onSelect: mockOnSelect,
         onEscape: mockOnEscape,
-      })
+      }),
     );
 
     act(() => {

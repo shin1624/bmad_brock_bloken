@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from "react";
 
 // Generic game state interface
 export interface GameStateBase {
@@ -11,23 +11,23 @@ export interface GameStateBase {
 }
 
 // Event types for game state changes
-export type GameStateEventType = 
-  | 'stateChange'
-  | 'scoreUpdate'
-  | 'levelUp'
-  | 'gameOver'
-  | 'pause'
-  | 'resume'
-  | 'reset';
+export type GameStateEventType =
+  | "stateChange"
+  | "scoreUpdate"
+  | "levelUp"
+  | "gameOver"
+  | "pause"
+  | "resume"
+  | "reset";
 
-export interface GameStateEvent<T = any> {
+export interface GameStateEvent<T = unknown> {
   type: GameStateEventType;
   payload?: T;
   timestamp: number;
 }
 
 // Callback type for state change listeners
-export type GameStateCallback<T = any> = (event: GameStateEvent<T>) => void;
+export type GameStateCallback<T = unknown> = (event: GameStateEvent<T>) => void;
 
 /**
  * Custom hook for managing bidirectional game state synchronization
@@ -56,7 +56,7 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
     };
 
     const listeners = listenersRef.current.get(type) || [];
-    listeners.forEach(callback => {
+    listeners.forEach((callback) => {
       try {
         callback(event);
       } catch (error) {
@@ -65,99 +65,113 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
     });
 
     // Also emit to 'all' listeners
-    const allListeners = listenersRef.current.get('*') || [];
-    allListeners.forEach(callback => {
+    const allListeners = listenersRef.current.get("*") || [];
+    allListeners.forEach((callback) => {
       try {
         callback(event);
       } catch (error) {
-        console.error('Error in game state all-listener:', error);
+        console.error("Error in game state all-listener:", error);
       }
     });
   }, []);
 
   // Update game state with event emission
-  const updateState = useCallback((updates: Partial<T> | ((prevState: T) => T)) => {
-    setState(prevState => {
-      const newState = typeof updates === 'function' 
-        ? updates(prevState)
-        : { ...prevState, ...updates };
+  const updateState = useCallback(
+    (updates: Partial<T> | ((prevState: T) => T)) => {
+      setState((prevState) => {
+        const newState =
+          typeof updates === "function"
+            ? updates(prevState)
+            : { ...prevState, ...updates };
 
-      // Add to history
-      addToHistory(newState);
+        // Add to history
+        addToHistory(newState);
 
-      // Detect specific state changes and emit appropriate events
-      if (prevState.score !== newState.score) {
-        emitEvent('scoreUpdate', { 
-          oldScore: prevState.score, 
-          newScore: newState.score,
-          delta: newState.score - prevState.score 
-        });
-      }
+        // Detect specific state changes and emit appropriate events
+        if (prevState.score !== newState.score) {
+          emitEvent("scoreUpdate", {
+            oldScore: prevState.score,
+            newScore: newState.score,
+            delta: newState.score - prevState.score,
+          });
+        }
 
-      if (prevState.level !== newState.level && newState.level > prevState.level) {
-        emitEvent('levelUp', { 
-          oldLevel: prevState.level, 
-          newLevel: newState.level 
-        });
-      }
+        if (
+          prevState.level !== newState.level &&
+          newState.level > prevState.level
+        ) {
+          emitEvent("levelUp", {
+            oldLevel: prevState.level,
+            newLevel: newState.level,
+          });
+        }
 
-      if (prevState.isPaused !== newState.isPaused) {
-        emitEvent(newState.isPaused ? 'pause' : 'resume');
-      }
+        if (prevState.isPaused !== newState.isPaused) {
+          emitEvent(newState.isPaused ? "pause" : "resume");
+        }
 
-      if (!prevState.isPlaying && !newState.isPlaying && newState.lives <= 0) {
-        emitEvent('gameOver', { finalScore: newState.score, level: newState.level });
-      }
+        if (
+          !prevState.isPlaying &&
+          !newState.isPlaying &&
+          newState.lives <= 0
+        ) {
+          emitEvent("gameOver", {
+            finalScore: newState.score,
+            level: newState.level,
+          });
+        }
 
-      // General state change event
-      emitEvent('stateChange', { prevState, newState });
+        // General state change event
+        emitEvent("stateChange", { prevState, newState });
 
-      return newState;
-    });
-  }, [addToHistory, emitEvent]);
+        return newState;
+      });
+    },
+    [addToHistory, emitEvent],
+  );
 
   // Subscribe to state change events
-  const addEventListener = useCallback((
-    type: GameStateEventType | '*', 
-    callback: GameStateCallback
-  ) => {
-    const eventType = type as string;
-    const listeners = listenersRef.current.get(eventType) || [];
-    listeners.push(callback);
-    listenersRef.current.set(eventType, listeners);
+  const addEventListener = useCallback(
+    (type: GameStateEventType | "*", callback: GameStateCallback) => {
+      const eventType = type as string;
+      const listeners = listenersRef.current.get(eventType) || [];
+      listeners.push(callback);
+      listenersRef.current.set(eventType, listeners);
 
-    // Return unsubscribe function
-    return () => {
-      const currentListeners = listenersRef.current.get(eventType) || [];
-      const index = currentListeners.indexOf(callback);
-      if (index > -1) {
-        currentListeners.splice(index, 1);
-        if (currentListeners.length === 0) {
-          listenersRef.current.delete(eventType);
-        } else {
-          listenersRef.current.set(eventType, currentListeners);
+      // Return unsubscribe function
+      return () => {
+        const currentListeners = listenersRef.current.get(eventType) || [];
+        const index = currentListeners.indexOf(callback);
+        if (index > -1) {
+          currentListeners.splice(index, 1);
+          if (currentListeners.length === 0) {
+            listenersRef.current.delete(eventType);
+          } else {
+            listenersRef.current.set(eventType, currentListeners);
+          }
         }
-      }
-    };
-  }, []);
+      };
+    },
+    [],
+  );
 
   // Remove event listener
-  const removeEventListener = useCallback((
-    type: GameStateEventType | '*', 
-    callback: GameStateCallback
-  ) => {
-    const eventType = type as string;
-    const listeners = listenersRef.current.get(eventType) || [];
-    const index = listeners.indexOf(callback);
-    if (index > -1) {
-      listeners.splice(index, 1);
-      if (listeners.length === 0) {
-        listenersRef.current.delete(eventType);
-      } else {
-        listenersRef.current.set(eventType, listeners);
+  const removeEventListener = useCallback(
+    (type: GameStateEventType | "*", callback: GameStateCallback) => {
+      const eventType = type as string;
+      const listeners = listenersRef.current.get(eventType) || [];
+      const index = listeners.indexOf(callback);
+      if (index > -1) {
+        listeners.splice(index, 1);
+        if (listeners.length === 0) {
+          listenersRef.current.delete(eventType);
+        } else {
+          listenersRef.current.set(eventType, listeners);
+        }
       }
-    }
-  }, []);
+    },
+    [],
+  );
 
   // Game control methods
   const startGame = useCallback(() => {
@@ -173,17 +187,17 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
   }, [updateState]);
 
   const resetGame = useCallback(() => {
-    const resetState = { 
-      ...initialState, 
+    const resetState = {
+      ...initialState,
       gameTime: 0,
       score: 0,
       level: 1,
-      lives: initialState.lives 
+      lives: initialState.lives,
     } as T;
-    
+
     setState(resetState);
     stateHistoryRef.current = [resetState];
-    emitEvent('reset', { newState: resetState });
+    emitEvent("reset", { newState: resetState });
   }, [initialState, emitEvent]);
 
   const endGame = useCallback(() => {
@@ -198,17 +212,20 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
   }, []);
 
   // Restore to previous state
-  const restorePreviousState = useCallback((stepsBack = 1) => {
-    const previousState = getPreviousState(stepsBack);
-    if (previousState) {
-      setState(previousState);
-      emitEvent('stateChange', { 
-        prevState: state, 
-        newState: previousState, 
-        restored: true 
-      });
-    }
-  }, [getPreviousState, state, emitEvent]);
+  const restorePreviousState = useCallback(
+    (stepsBack = 1) => {
+      const previousState = getPreviousState(stepsBack);
+      if (previousState) {
+        setState(previousState);
+        emitEvent("stateChange", {
+          prevState: state,
+          newState: previousState,
+          restored: true,
+        });
+      }
+    },
+    [getPreviousState, state, emitEvent],
+  );
 
   // Cleanup listeners on unmount
   useEffect(() => {
