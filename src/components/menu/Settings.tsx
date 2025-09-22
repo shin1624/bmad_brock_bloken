@@ -49,7 +49,7 @@ export const Settings: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-700 mb-3">
               コントロール設定
             </h3>
-            
+
             {/* 入力モード選択 */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600 mb-2">
@@ -59,15 +59,22 @@ export const Settings: React.FC = () => {
                 {["keyboard", "mouse", "touch"].map((mode) => (
                   <button
                     key={mode}
-                    onClick={() => handleControlsChange(mode as any)}
+                    onClick={() =>
+                      handleControlsChange(
+                        mode as "keyboard" | "mouse" | "touch",
+                      )
+                    }
                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       settings.controls === mode
                         ? "bg-blue-500 text-white"
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
-                    {mode === "keyboard" ? "キーボード" : 
-                     mode === "mouse" ? "マウス" : "タッチ"}
+                    {mode === "keyboard"
+                      ? "キーボード"
+                      : mode === "mouse"
+                        ? "マウス"
+                        : "タッチ"}
                   </button>
                 ))}
               </div>
@@ -76,7 +83,7 @@ export const Settings: React.FC = () => {
             {/* 入力感度調整 */}
             <div className="space-y-3">
               <h4 className="text-sm font-medium text-gray-600">入力感度</h4>
-              
+
               {/* キーボード感度 */}
               <div>
                 <div className="flex justify-between items-center mb-1">
@@ -92,7 +99,10 @@ export const Settings: React.FC = () => {
                   step="0.1"
                   value={settings.inputSensitivity.keyboard}
                   onChange={(e) =>
-                    handleInputSensitivityChange("keyboard", parseFloat(e.target.value))
+                    handleInputSensitivityChange(
+                      "keyboard",
+                      parseFloat(e.target.value),
+                    )
                   }
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                 />
@@ -113,7 +123,10 @@ export const Settings: React.FC = () => {
                   step="0.1"
                   value={settings.inputSensitivity.mouse}
                   onChange={(e) =>
-                    handleInputSensitivityChange("mouse", parseFloat(e.target.value))
+                    handleInputSensitivityChange(
+                      "mouse",
+                      parseFloat(e.target.value),
+                    )
                   }
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                 />
@@ -134,7 +147,10 @@ export const Settings: React.FC = () => {
                   step="0.1"
                   value={settings.inputSensitivity.touch}
                   onChange={(e) =>
-                    handleInputSensitivityChange("touch", parseFloat(e.target.value))
+                    handleInputSensitivityChange(
+                      "touch",
+                      parseFloat(e.target.value),
+                    )
                   }
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                 />
@@ -147,7 +163,7 @@ export const Settings: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-700 mb-3">
               ゲーム設定
             </h3>
-            
+
             {/* オーディオ有効化 */}
             <div className="mb-4">
               <label className="flex items-center space-x-2 text-sm font-medium text-gray-600">
@@ -270,15 +286,22 @@ export const Settings: React.FC = () => {
                 {["easy", "normal", "hard"].map((level) => (
                   <button
                     key={level}
-                    onClick={() => updateSettings({ difficulty: level as any })}
+                    onClick={() =>
+                      updateSettings({
+                        difficulty: level as "easy" | "normal" | "hard",
+                      })
+                    }
                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                       settings.difficulty === level
                         ? "bg-blue-500 text-white"
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
-                    {level === "easy" ? "簡単" : 
-                     level === "normal" ? "普通" : "難しい"}
+                    {level === "easy"
+                      ? "簡単"
+                      : level === "normal"
+                        ? "普通"
+                        : "難しい"}
                   </button>
                 ))}
               </div>

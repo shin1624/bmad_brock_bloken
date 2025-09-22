@@ -1,6 +1,7 @@
 import React from "react";
 import { useLevelData } from "../../../hooks/useLevelData";
 import { validateLevelName } from "../../../utils/inputValidation";
+import type { LevelData, LevelProgress } from "../../../types/level.types";
 
 export interface LevelSelectProps {
   onSelectLevel: (levelId: number) => void;
@@ -9,12 +10,15 @@ export interface LevelSelectProps {
 /**
  * Gets the completion status indicator for a level
  */
-const getCompletionStatus = (level: any, progress: any): string => {
+const getCompletionStatus = (
+  level: LevelData,
+  progress: LevelProgress | null,
+): string => {
   if (!level.unlocked) return "🔒";
-  
+
   const isCompleted = progress?.completedLevels?.includes(level.id);
   const hasScore = progress?.levelScores?.[level.id];
-  
+
   if (isCompleted && hasScore) {
     // Check if score is above required for "perfect"
     if (level.requiredScore && hasScore >= level.requiredScore * 1.5) {
@@ -22,7 +26,7 @@ const getCompletionStatus = (level: any, progress: any): string => {
     }
     return "✅"; // Completed
   }
-  
+
   return ""; // Available but not completed
 };
 

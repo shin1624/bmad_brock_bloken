@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import React, { useState } from "react";
 import { usePauseInput } from "../../../hooks/usePauseInput";
 import { usePauseMenuNavigation } from "../../../hooks/usePauseMenuNavigation";
 import { useIsPaused, useIsPauseMenuOpen } from "../../../stores/uiStore";
@@ -8,6 +7,13 @@ import { MenuButton } from "./MenuButton";
 import { PauseMenuSettings } from "./PauseMenuSettings";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import styles from "./PauseMenu.module.css";
+import type { GameStateManager } from "../../../game/core/GameState";
+
+declare global {
+  interface Window {
+    gameStateManager?: GameStateManager;
+  }
+}
 
 export interface PauseMenuProps {
   onResume?: () => void;
@@ -83,8 +89,8 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
 
     // Clean up game state when returning to main menu
     // This will reset scores, lives, etc.
-    if (typeof window !== "undefined" && (window as any).gameStateManager) {
-      const gameStateManager = (window as any).gameStateManager;
+    if (typeof window !== "undefined" && window.gameStateManager) {
+      const gameStateManager = window.gameStateManager;
       gameStateManager.reset();
       gameStateManager.setGameStatus("idle");
     }
