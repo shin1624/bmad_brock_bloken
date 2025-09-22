@@ -2,12 +2,12 @@
  * PowerUp Plugin Registry Implementation
  * Story 4.2, Task 4: Centralized registration system for all power-up plugins
  */
-import { PluginManager } from '../PluginManager';
-import { PowerUpSystem } from '../../systems/PowerUpSystem';
-import { MultiBallPowerUp } from './MultiBallPowerUp';
-import { PaddleSizePowerUp, PaddleSizeVariant } from './PaddleSizePowerUp';
-import { BallSpeedPowerUp, BallSpeedVariant } from './BallSpeedPowerUp';
-import { PowerUpType } from '../../entities/PowerUp';
+import { PluginManager } from "../PluginManager";
+import { PowerUpSystem } from "../../systems/PowerUpSystem";
+import { MultiBallPowerUp } from "./MultiBallPowerUp";
+import { PaddleSizePowerUp } from "./PaddleSizePowerUp";
+import { BallSpeedPowerUp } from "./BallSpeedPowerUp";
+import { PowerUpType } from "../../entities/PowerUp";
 
 /**
  * PowerUpRegistry Class
@@ -30,24 +30,28 @@ export class PowerUpRegistry {
     try {
       // Register MultiBall power-up
       const multiBallPlugin = new MultiBallPowerUp();
-      await this.registerPlugin('multiball', multiBallPlugin);
+      await this.registerPlugin("multiball", multiBallPlugin);
 
       // Register PaddleSize power-ups (both variants)
       const largePaddlePlugin = PaddleSizePowerUp.createLarge();
       const smallPaddlePlugin = PaddleSizePowerUp.createSmall();
-      await this.registerPlugin('paddle_large', largePaddlePlugin);
-      await this.registerPlugin('paddle_small', smallPaddlePlugin);
+      await this.registerPlugin("paddle_large", largePaddlePlugin);
+      await this.registerPlugin("paddle_small", smallPaddlePlugin);
 
       // Register BallSpeed power-ups (both variants)
       const fastBallPlugin = BallSpeedPowerUp.createFast();
       const slowBallPlugin = BallSpeedPowerUp.createSlow();
-      await this.registerPlugin('ball_fast', fastBallPlugin);
-      await this.registerPlugin('ball_slow', slowBallPlugin);
+      await this.registerPlugin("ball_fast", fastBallPlugin);
+      await this.registerPlugin("ball_slow", slowBallPlugin);
 
-      console.log(`PowerUpRegistry: Successfully registered ${this.registeredPlugins.size} power-up plugins`);
-
+      console.log(
+        `PowerUpRegistry: Successfully registered ${this.registeredPlugins.size} power-up plugins`,
+      );
     } catch (error) {
-      console.error('PowerUpRegistry: Failed to register power-up plugins:', error);
+      console.error(
+        "PowerUpRegistry: Failed to register power-up plugins:",
+        error,
+      );
       throw error;
     }
   }
@@ -63,10 +67,14 @@ export class PowerUpRegistry {
       // Store in local registry
       this.registeredPlugins.set(id, plugin);
 
-      console.log(`PowerUpRegistry: Registered plugin '${id}' (${plugin.name})`);
-
+      console.log(
+        `PowerUpRegistry: Registered plugin '${id}' (${plugin.name})`,
+      );
     } catch (error) {
-      console.error(`PowerUpRegistry: Failed to register plugin '${id}':`, error);
+      console.error(
+        `PowerUpRegistry: Failed to register plugin '${id}':`,
+        error,
+      );
       throw error;
     }
   }
@@ -91,20 +99,20 @@ export class PowerUpRegistry {
   public getPluginByType(type: PowerUpType, variant?: string): any | null {
     switch (type) {
       case PowerUpType.MultiBall:
-        return this.getPlugin('multiball');
-      
+        return this.getPlugin("multiball");
+
       case PowerUpType.PaddleSize:
-        if (variant === 'large') return this.getPlugin('paddle_large');
-        if (variant === 'small') return this.getPlugin('paddle_small');
+        if (variant === "large") return this.getPlugin("paddle_large");
+        if (variant === "small") return this.getPlugin("paddle_small");
         // Default to large if no variant specified
-        return this.getPlugin('paddle_large');
-      
+        return this.getPlugin("paddle_large");
+
       case PowerUpType.BallSpeed:
-        if (variant === 'fast') return this.getPlugin('ball_fast');
-        if (variant === 'slow') return this.getPlugin('ball_slow');
+        if (variant === "fast") return this.getPlugin("ball_fast");
+        if (variant === "slow") return this.getPlugin("ball_slow");
         // Default to fast if no variant specified
-        return this.getPlugin('ball_fast');
-      
+        return this.getPlugin("ball_fast");
+
       default:
         return null;
     }
@@ -121,10 +129,9 @@ export class PowerUpRegistry {
       }
 
       this.registeredPlugins.clear();
-      console.log('PowerUpRegistry: All plugins unregistered');
-
+      console.log("PowerUpRegistry: All plugins unregistered");
     } catch (error) {
-      console.error('PowerUpRegistry: Error during unregistration:', error);
+      console.error("PowerUpRegistry: Error during unregistration:", error);
       throw error;
     }
   }
@@ -138,15 +145,15 @@ export class PowerUpRegistry {
     pluginTypes: { [type: string]: string[] };
   } {
     const pluginTypes: { [type: string]: string[] } = {
-      [PowerUpType.MultiBall]: ['multiball'],
-      [PowerUpType.PaddleSize]: ['paddle_large', 'paddle_small'],
-      [PowerUpType.BallSpeed]: ['ball_fast', 'ball_slow']
+      [PowerUpType.MultiBall]: ["multiball"],
+      [PowerUpType.PaddleSize]: ["paddle_large", "paddle_small"],
+      [PowerUpType.BallSpeed]: ["ball_fast", "ball_slow"],
     };
 
     return {
       totalRegistered: this.registeredPlugins.size,
       pluginIds: this.getRegisteredPluginIds(),
-      pluginTypes
+      pluginTypes,
     };
   }
 
@@ -154,8 +161,8 @@ export class PowerUpRegistry {
    * Factory method to create registry with all plugins
    */
   public static async createWithAllPlugins(
-    pluginManager: PluginManager, 
-    powerUpSystem: PowerUpSystem
+    pluginManager: PluginManager,
+    powerUpSystem: PowerUpSystem,
   ): Promise<PowerUpRegistry> {
     const registry = new PowerUpRegistry(pluginManager, powerUpSystem);
     await registry.registerAllPowerUps();

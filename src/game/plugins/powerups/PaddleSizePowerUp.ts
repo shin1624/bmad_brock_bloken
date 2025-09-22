@@ -2,13 +2,17 @@
  * Paddle Size Power-Up Plugin Implementation
  * Story 4.2, Task 2: Modifies paddle size (large/small)
  */
-import { PowerUpPlugin, PowerUpPluginContext, EffectResult } from '../PowerUpPlugin';
-import { PowerUpType, PowerUpEffect } from '../../entities/PowerUp';
-import { Paddle } from '../../entities/Paddle';
+import {
+  PowerUpPlugin,
+  PowerUpPluginContext,
+  EffectResult,
+} from "../PowerUpPlugin";
+import { PowerUpType, PowerUpEffect } from "../../entities/PowerUp";
+import { Paddle } from "../../entities/Paddle";
 
 export enum PaddleSizeVariant {
-  Large = 'large',
-  Small = 'small'
+  Large = "large",
+  Small = "small",
 }
 
 interface PaddleSizeEffectData {
@@ -34,16 +38,16 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
       stackable: false,
       conflictsWith: [PowerUpType.PaddleSize], // Conflicts with other paddle size changes
       apply: () => {}, // Implementation in onApplyEffect
-      remove: () => {} // Implementation in onRemoveEffect
+      remove: () => {}, // Implementation in onRemoveEffect
     };
 
     super(
       `PaddleSizePowerUp_${variant}`,
-      '1.0.0',
+      "1.0.0",
       PowerUpType.PaddleSize,
       effect,
       `Modifies paddle size (${variant})`,
-      []
+      [],
     );
 
     this.variant = variant;
@@ -61,27 +65,32 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
     try {
       const paddle = context.gameEntities.paddle as Paddle;
       if (!paddle || !paddle.active) {
-        this.log('No active paddle found', 'error');
+        this.log("No active paddle found", "error");
         return {
           success: false,
           modified: false,
-          error: new Error('No active paddle available for size modification')
+          error: new Error("No active paddle available for size modification"),
         };
       }
 
       // Calculate new size
-      const multiplier = this.variant === PaddleSizeVariant.Large ? 
-        PaddleSizePowerUp.LARGE_MULTIPLIER : PaddleSizePowerUp.SMALL_MULTIPLIER;
+      const multiplier =
+        this.variant === PaddleSizeVariant.Large
+          ? PaddleSizePowerUp.LARGE_MULTIPLIER
+          : PaddleSizePowerUp.SMALL_MULTIPLIER;
 
       const originalSize = paddle.getBounds();
       const newWidth = originalSize.width * multiplier;
 
       // Ensure minimum paddle width
       if (newWidth < PaddleSizePowerUp.MIN_PADDLE_WIDTH) {
-        this.log(`Paddle would be too small (${newWidth}px), effect not applied`, 'warn');
+        this.log(
+          `Paddle would be too small (${newWidth}px), effect not applied`,
+          "warn",
+        );
         return {
           success: true,
-          modified: false
+          modified: false,
         };
       }
 
@@ -91,13 +100,13 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
         originalWidth: originalSize.width,
         originalHeight: originalSize.height,
         sizeMultiplier: multiplier,
-        paddleId: (paddle as any).id || 'main_paddle'
+        paddleId: paddle.id || "main_paddle",
       };
 
       // Apply size change
       const config = {
         width: newWidth,
-        height: originalSize.height * multiplier
+        height: originalSize.height * multiplier,
       };
 
       paddle.updateConfig(config);
@@ -108,20 +117,21 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
       // Store effect data in context for later cleanup
       context.effectData = effectData;
 
-      this.log(`PaddleSize (${this.variant}) effect applied: ${originalSize.width}px → ${newWidth}px`);
+      this.log(
+        `PaddleSize (${this.variant}) effect applied: ${originalSize.width}px → ${newWidth}px`,
+      );
 
       return {
         success: true,
         modified: true,
-        rollback: () => this.rollbackEffect(context)
+        rollback: () => this.rollbackEffect(context),
       };
-
     } catch (error) {
-      this.log(`Failed to apply PaddleSize effect: ${error.message}`, 'error');
+      this.log(`Failed to apply PaddleSize effect: ${error.message}`, "error");
       return {
         success: false,
         modified: false,
-        error: error as Error
+        error: error as Error,
       };
     }
   }
@@ -130,20 +140,20 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
     try {
       const effectData = context.effectData as PaddleSizeEffectData;
       if (!effectData) {
-        this.log('No effect data found for removal', 'warn');
+        this.log("No effect data found for removal", "warn");
         return { success: true, modified: false };
       }
 
       const paddle = context.gameEntities.paddle as Paddle;
       if (!paddle || !paddle.active) {
-        this.log('No active paddle found for effect removal', 'warn');
+        this.log("No active paddle found for effect removal", "warn");
         return { success: true, modified: false };
       }
 
       // Restore original size
       const config = {
         width: effectData.originalWidth,
-        height: effectData.originalHeight
+        height: effectData.originalHeight,
       };
 
       paddle.updateConfig(config);
@@ -151,24 +161,25 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
       // Adjust position after size change
       this.adjustPaddlePosition(paddle);
 
-      this.log(`PaddleSize (${effectData.variant}) effect removed: restored to ${effectData.originalWidth}px`);
+      this.log(
+        `PaddleSize (${effectData.variant}) effect removed: restored to ${effectData.originalWidth}px`,
+      );
 
       return {
         success: true,
-        modified: true
+        modified: true,
       };
-
     } catch (error) {
-      this.log(`Failed to remove PaddleSize effect: ${error.message}`, 'error');
+      this.log(`Failed to remove PaddleSize effect: ${error.message}`, "error");
       return {
         success: false,
         modified: false,
-        error: error as Error
+        error: error as Error,
       };
     }
   }
 
-  protected onUpdateEffect(context: PowerUpPluginContext): EffectResult {
+  protected onUpdateEffect(_context: PowerUpPluginContext): EffectResult {
     // PaddleSize doesn't need frame-by-frame updates
     // The size change is applied once and persists
     return { success: true, modified: false };
@@ -176,12 +187,14 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
 
   protected onHandleConflict(
     conflictingType: PowerUpType,
-    context: PowerUpPluginContext
+    context: PowerUpPluginContext,
   ): EffectResult {
     if (conflictingType === PowerUpType.PaddleSize) {
       // Handle paddle size conflicts: higher priority wins
-      this.log(`PaddleSize conflict detected with ${conflictingType}, applying priority-based resolution`);
-      
+      this.log(
+        `PaddleSize conflict detected with ${conflictingType}, applying priority-based resolution`,
+      );
+
       // Remove existing effect before applying new one
       const removeResult = this.onRemoveEffect(context);
       if (!removeResult.success) {
@@ -197,15 +210,15 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
   }
 
   protected getIcon(): string {
-    return this.variant === PaddleSizeVariant.Large ? '🏓' : '🏓';
+    return this.variant === PaddleSizeVariant.Large ? "🏓" : "🏓";
   }
 
   protected getColor(): string {
-    return this.variant === PaddleSizeVariant.Large ? '#4ecdc4' : '#ff9f43';
+    return this.variant === PaddleSizeVariant.Large ? "#4ecdc4" : "#ff9f43";
   }
 
-  protected getRarity(): 'common' | 'rare' | 'epic' {
-    return 'common';
+  protected getRarity(): "common" | "rare" | "epic" {
+    return "common";
   }
 
   protected getDuration(): number {
@@ -244,15 +257,18 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
       // Restore original size
       const config = {
         width: effectData.originalWidth,
-        height: effectData.originalHeight
+        height: effectData.originalHeight,
       };
 
       paddle.updateConfig(config);
       this.adjustPaddlePosition(paddle);
 
-      this.log('PaddleSize effect rolled back successfully');
+      this.log("PaddleSize effect rolled back successfully");
     } catch (error) {
-      this.log(`Failed to rollback PaddleSize effect: ${error.message}`, 'error');
+      this.log(
+        `Failed to rollback PaddleSize effect: ${error.message}`,
+        "error",
+      );
     }
   }
 
@@ -274,15 +290,19 @@ export class PaddleSizePowerUp extends PowerUpPlugin {
    * Get size multiplier for variant
    */
   public static getMultiplier(variant: PaddleSizeVariant): number {
-    return variant === PaddleSizeVariant.Large ? 
-      PaddleSizePowerUp.LARGE_MULTIPLIER : PaddleSizePowerUp.SMALL_MULTIPLIER;
+    return variant === PaddleSizeVariant.Large
+      ? PaddleSizePowerUp.LARGE_MULTIPLIER
+      : PaddleSizePowerUp.SMALL_MULTIPLIER;
   }
 
   /**
    * Check if paddle would be too small
    */
-  public static wouldBeTooSmall(currentWidth: number, variant: PaddleSizeVariant): boolean {
+  public static wouldBeTooSmall(
+    currentWidth: number,
+    variant: PaddleSizeVariant,
+  ): boolean {
     const multiplier = PaddleSizePowerUp.getMultiplier(variant);
-    return (currentWidth * multiplier) < PaddleSizePowerUp.MIN_PADDLE_WIDTH;
+    return currentWidth * multiplier < PaddleSizePowerUp.MIN_PADDLE_WIDTH;
   }
 }
