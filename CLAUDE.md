@@ -179,4 +179,4 @@ Stories and epics defined in the PRD need to be sharded into individual files us
 
 ## Language
 
-思考は英語で, 出力は日本語で
+思考は英語で, 出力は日本語でしてください。

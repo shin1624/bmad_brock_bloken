@@ -210,3 +210,36 @@ export const DEFAULT_EDITOR_CONFIG: EditorConfig = {
   autoSaveInterval: 30_000,
   virtualScrollBuffer: 5,
 };
+
+// Level Persistence Types
+export interface Level {
+  id: string;
+  name: string;
+  author?: string;
+  createdAt: number;
+  updatedAt: number;
+  version: string;
+  metadata: {
+    difficulty?: 'easy' | 'medium' | 'hard';
+    tags?: string[];
+    description?: string;
+  };
+  grid: {
+    width: number;
+    height: number;
+    blocks: Array<{
+      x: number;
+      y: number;
+      type: string;
+      health?: number;
+      powerUp?: string;
+    }>;
+  };
+  settings?: {
+    ballSpeed?: number;
+    paddleSize?: number;
+    theme?: string;
+  };
+}
+
+export const LEVEL_FORMAT_VERSION = '1.0.0';
