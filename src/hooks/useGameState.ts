@@ -234,6 +234,54 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
     };
   }, []);
 
+  // Get state history
+  const getStateHistory = useCallback(() => {
+    return [...stateHistoryRef.current];
+  }, []);
+
+  // Undo to previous state
+  const undo = useCallback(() => {
+    const history = stateHistoryRef.current;
+    if (history.length > 1) {
+      // Remove current state
+      history.pop();
+      // Get previous state
+      const previousState = history[history.length - 1];
+      setState(previousState);
+      emitEvent("stateChange", {
+        prevState: state,
+        newState: previousState,
+        undo: true,
+      });
+    }
+  }, [state, emitEvent]);
+
+  // Reset to initial state
+  const reset = useCallback(() => {
+    setState(initialState);
+    stateHistoryRef.current = [initialState];
+    emitEvent("reset", { newState: initialState });
+  }, [initialState, emitEvent]);
+
+  // Batch update for multiple state changes
+  const batchUpdate = useCallback(
+    (updates: Array<Partial<T>>) => {
+      setState((prevState) => {
+        const newState = updates.reduce(
+          (acc, update) => ({ ...acc, ...update }),
+          prevState
+        );
+        addToHistory(newState);
+        emitEvent("stateChange", { prevState, newState, batch: true });
+        return newState;
+      });
+    },
+    [addToHistory, emitEvent]
+  );
+
+  // Computed game over state
+  const isGameOver = state.lives <= 0 && !state.isPlaying;
+
   return {
     // Current state
     state,
@@ -241,6 +289,7 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
     // State update methods
     updateState,
     setState: updateState, // Alias for convenience
+    batchUpdate,
 
     // Game control
     startGame,
@@ -248,6 +297,8 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
     resumeGame,
     resetGame,
     endGame,
+    reset,
+    undo,
 
     // Event system
     addEventListener,
@@ -257,10 +308,12 @@ export function useGameState<T extends GameStateBase>(initialState: T) {
     // History management
     getPreviousState,
     restorePreviousState,
+    getStateHistory,
     history: stateHistoryRef.current,
 
     // Computed properties
     isGameActive: state.isPlaying && !state.isPaused,
     canPlay: !state.isPlaying || state.isPaused,
+    isGameOver,
   };
 }

@@ -1,101 +1,208 @@
 {
   "testModules": [
     {
-      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/utils/levelExportImport.test.ts",
+      "moduleId": "/Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/__tests__/useGameState.enhanced.test.ts",
       "tests": [
         {
-          "name": "should generate a level code string",
-          "fullName": "Level Export/Import Utils > generateLevelCode > should generate a level code string",
+          "name": "should initialize with the provided initial state",
+          "fullName": "useGameState - Enhanced Test Suite > State Initialization > should initialize with the provided initial state",
           "state": "passed"
         },
         {
-          "name": "should generate URL-safe codes",
-          "fullName": "Level Export/Import Utils > generateLevelCode > should generate URL-safe codes",
+          "name": "should handle complex nested initial state",
+          "fullName": "useGameState - Enhanced Test Suite > State Initialization > should handle complex nested initial state",
           "state": "passed"
         },
         {
-          "name": "should compress data effectively",
-          "fullName": "Level Export/Import Utils > generateLevelCode > should compress data effectively",
+          "name": "should update state with partial updates",
+          "fullName": "useGameState - Enhanced Test Suite > State Updates > should update state with partial updates",
           "state": "passed"
         },
         {
-          "name": "should include a checksum",
-          "fullName": "Level Export/Import Utils > generateLevelCode > should include a checksum",
+          "name": "should update state with function updater",
+          "fullName": "useGameState - Enhanced Test Suite > State Updates > should update state with function updater",
           "state": "passed"
         },
         {
-          "name": "should decode a valid level code",
-          "fullName": "Level Export/Import Utils > decodeLevelCode > should decode a valid level code",
+          "name": "should handle multiple rapid updates",
+          "fullName": "useGameState - Enhanced Test Suite > State Updates > should handle multiple rapid updates",
           "state": "passed"
         },
         {
-          "name": "should throw error on invalid format",
-          "fullName": "Level Export/Import Utils > decodeLevelCode > should throw error on invalid format",
+          "name": "should handle array mutations correctly",
+          "fullName": "useGameState - Enhanced Test Suite > State Updates > should handle array mutations correctly",
           "state": "passed"
         },
         {
-          "name": "should throw error on corrupted data",
-          "fullName": "Level Export/Import Utils > decodeLevelCode > should throw error on corrupted data",
+          "name": "should emit scoreUpdate event on score change",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should emit scoreUpdate event on score change",
           "state": "passed"
         },
         {
-          "name": "should throw error on invalid base64",
-          "fullName": "Level Export/Import Utils > decodeLevelCode > should throw error on invalid base64",
+          "name": "should emit levelUp event on level increase",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should emit levelUp event on level increase",
           "state": "passed"
         },
         {
-          "name": "should validate decoded level structure",
-          "fullName": "Level Export/Import Utils > decodeLevelCode > should validate decoded level structure",
+          "name": "should not emit levelUp event on level decrease",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should not emit levelUp event on level decrease",
           "state": "passed"
         },
         {
-          "name": "should maintain data integrity through encode/decode cycle",
-          "fullName": "Level Export/Import Utils > Level code round-trip > should maintain data integrity through encode/decode cycle",
+          "name": "should emit pause and resume events",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should emit pause and resume events",
           "state": "passed"
         },
         {
-          "name": "should handle levels with minimal data",
-          "fullName": "Level Export/Import Utils > Level code round-trip > should handle levels with minimal data",
+          "name": "should emit gameOver event when lives reach 0",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should emit gameOver event when lives reach 0",
           "state": "passed"
         },
         {
-          "name": "should handle levels with large grids",
-          "fullName": "Level Export/Import Utils > Level code round-trip > should handle levels with large grids",
+          "name": "should emit stateChange event on any update",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should emit stateChange event on any update",
           "state": "passed"
         },
         {
-          "name": "should return the byte size of a level code",
-          "fullName": "Level Export/Import Utils > getLevelCodeSize > should return the byte size of a level code",
+          "name": "should handle wildcard listeners",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should handle wildcard listeners",
           "state": "passed"
         },
         {
-          "name": "should return true for small level codes",
-          "fullName": "Level Export/Import Utils > isLevelCodeShareable > should return true for small level codes",
+          "name": "should unsubscribe listeners correctly",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should unsubscribe listeners correctly",
           "state": "passed"
         },
         {
-          "name": "should check against URL size limit",
-          "fullName": "Level Export/Import Utils > isLevelCodeShareable > should check against URL size limit",
+          "name": "should handle multiple listeners for same event",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should handle multiple listeners for same event",
           "state": "passed"
         },
         {
-          "name": "should create a minimal version of a level",
-          "fullName": "Level Export/Import Utils > createMinimalLevel > should create a minimal version of a level",
+          "name": "should handle listener errors gracefully",
+          "fullName": "useGameState - Enhanced Test Suite > Event System > should handle listener errors gracefully",
           "state": "passed"
         },
         {
-          "name": "should optimize block data",
-          "fullName": "Level Export/Import Utils > createMinimalLevel > should optimize block data",
+          "name": "should maintain state history",
+          "fullName": "useGameState - Enhanced Test Suite > State History > should maintain state history",
           "state": "passed"
         },
         {
-          "name": "should produce smaller codes",
-          "fullName": "Level Export/Import Utils > createMinimalLevel > should produce smaller codes",
+          "name": "should limit history size to prevent memory leaks",
+          "fullName": "useGameState - Enhanced Test Suite > State History > should limit history size to prevent memory leaks",
+          "state": "passed"
+        },
+        {
+          "name": "should handle undo operation",
+          "fullName": "useGameState - Enhanced Test Suite > State History > should handle undo operation",
+          "state": "passed"
+        },
+        {
+          "name": "should not undo beyond initial state",
+          "fullName": "useGameState - Enhanced Test Suite > State History > should not undo beyond initial state",
+          "state": "passed"
+        },
+        {
+          "name": "should reset to initial state",
+          "fullName": "useGameState - Enhanced Test Suite > Reset Functionality > should reset to initial state",
+          "state": "passed"
+        },
+        {
+          "name": "should emit reset event on reset",
+          "fullName": "useGameState - Enhanced Test Suite > Reset Functionality > should emit reset event on reset",
+          "state": "passed"
+        },
+        {
+          "name": "should clear history on reset",
+          "fullName": "useGameState - Enhanced Test Suite > Reset Functionality > should clear history on reset",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [ { isPlaying: false, …(9) }, …(1) ] to have a length of 1 but got 2",
+              "stack": "AssertionError: expected [ { isPlaying: false, …(9) }, …(1) ] to have a length of 1 but got 2\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1257:20)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/__tests__/useGameState.enhanced.test.ts:459:23\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
+              "expected": "1",
+              "actual": "2"
+            }
+          ]
+        },
+        {
+          "name": "should provide computed game over state",
+          "fullName": "useGameState - Enhanced Test Suite > Computed Properties > should provide computed game over state",
+          "state": "passed"
+        },
+        {
+          "name": "should provide computed high score",
+          "fullName": "useGameState - Enhanced Test Suite > Computed Properties > should provide computed high score",
+          "state": "passed"
+        },
+        {
+          "name": "should batch multiple state updates efficiently",
+          "fullName": "useGameState - Enhanced Test Suite > Batch Updates > should batch multiple state updates efficiently",
+          "state": "passed"
+        },
+        {
+          "name": "should handle complex batch operations",
+          "fullName": "useGameState - Enhanced Test Suite > Batch Updates > should handle complex batch operations",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "updates.reduce is not a function",
+              "stack": "TypeError: updates.reduce is not a function\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/useGameState.ts:270:34\n    at basicStateReducer (/Users/yoshikawashin/project/bmad_brock_bloken/node_modules/react-dom/cjs/react-dom-client.development.js:5802:45)\n    at updateReducerImpl (/Users/yoshikawashin/project/bmad_brock_bloken/node_modules/react-dom/cjs/react-dom-client.development.js:5913:17)\n    at updateReducer (/Users/yoshikawashin/project/bmad_brock_bloken/node_modules/react-dom/cjs/react-dom-client.development.js:5835:14)\n    at Object.useState (/Users/yoshikawashin/project/bmad_brock_bloken/node_modules/react-dom/cjs/react-dom-client.development.js:23209:18)\n    at process.env.NODE_ENV.exports.useState (/Users/yoshikawashin/project/bmad_brock_bloken/node_modules/react/cjs/react.development.js:1222:34)\n    at useGameState (/Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/useGameState.ts:37:29)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/__tests__/useGameState.enhanced.test.ts:523:43\n    at TestComponent (/Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@testing-library/react/dist/pure.js:331:27)\n    at Object.react_stack_bottom_frame (/Users/yoshikawashin/project/bmad_brock_bloken/node_modules/react-dom/cjs/react-dom-client.development.js:23863:20)"
+            }
+          ]
+        },
+        {
+          "name": "should handle rapid updates without performance degradation",
+          "fullName": "useGameState - Enhanced Test Suite > Performance > should handle rapid updates without performance degradation",
+          "state": "passed"
+        },
+        {
+          "name": "should handle many listeners efficiently",
+          "fullName": "useGameState - Enhanced Test Suite > Performance > should handle many listeners efficiently",
+          "state": "passed"
+        },
+        {
+          "name": "should handle undefined updates gracefully",
+          "fullName": "useGameState - Enhanced Test Suite > Edge Cases > should handle undefined updates gracefully",
+          "state": "passed"
+        },
+        {
+          "name": "should handle null values in state",
+          "fullName": "useGameState - Enhanced Test Suite > Edge Cases > should handle null values in state",
+          "state": "passed"
+        },
+        {
+          "name": "should handle removing event listeners that were never added",
+          "fullName": "useGameState - Enhanced Test Suite > Edge Cases > should handle removing event listeners that were never added",
+          "state": "passed"
+        },
+        {
+          "name": "should handle state updates after unmount gracefully",
+          "fullName": "useGameState - Enhanced Test Suite > Edge Cases > should handle state updates after unmount gracefully",
+          "state": "passed"
+        },
+        {
+          "name": "should handle complete game flow",
+          "fullName": "useGameState - Enhanced Test Suite > Integration Scenarios > should handle complete game flow",
+          "state": "failed",
+          "errors": [
+            {
+              "message": "expected [ 'stateChange', 'scoreUpdate', …(9) ] to include 'gameOver'",
+              "stack": "AssertionError: expected [ 'stateChange', 'scoreUpdate', …(9) ] to include 'gameOver'\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1191:15)\n    at Proxy.<anonymous> (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/expect/dist/index.js:1029:14)\n    at Proxy.methodWrapper (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/chai/index.js:1686:25)\n    at /Users/yoshikawashin/project/bmad_brock_bloken/src/hooks/__tests__/useGameState.enhanced.test.ts:684:22\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///Users/yoshikawashin/project/bmad_brock_bloken/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)",
+              "expected": "undefined",
+              "actual": "Array [\n  \"stateChange\",\n  \"scoreUpdate\",\n  \"stateChange\",\n  \"stateChange\",\n  \"levelUp\",\n  \"stateChange\",\n  \"pause\",\n  \"stateChange\",\n  \"resume\",\n  \"stateChange\",\n  \"stateChange\",\n]"
+            }
+          ]
+        },
+        {
+          "name": "should handle power-up collection flow",
+          "fullName": "useGameState - Enhanced Test Suite > Integration Scenarios > should handle power-up collection flow",
           "state": "passed"
         }
       ]
     }
   ],
   "unhandledErrors": [],
-  "reason": "passed"
+  "reason": "failed"
 }

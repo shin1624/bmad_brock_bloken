@@ -1,0 +1,83 @@
+name: Coverage Report
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests with coverage
+      run: npm run test:coverage
+    
+    - name: Generate coverage report
+      run: node scripts/coverage-report.js
+    
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-reports
+        path: |
+          coverage/lcov-report/
+          coverage/COVERAGE.md
+          coverage/detailed-report.json
+    
+    - name: Comment PR with coverage
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const coverage = fs.readFileSync('coverage/COVERAGE.md', 'utf8');
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: coverage
+          });
+    
+    - name: Check coverage thresholds
+      run: |
+        node -e "
+          const report = require('./coverage/detailed-report.json');
+          const summary = report.summary;
+          
+          const failed = [];
+          if (summary.statements.pct < 90) failed.push('statements');
+          if (summary.branches.pct < 85) failed.push('branches');
+          if (summary.functions.pct < 80) failed.push('functions');
+          if (summary.lines.pct < 90) failed.push('lines');
+          
+          if (failed.length > 0) {
+            console.error('Coverage thresholds not met:', failed.join(', '));
+            process.exit(1);
+          }
+          
+          console.log('All coverage thresholds met!');
+        "
+    
+    - name: Update badges
+      if: github.ref == 'refs/heads/main'
+      run: |
+        node scripts/update-badges.js
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add README.md
+        git diff --staged --quiet || git commit -m "chore: update coverage badges"
+        git push

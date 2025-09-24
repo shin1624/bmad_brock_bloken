@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useGameLoop } from './useGameLoop';
 import { useGameState, type GameStateBase } from './useGameState';
 import type { GameLoopConfig } from '../types/game.types';
-import { audioSystem } from '../game/systems/AudioSystem';
+import { audioService } from '../services/AudioService';
 
 interface GameEngineConfig<T extends GameStateBase> extends GameLoopConfig {
   initialGameState: T;
@@ -47,13 +47,13 @@ export function useGameEngine<T extends GameStateBase>(config: GameEngineConfig<
   useEffect(() => {
     let cancelled = false;
 
-    audioSystem.initialize().catch((error) => {
+    audioService.initialize().catch((error) => {
       console.error('Failed to initialize audio system:', error);
     });
 
     return () => {
       if (!cancelled) {
-        audioSystem.destroy();
+        audioService.dispose();
         cancelled = true;
       }
     };
