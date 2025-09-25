@@ -1,92 +1,241 @@
-import { Page, Locator } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { BasePage } from './base.page';
+import {
+  waitForCanvasReady,
+  waitForGameEngineReady,
+  getGameState,
+  movePaddleTo,
+  startNewGame,
+  pauseGame,
+  resumeGame,
+  pressGameKey,
+  getFPS,
+  screenshotCanvas,
+  GameState
+} from '../fixtures/canvas-helpers';
 
 /**
  * Game Page Object Model
- * Encapsulates game canvas interactions and game state queries
+ * Handles interactions with the main game canvas and gameplay
  */
-export class GamePage {
-  readonly page: Page;
-  readonly gameCanvas: Locator;
-  readonly scoreDisplay: Locator;
-  readonly livesDisplay: Locator;
-  readonly levelDisplay: Locator;
-  readonly pauseButton: Locator;
-  readonly gameOverDialog: Locator;
-  readonly winDialog: Locator;
-
+export class GamePage extends BasePage {
   constructor(page: Page) {
-    this.page = page;
-    this.gameCanvas = page.locator('#game-canvas');
-    this.scoreDisplay = page.locator('[data-testid="score-display"]');
-    this.livesDisplay = page.locator('[data-testid="lives-display"]');
-    this.levelDisplay = page.locator('[data-testid="level-display"]');
-    this.pauseButton = page.locator('[data-testid="pause-button"]');
-    this.gameOverDialog = page.locator('[data-testid="game-over-dialog"]');
-    this.winDialog = page.locator('[data-testid="win-dialog"]');
+    super(page);
   }
 
-  async goto() {
-    await this.page.goto('/game');
+  /**
+   * Navigate to game and wait for it to be ready
+   */
+  async gotoGame() {
+    await this.goto('/');
+    await this.waitForGameReady();
   }
 
-  async startGame() {
-    await this.page.keyboard.press('Space');
+  /**
+   * Wait for game to be fully ready
+   */
+  async waitForGameReady() {
+    await waitForCanvasReady(this.page);
+    await waitForGameEngineReady(this.page);
   }
 
+  /**
+   * Get current game state
+   */
+  async getGameState(): Promise<GameState> {
+    return await getGameState(this.page);
+  }
+
+  /**
+   * Start a new game
+   */
+  async startNewGame() {
+    await startNewGame(this.page);
+  }
+
+  /**
+   * Pause the game
+   */
   async pauseGame() {
-    await this.pauseButton.click();
+    await pauseGame(this.page);
   }
 
+  /**
+   * Resume the game
+   */
   async resumeGame() {
-    await this.page.keyboard.press('Escape');
+    await resumeGame(this.page);
   }
 
-  async movePaddleLeft(duration = 100) {
-    await this.page.keyboard.down('ArrowLeft');
-    await this.page.waitForTimeout(duration);
-    await this.page.keyboard.up('ArrowLeft');
+  /**
+   * Move paddle to specific position
+   */
+  async movePaddle(x: number) {
+    await movePaddleTo(this.page, x);
   }
 
-  async movePaddleRight(duration = 100) {
-    await this.page.keyboard.down('ArrowRight');
-    await this.page.waitForTimeout(duration);
-    await this.page.keyboard.up('ArrowRight');
+  /**
+   * Move paddle left
+   */
+  async movePaddleLeft() {
+    await pressGameKey(this.page, 'ArrowLeft');
   }
 
-  async movePaddleToPosition(x: number) {
-    await this.gameCanvas.click({ position: { x, y: 550 } });
+  /**
+   * Move paddle right
+   */
+  async movePaddleRight() {
+    await pressGameKey(this.page, 'ArrowRight');
   }
 
+  /**
+   * Use keyboard controls (WASD)
+   */
+  async useWASDControls(key: 'w' | 'a' | 's' | 'd') {
+    await pressGameKey(this.page, key);
+  }
+
+  /**
+   * Get current score
+   */
   async getScore(): Promise<number> {
-    const text = await this.scoreDisplay.textContent();
-    return parseInt(text?.replace(/\D/g, '') || '0');
+    const state = await this.getGameState();
+    return state.score;
   }
 
+  /**
+   * Get remaining lives
+   */
   async getLives(): Promise<number> {
-    const text = await this.livesDisplay.textContent();
-    return parseInt(text?.replace(/\D/g, '') || '0');
+    const state = await this.getGameState();
+    return state.lives;
   }
 
+  /**
+   * Get current level
+   */
   async getLevel(): Promise<number> {
-    const text = await this.levelDisplay.textContent();
-    return parseInt(text?.replace(/\D/g, '') || '0');
+    const state = await this.getGameState();
+    return state.level;
   }
 
+  /**
+   * Check if game is playing
+   */
+  async isPlaying(): Promise<boolean> {
+    const state = await this.getGameState();
+    return state.isPlaying;
+  }
+
+  /**
+   * Check if game is paused
+   */
+  async isPaused(): Promise<boolean> {
+    const state = await this.getGameState();
+    return state.isPaused;
+  }
+
+  /**
+   * Check if game is over
+   */
   async isGameOver(): Promise<boolean> {
-    return await this.gameOverDialog.isVisible();
+    const state = await this.getGameState();
+    return state.isGameOver;
   }
 
-  async isGameWon(): Promise<boolean> {
-    return await this.winDialog.isVisible();
+  /**
+   * Get current FPS
+   */
+  async getFPS(): Promise<number> {
+    return await getFPS(this.page);
   }
 
-  async restartGame() {
-    if (await this.isGameOver() || await this.isGameWon()) {
-      await this.page.keyboard.press('Enter');
+  /**
+   * Take screenshot of game canvas
+   */
+  async screenshotGame(path?: string) {
+    return await screenshotCanvas(this.page, path);
+  }
+
+  /**
+   * Wait for specific score
+   */
+  async waitForScore(targetScore: number, timeout = 30000) {
+    await this.page.waitForFunction(
+      (score) => {
+        if (!window.gameEngine) return false;
+        const state = window.gameEngine.getState();
+        return state.score >= score;
+      },
+      targetScore,
+      { timeout }
+    );
+  }
+
+  /**
+   * Wait for level change
+   */
+  async waitForLevel(targetLevel: number, timeout = 30000) {
+    await this.page.waitForFunction(
+      (level) => {
+        if (!window.gameEngine) return false;
+        const state = window.gameEngine.getState();
+        return state.level >= level;
+      },
+      targetLevel,
+      { timeout }
+    );
+  }
+
+  /**
+   * Wait for game over
+   */
+  async waitForGameOver(timeout = 30000) {
+    await this.page.waitForFunction(
+      () => {
+        if (!window.gameEngine) return false;
+        const state = window.gameEngine.getState();
+        return state.isGameOver === true;
+      },
+      { timeout }
+    );
+  }
+
+  /**
+   * Get HUD elements
+   */
+  async getHUDElements() {
+    return {
+      score: await this.getText('.hud-score'),
+      lives: await this.getText('.hud-lives'),
+      level: await this.getText('.hud-level'),
+      combo: await this.getText('.hud-combo'),
+      powerUp: await this.getText('.hud-powerup')
+    };
+  }
+
+  /**
+   * Verify game performance
+   */
+  async checkPerformance() {
+    const samples: number[] = [];
+    
+    // Collect FPS samples over 3 seconds
+    for (let i = 0; i < 30; i++) {
+      const fps = await this.getFPS();
+      samples.push(fps);
+      await this.page.waitForTimeout(100);
     }
-  }
-
-  async waitForBallLaunch() {
-    await this.page.waitForTimeout(1000);
+    
+    const avgFPS = samples.reduce((a, b) => a + b, 0) / samples.length;
+    const minFPS = Math.min(...samples);
+    const maxFPS = Math.max(...samples);
+    
+    return {
+      average: avgFPS,
+      min: minFPS,
+      max: maxFPS,
+      samples
+    };
   }
 }

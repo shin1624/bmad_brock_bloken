@@ -1,53 +1,133 @@
-import { Page, Locator } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { BasePage } from './base.page';
 
 /**
  * Main Menu Page Object Model
- * Handles main menu navigation and interactions
+ * Handles interactions with the main menu and navigation
  */
-export class MainMenuPage {
-  readonly page: Page;
-  readonly playButton: Locator;
-  readonly settingsButton: Locator;
-  readonly levelEditorButton: Locator;
-  readonly highScoresButton: Locator;
-  readonly helpButton: Locator;
-  readonly title: Locator;
+export class MainMenuPage extends BasePage {
+  // Selectors
+  private readonly selectors = {
+    mainMenu: '.main-menu',
+    startButton: 'button[data-testid="start-game"]',
+    settingsButton: 'button[data-testid="settings"]',
+    highScoresButton: 'button[data-testid="high-scores"]',
+    levelSelectButton: 'button[data-testid="level-select"]',
+    exitButton: 'button[data-testid="exit"]',
+    logo: '.game-logo',
+    version: '.game-version'
+  };
 
   constructor(page: Page) {
-    this.page = page;
-    this.playButton = page.locator('[data-testid="play-button"]');
-    this.settingsButton = page.locator('[data-testid="settings-button"]');
-    this.levelEditorButton = page.locator('[data-testid="level-editor-button"]');
-    this.highScoresButton = page.locator('[data-testid="high-scores-button"]');
-    this.helpButton = page.locator('[data-testid="help-button"]');
-    this.title = page.locator('[data-testid="game-title"]');
+    super(page);
   }
 
-  async goto() {
-    await this.page.goto('/');
+  /**
+   * Navigate to main menu
+   */
+  async gotoMainMenu() {
+    await this.goto('/');
+    await this.waitForMainMenu();
   }
 
-  async clickPlay() {
-    await this.playButton.click();
+  /**
+   * Wait for main menu to be visible
+   */
+  async waitForMainMenu() {
+    await this.waitForVisible(this.selectors.mainMenu);
   }
 
+  /**
+   * Click Start Game button
+   */
+  async clickStartGame() {
+    await this.click(this.selectors.startButton);
+  }
+
+  /**
+   * Click Settings button
+   */
   async clickSettings() {
-    await this.settingsButton.click();
+    await this.click(this.selectors.settingsButton);
   }
 
-  async clickLevelEditor() {
-    await this.levelEditorButton.click();
-  }
-
+  /**
+   * Click High Scores button
+   */
   async clickHighScores() {
-    await this.highScoresButton.click();
+    await this.click(this.selectors.highScoresButton);
   }
 
-  async clickHelp() {
-    await this.helpButton.click();
+  /**
+   * Click Level Select button
+   */
+  async clickLevelSelect() {
+    await this.click(this.selectors.levelSelectButton);
   }
 
-  async isVisible(): Promise<boolean> {
-    return await this.title.isVisible();
+  /**
+   * Click Exit button
+   */
+  async clickExit() {
+    await this.click(this.selectors.exitButton);
+  }
+
+  /**
+   * Check if main menu is visible
+   */
+  async isMainMenuVisible(): Promise<boolean> {
+    return await this.isVisible(this.selectors.mainMenu);
+  }
+
+  /**
+   * Get game version
+   */
+  async getGameVersion(): Promise<string> {
+    return await this.getText(this.selectors.version);
+  }
+
+  /**
+   * Check if all menu buttons are visible
+   */
+  async areAllButtonsVisible(): Promise<boolean> {
+    const checks = await Promise.all([
+      this.isVisible(this.selectors.startButton),
+      this.isVisible(this.selectors.settingsButton),
+      this.isVisible(this.selectors.highScoresButton),
+      this.isVisible(this.selectors.levelSelectButton)
+    ]);
+    return checks.every(visible => visible === true);
+  }
+
+  /**
+   * Navigate to game from menu
+   */
+  async navigateToGame() {
+    await this.clickStartGame();
+    await this.page.waitForLoadState('domcontentloaded');
+  }
+
+  /**
+   * Navigate to settings from menu
+   */
+  async navigateToSettings() {
+    await this.clickSettings();
+    await this.page.waitForSelector('.settings-panel');
+  }
+
+  /**
+   * Navigate to high scores from menu
+   */
+  async navigateToHighScores() {
+    await this.clickHighScores();
+    await this.page.waitForSelector('.high-scores-panel');
+  }
+
+  /**
+   * Navigate to level select from menu
+   */
+  async navigateToLevelSelect() {
+    await this.clickLevelSelect();
+    await this.page.waitForSelector('.level-select-panel');
   }
 }
