@@ -388,14 +388,15 @@ describe("Power-Up System Performance", () => {
       }
 
       // Force garbage collection if available
-      interface GlobalWithGC extends typeof globalThis {
+      type GlobalWithGC = typeof globalThis & {
         gc?: () => void;
-      }
+      };
       if ((global as GlobalWithGC).gc) {
         (global as GlobalWithGC).gc();
       }
 
-      const finalMemory = (performance as PerformanceWithMemory).memory?.usedJSHeapSize || 0;
+      const finalMemory =
+        (performance as PerformanceWithMemory).memory?.usedJSHeapSize || 0;
       const memoryIncrease = finalMemory - initialMemory;
 
       // Memory increase should be minimal (less than 1MB)

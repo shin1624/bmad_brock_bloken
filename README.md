@@ -1,11 +1,86 @@
-# React + TypeScript + Vite
+# Block Breaker Game - React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern block breaker game built with React, TypeScript, and Canvas, featuring comprehensive testing and CI/CD integration.
 
-Currently, two official plugins are available:
+## 🎮 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Classic block breaker gameplay
+- React + Canvas hybrid architecture
+- TypeScript for type safety
+- Comprehensive test coverage
+- CI/CD pipeline with GitHub Actions
+
+## 🧪 Testing
+
+### Running Tests
+
+```bash
+# Run all unit tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run integration tests
+npm test -- src/__tests__/integration
+
+# Run E2E tests
+npm run test:e2e
+
+# TypeScript type checking
+npm run typecheck
+```
+
+### Test Coverage Goals
+
+- **Unit Tests**: 90% coverage target
+- **Integration Tests**: Key user flows covered
+- **E2E Tests**: Critical paths automated
+
+### CI/CD Pipeline
+
+The project includes GitHub Actions workflows for:
+- TypeScript type checking on all branches
+- Test coverage reporting
+- E2E test automation
+- Automatic PR checks
+
+## 🚀 Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run linting
+npm run lint
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/        # React UI components
+│   ├── game/         # Game-related components
+│   └── menu/         # Menu components
+├── __tests__/        # Test files
+│   └── integration/  # Integration tests
+├── game/             # Canvas game engine
+└── stores/           # State management
+```
+
+## 🔧 Technical Debt Tracking
+
+Current technical debt is tracked in the project stories:
+- TD-007: Test coverage improvements (Resolved)
 
 ## Expanding the ESLint configuration
 

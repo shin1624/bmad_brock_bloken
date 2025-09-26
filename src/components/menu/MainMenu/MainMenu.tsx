@@ -6,9 +6,11 @@ import "./MainMenu.css";
 
 export interface MainMenuProps {
   className?: string;
+  onStartGame?: () => void;
+  onOpenEditor?: () => void;
 }
 
-export const MainMenu: React.FC<MainMenuProps> = ({ className = "" }) => {
+export const MainMenu: React.FC<MainMenuProps> = ({ className = "", onStartGame, onOpenEditor }) => {
   const {
     startGame,
     openSettings,
@@ -16,6 +18,14 @@ export const MainMenu: React.FC<MainMenuProps> = ({ className = "" }) => {
     openLevelSelect,
     isLoading,
   } = useMainMenu();
+  
+  const handleStartGame = () => {
+    if (onStartGame) {
+      onStartGame();
+    } else {
+      startGame(1);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -46,7 +56,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ className = "" }) => {
         >
           <MenuNavigation>
             <StartButton
-              onClick={() => startGame(1)}
+              onClick={handleStartGame}
               disabled={isLoading}
               className="menu-item-enter"
             />

@@ -44,7 +44,7 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
     enableHoverOutsideTarget: true,
     delayTouchStart: 100, // Reduce delay for better responsiveness
     touchSlop: 5, // Pixels of movement allowed before drag starts
-  } : {};
+  } : undefined;
 
   return (
     <DndProvider backend={backend} options={backendOptions}>

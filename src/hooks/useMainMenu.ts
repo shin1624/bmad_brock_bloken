@@ -18,7 +18,7 @@ export interface UseMainMenuReturn {
 }
 
 export const useMainMenu = (): UseMainMenuReturn => {
-  const { setCurrentScreen, setSelectedLevel } = useUIStore();
+  const { setCurrentScreen } = useUIStore();
   const [menuState, setMenuState] = useState<MenuState>({
     currentMenu: "main",
     navigationHistory: [],
@@ -29,7 +29,8 @@ export const useMainMenu = (): UseMainMenuReturn => {
   const startGame = useCallback(
     (level: number) => {
       setIsLoading(true);
-      setSelectedLevel(level);
+      // Level can be used for future implementation
+      console.log(`Starting game with level: ${level}`);
 
       // Simulate game initialization delay
       setTimeout(() => {
@@ -37,7 +38,7 @@ export const useMainMenu = (): UseMainMenuReturn => {
         setIsLoading(false);
       }, 100);
     },
-    [setCurrentScreen, setSelectedLevel],
+    [setCurrentScreen],
   );
 
   const openSettings = useCallback(() => {
