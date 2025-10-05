@@ -1,0 +1,55 @@
+# Page snapshot
+
+```yaml
+- main "Main Menu" [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Block Breaker" [level=1] [ref=e6]
+      - paragraph [ref=e7]: Experience the Classic
+    - navigation "Main navigation" [ref=e8]:
+      - group "Game navigation options" [ref=e9]:
+        - button "Start new game" [ref=e10] [cursor=pointer]:
+          - generic [ref=e11] [cursor=pointer]: ▶️
+          - generic [ref=e12] [cursor=pointer]: Start Game
+        - button "Select game level" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15] [cursor=pointer]: 🎯
+          - generic [ref=e16] [cursor=pointer]: Level Select
+        - button "View high scores" [ref=e17] [cursor=pointer]:
+          - generic [ref=e18] [cursor=pointer]: 🏆
+          - generic [ref=e19] [cursor=pointer]: High Scores
+        - button "Open game settings" [ref=e20] [cursor=pointer]:
+          - generic [ref=e21] [cursor=pointer]: ⚙️
+          - generic [ref=e22] [cursor=pointer]: Settings
+        - button "About the game" [ref=e23] [cursor=pointer]:
+          - generic [ref=e24] [cursor=pointer]: ℹ️
+          - generic [ref=e25] [cursor=pointer]: About
+  - dialog "Block Breaker" [ref=e26]:
+    - generic [ref=e27]:
+      - button "Close about dialog" [active] [ref=e28] [cursor=pointer]: ×
+      - generic [ref=e29]:
+        - heading "Block Breaker" [level=2] [ref=e30]
+        - paragraph [ref=e31]: Version 0.0
+        - generic [ref=e32]:
+          - heading "About" [level=3] [ref=e33]
+          - paragraph [ref=e34]: Experience the classic arcade game reimagined for the modern web!
+        - generic [ref=e35]:
+          - heading "Development Team" [level=3] [ref=e36]
+          - list [ref=e37]:
+            - listitem [ref=e38]: "▸ Game Design & Development: BMAD Team"
+            - listitem [ref=e39]: "▸ Quality Assurance: Quinn (Test Architect)"
+            - listitem [ref=e40]: "▸ Product Management: Sarah (Product Owner)"
+            - listitem [ref=e41]: "▸ Development: James (Full Stack Developer)"
+        - generic [ref=e42]:
+          - heading "Technologies" [level=3] [ref=e43]
+          - list [ref=e44]:
+            - listitem [ref=e45]: ▸ React 18.3
+            - listitem [ref=e46]: ▸ TypeScript 5.4
+            - listitem [ref=e47]: ▸ Canvas API
+            - listitem [ref=e48]: ▸ Vite
+            - listitem [ref=e49]: ▸ Zustand
+        - generic [ref=e50]:
+          - heading "License" [level=3] [ref=e51]
+          - paragraph [ref=e52]: MIT License
+          - paragraph [ref=e53]: © 2025 BMAD Brock Bloken. All rights reserved.
+      - button "Close" [ref=e54] [cursor=pointer]
+```

@@ -1,133 +1,258 @@
-import { Page } from '@playwright/test';
-import { BasePage } from './base.page';
+import { Page } from "@playwright/test";
+import { BasePage } from "./base.page";
 
 /**
  * Main Menu Page Object Model
- * Handles interactions with the main menu and navigation
+ * Story 7.2: E2E Testing Implementation
  */
-export class MainMenuPage extends BasePage {
-  // Selectors
-  private readonly selectors = {
-    mainMenu: '.main-menu',
-    startButton: 'button[data-testid="start-game"]',
-    settingsButton: 'button[data-testid="settings"]',
-    highScoresButton: 'button[data-testid="high-scores"]',
-    levelSelectButton: 'button[data-testid="level-select"]',
-    exitButton: 'button[data-testid="exit"]',
-    logo: '.game-logo',
-    version: '.game-version'
-  };
 
+export class MainMenuPage extends BasePage {
   constructor(page: Page) {
     super(page);
   }
 
+  // Selectors - updated to match actual UI
+  private readonly selectors = {
+    title: "h1",
+    playButton: 'button[aria-label="Start new game"]',
+    settingsButton: 'button[aria-label="Settings"]',
+    levelEditorButton: 'button[aria-label="Level Editor"]',
+    highScoresButton: 'button[aria-label="High Scores"]',
+    aboutButton: 'button[aria-label="About"]',
+    settingsModal: '[data-testid="settings-modal"]',
+    volumeSlider: 'input[aria-label="Volume"]',
+    soundToggle: 'input[aria-label="Sound Effects"]',
+    musicToggle: 'input[aria-label="Background Music"]',
+    themeSelector: 'select[aria-label="Theme"]',
+    difficultySelector: 'select[aria-label="Difficulty"]',
+    saveSettingsButton: 'button[aria-label="Save Settings"]',
+    cancelSettingsButton: 'button[aria-label="Cancel"]',
+    highScoresModal: '[data-testid="high-scores-modal"]',
+    highScoresList: '[data-testid="high-scores-list"]',
+    aboutModal: '[data-testid="about-modal"]',
+    version: '[data-testid="version"]',
+  };
+
   /**
    * Navigate to main menu
    */
-  async gotoMainMenu() {
-    await this.goto('/');
+  async goto() {
+    await super.goto("/");
     await this.waitForMainMenu();
   }
 
   /**
-   * Wait for main menu to be visible
+   * Wait for main menu to be ready
    */
   async waitForMainMenu() {
-    await this.waitForVisible(this.selectors.mainMenu);
+    await this.waitForVisible(this.selectors.playButton);
   }
 
   /**
-   * Click Start Game button
+   * Start a new game
    */
-  async clickStartGame() {
-    await this.click(this.selectors.startButton);
+  async startNewGame() {
+    await this.clickWithRetry(this.selectors.playButton);
+    await this.waitForNavigation();
   }
 
   /**
-   * Click Settings button
+   * Open settings
    */
-  async clickSettings() {
-    await this.click(this.selectors.settingsButton);
+  async openSettings() {
+    await this.clickWithRetry(this.selectors.settingsButton);
+    await this.waitForVisible(this.selectors.settingsModal);
   }
 
   /**
-   * Click High Scores button
+   * Open level editor
    */
-  async clickHighScores() {
-    await this.click(this.selectors.highScoresButton);
+  async openLevelEditor() {
+    await this.clickWithRetry(this.selectors.levelEditorButton);
+    await this.waitForNavigation();
   }
 
   /**
-   * Click Level Select button
+   * Open high scores
    */
-  async clickLevelSelect() {
-    await this.click(this.selectors.levelSelectButton);
+  async openHighScores() {
+    await this.clickWithRetry(this.selectors.highScoresButton);
+    await this.waitForVisible(this.selectors.highScoresModal);
   }
 
   /**
-   * Click Exit button
+   * Open about dialog
    */
-  async clickExit() {
-    await this.click(this.selectors.exitButton);
+  async openAbout() {
+    await this.clickWithRetry(this.selectors.aboutButton);
+    await this.waitForVisible(this.selectors.aboutModal);
   }
 
   /**
-   * Check if main menu is visible
+   * Set volume
    */
-  async isMainMenuVisible(): Promise<boolean> {
-    return await this.isVisible(this.selectors.mainMenu);
+  async setVolume(value: number) {
+    const slider = await this.page.locator(this.selectors.volumeSlider);
+    await slider.fill(value.toString());
   }
 
   /**
-   * Get game version
+   * Toggle sound effects
    */
-  async getGameVersion(): Promise<string> {
+  async toggleSoundEffects() {
+    await this.page.locator(this.selectors.soundToggle).click();
+  }
+
+  /**
+   * Toggle background music
+   */
+  async toggleBackgroundMusic() {
+    await this.page.locator(this.selectors.musicToggle).click();
+  }
+
+  /**
+   * Select theme
+   */
+  async selectTheme(theme: string) {
+    await this.page.locator(this.selectors.themeSelector).selectOption(theme);
+  }
+
+  /**
+   * Select difficulty
+   */
+  async selectDifficulty(difficulty: "easy" | "normal" | "hard") {
+    await this.page
+      .locator(this.selectors.difficultySelector)
+      .selectOption(difficulty);
+  }
+
+  /**
+   * Save settings
+   */
+  async saveSettings() {
+    await this.clickWithRetry(this.selectors.saveSettingsButton);
+    await this.page.waitForSelector(this.selectors.settingsModal, {
+      state: "hidden",
+    });
+  }
+
+  /**
+   * Cancel settings
+   */
+  async cancelSettings() {
+    await this.clickWithRetry(this.selectors.cancelSettingsButton);
+    await this.page.waitForSelector(this.selectors.settingsModal, {
+      state: "hidden",
+    });
+  }
+
+  /**
+   * Get high scores list
+   */
+  async getHighScores(): Promise<
+    Array<{ rank: number; name: string; score: number }>
+  > {
+    const scoreElements = await this.page
+      .locator(`${this.selectors.highScoresList} li`)
+      .all();
+    const scores = [];
+
+    for (const element of scoreElements) {
+      const text = await element.textContent();
+      if (text) {
+        const match = text.match(/(\d+)\.\s*(.+?)\s*-\s*(\d+)/);
+        if (match) {
+          scores.push({
+            rank: parseInt(match[1], 10),
+            name: match[2],
+            score: parseInt(match[3], 10),
+          });
+        }
+      }
+    }
+
+    return scores;
+  }
+
+  /**
+   * Close modal
+   */
+  async closeModal() {
+    await this.page.keyboard.press("Escape");
+  }
+
+  /**
+   * Get version
+   */
+  async getVersion(): Promise<string> {
     return await this.getText(this.selectors.version);
   }
 
   /**
-   * Check if all menu buttons are visible
+   * Check if settings are persisted
    */
-  async areAllButtonsVisible(): Promise<boolean> {
-    const checks = await Promise.all([
-      this.isVisible(this.selectors.startButton),
-      this.isVisible(this.selectors.settingsButton),
-      this.isVisible(this.selectors.highScoresButton),
-      this.isVisible(this.selectors.levelSelectButton)
-    ]);
-    return checks.every(visible => visible === true);
+  async areSettingsPersisted(): Promise<boolean> {
+    await this.openSettings();
+
+    const volume = await this.page
+      .locator(this.selectors.volumeSlider)
+      .inputValue();
+    const soundEnabled = await this.page
+      .locator(this.selectors.soundToggle)
+      .isChecked();
+    const musicEnabled = await this.page
+      .locator(this.selectors.musicToggle)
+      .isChecked();
+
+    await this.cancelSettings();
+
+    // Reload page
+    await this.reload();
+
+    await this.openSettings();
+
+    const newVolume = await this.page
+      .locator(this.selectors.volumeSlider)
+      .inputValue();
+    const newSoundEnabled = await this.page
+      .locator(this.selectors.soundToggle)
+      .isChecked();
+    const newMusicEnabled = await this.page
+      .locator(this.selectors.musicToggle)
+      .isChecked();
+
+    await this.cancelSettings();
+
+    return (
+      volume === newVolume &&
+      soundEnabled === newSoundEnabled &&
+      musicEnabled === newMusicEnabled
+    );
   }
 
   /**
-   * Navigate to game from menu
+   * Navigate using keyboard
    */
-  async navigateToGame() {
-    await this.clickStartGame();
-    await this.page.waitForLoadState('domcontentloaded');
+  async navigateWithKeyboard(times: number = 1) {
+    for (let i = 0; i < times; i++) {
+      await this.page.keyboard.press("Tab");
+      await this.page.waitForTimeout(100);
+    }
   }
 
   /**
-   * Navigate to settings from menu
+   * Activate focused button
    */
-  async navigateToSettings() {
-    await this.clickSettings();
-    await this.page.waitForSelector('.settings-panel');
+  async activateFocusedButton() {
+    await this.page.keyboard.press("Enter");
   }
 
   /**
-   * Navigate to high scores from menu
+   * Check if button is focused
    */
-  async navigateToHighScores() {
-    await this.clickHighScores();
-    await this.page.waitForSelector('.high-scores-panel');
-  }
-
-  /**
-   * Navigate to level select from menu
-   */
-  async navigateToLevelSelect() {
-    await this.clickLevelSelect();
-    await this.page.waitForSelector('.level-select-panel');
+  async isButtonFocused(selector: string): Promise<boolean> {
+    return await this.page
+      .locator(selector)
+      .evaluate((el) => el === document.activeElement);
   }
 }

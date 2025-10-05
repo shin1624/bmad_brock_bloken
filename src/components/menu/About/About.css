@@ -1,0 +1,202 @@
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure modal is above game canvas */
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.about-modal {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border: 3px solid #64b5f6;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.about-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.about-close-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.about-close-button:focus {
+  outline: 2px solid #64b5f6;
+  outline-offset: 2px;
+}
+
+.about-content {
+  color: #fff;
+}
+
+.about-title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: 'Orbitron', monospace;
+}
+
+.about-version {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #64b5f6;
+  margin-bottom: 2rem;
+  font-family: monospace;
+}
+
+.about-section {
+  margin-bottom: 1.5rem;
+}
+
+.about-section h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #64b5f6;
+  border-bottom: 1px solid #64b5f6;
+  padding-bottom: 0.25rem;
+}
+
+.about-section p {
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.about-credits,
+.about-tech {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-credits li,
+.about-tech li {
+  padding: 0.25rem 0;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.about-credits li:before,
+.about-tech li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #64b5f6;
+}
+
+.about-copyright {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #aaa;
+  text-align: center;
+}
+
+.about-close-bottom {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.about-close-bottom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(100, 181, 246, 0.4);
+}
+
+.about-close-bottom:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about-modal {
+    width: 95%;
+    padding: 1.5rem;
+    max-height: 90vh;
+  }
+
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-section h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Scrollbar styling for modal content */
+.about-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.about-modal::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.about-modal::-webkit-scrollbar-thumb {
+  background: #64b5f6;
+  border-radius: 4px;
+}
+
+.about-modal::-webkit-scrollbar-thumb:hover {
+  background: #42a5f5;
+}

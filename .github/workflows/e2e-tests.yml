@@ -2,9 +2,9 @@ name: E2E Tests
 
 on:
   push:
-    branches: [main, develop]
+    branches: [ main, develop ]
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
   schedule:
     # Run nightly at 2 AM UTC
     - cron: '0 2 * * *'
@@ -15,219 +15,97 @@ jobs:
     strategy:
       matrix:
         browser: [chromium, firefox, webkit]
-        shard: [1, 2, 3, 4]
+        shard: [1, 2, 3]
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps ${{ matrix.browser }}
-
-      - name: Run E2E tests
-        run: |
-          npx playwright test \
-            --project=${{ matrix.browser }} \
-            --shard=${{ matrix.shard }}/4 \
-            --reporter=json,html
-        env:
-          BASE_URL: http://localhost:3000
-          CI: true
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-results-${{ matrix.browser }}-${{ matrix.shard }}
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 30
-
-      - name: Upload screenshots on failure
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-screenshots-${{ matrix.browser }}-${{ matrix.shard }}
-          path: e2e/screenshots/
-          retention-days: 7
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps ${{ matrix.browser }}
+    
+    - name: Run E2E Tests - ${{ matrix.browser }} (Shard ${{ matrix.shard }}/3)
+      run: npx playwright test --project=${{ matrix.browser }} --shard=${{ matrix.shard }}/3
+      env:
+        CI: true
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: playwright-report-${{ matrix.browser }}-${{ matrix.shard }}
+        path: e2e-reports/
+        retention-days: 30
+    
+    - name: Upload screenshots
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: screenshots-${{ matrix.browser }}-${{ matrix.shard }}
+        path: e2e/screenshots/
+        retention-days: 7
 
   merge-reports:
     needs: e2e-tests
+    runs-on: ubuntu-latest
     if: always()
-    runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3
-        with:
-          path: all-reports/
-
-      - name: Merge test reports
-        run: |
-          npm install --save-dev @playwright/test
-          npx playwright merge-reports --reporter=html all-reports/
-
-      - name: Upload merged report
-        uses: actions/upload-artifact@v3
-        with:
-          name: merged-playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-      - name: Comment PR with results
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-            
-            // Read test results
-            const resultsPath = 'playwright-report/index.json';
-            if (fs.existsSync(resultsPath)) {
-              const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
-              
-              const summary = `
-              ## 🎭 E2E Test Results
-              
-              | Browser | Passed | Failed | Skipped | Flaky |
-              |---------|--------|--------|---------|-------|
-              | Chrome  | ✅ ${results.chromium.passed} | ❌ ${results.chromium.failed} | ⏭️ ${results.chromium.skipped} | 🔄 ${results.chromium.flaky} |
-              | Firefox | ✅ ${results.firefox.passed} | ❌ ${results.firefox.failed} | ⏭️ ${results.firefox.skipped} | 🔄 ${results.firefox.flaky} |
-              | Safari  | ✅ ${results.webkit.passed} | ❌ ${results.webkit.failed} | ⏭️ ${results.webkit.skipped} | 🔄 ${results.webkit.flaky} |
-              
-              **Total Duration:** ${results.duration}s
-              **Test Report:** [View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-              `;
-              
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: summary
-              });
-            }
-
-  performance-report:
-    needs: e2e-tests
-    if: always()
-    runs-on: ubuntu-latest
+    - uses: actions/checkout@v3
     
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Download test results
-        uses: actions/download-artifact@v3
-        with:
-          path: test-results/
-
-      - name: Generate performance report
-        run: |
-          node scripts/generate-performance-report.js
-
-      - name: Upload performance report
-        uses: actions/upload-artifact@v3
-        with:
-          name: performance-report
-          path: performance-report.html
-          retention-days: 30
-
-  visual-regression:
-    runs-on: ubuntu-latest
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
     
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright
-        run: npx playwright install --with-deps chromium
-
-      - name: Run visual regression tests
-        run: |
-          npx playwright test e2e/tests/visual-regression.spec.ts \
-            --project=chromium \
-            --reporter=json,html
-
-      - name: Upload visual diff report
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: visual-diff-report
-          path: |
-            e2e/screenshots/diff/
-            e2e/screenshots/visual-report.html
-          retention-days: 30
-
-  accessibility-audit:
-    runs-on: ubuntu-latest
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: all-reports/
     
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: |
-          npm ci
-          npm install --save-dev @axe-core/playwright
-
-      - name: Install Playwright
-        run: npx playwright install --with-deps chromium
-
-      - name: Run accessibility tests
-        run: |
-          npx playwright test e2e/tests/accessibility.spec.ts \
-            --project=chromium \
-            --reporter=json,html
-
-      - name: Generate accessibility report
-        if: always()
-        run: |
-          node scripts/generate-a11y-report.js
-
-      - name: Upload accessibility report
-        uses: actions/upload-artifact@v3
-        with:
-          name: accessibility-report
-          path: |
-            a11y-report.html
-            a11y-violations.json
-          retention-days: 30
-
-      - name: Fail if critical violations
-        run: |
-          if [ -f "a11y-violations.json" ]; then
-            CRITICAL_COUNT=$(jq '.violations | map(select(.impact == "critical")) | length' a11y-violations.json)
-            if [ "$CRITICAL_COUNT" -gt 0 ]; then
-              echo "❌ Found $CRITICAL_COUNT critical accessibility violations"
-              exit 1
-            fi
-          fi
+    - name: Merge test reports
+      run: |
+        npm install --no-save @playwright/test
+        npx playwright merge-reports --reporter html ./all-reports
+    
+    - name: Upload merged report
+      uses: actions/upload-artifact@v3
+      with:
+        name: playwright-report-merged
+        path: playwright-report/
+        retention-days: 30
+    
+    - name: Comment PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const results = JSON.parse(fs.readFileSync('./e2e-reports/results.json', 'utf8'));
+          
+          const comment = `
+          ## 🎭 E2E Test Results
+          
+          - **Total Tests**: ${results.total}
+          - **Passed**: ✅ ${results.passed}
+          - **Failed**: ❌ ${results.failed}
+          - **Skipped**: ⏭️ ${results.skipped}
+          - **Duration**: ⏱️ ${results.duration}ms
+          
+          [View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          `;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });

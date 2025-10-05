@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { StartButton } from "./StartButton";
 import { MenuNavigation } from "./MenuNavigation";
 import { useMainMenu } from "../../../hooks/useMainMenu";
+import { About } from "../About";
 import "./MainMenu.css";
 
 export interface MainMenuProps {
@@ -18,6 +19,8 @@ export const MainMenu: React.FC<MainMenuProps> = ({ className = "", onStartGame,
     openLevelSelect,
     isLoading,
   } = useMainMenu();
+  
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   
   const handleStartGame = () => {
     if (onStartGame) {
@@ -90,9 +93,21 @@ export const MainMenu: React.FC<MainMenuProps> = ({ className = "", onStartGame,
               <span className="button-icon">⚙️</span>
               <span className="button-text">Settings</span>
             </button>
+
+            <button
+              className="menu-button menu-item-enter"
+              onClick={() => setIsAboutOpen(true)}
+              disabled={isLoading}
+              aria-label="About the game"
+            >
+              <span className="button-icon">ℹ️</span>
+              <span className="button-text">About</span>
+            </button>
           </MenuNavigation>
         </nav>
       </div>
+      
+      <About isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );
 };

@@ -1,258 +1,205 @@
 import { Page } from '@playwright/test';
 
 /**
- * Canvas Testing Utilities
- * Provides helper functions for interacting with Canvas elements in E2E tests
+ * Canvas interaction utilities for E2E testing
+ * Story 7.2: E2E Testing Implementation
  */
 
-export interface CanvasPosition {
-  x: number;
-  y: number;
-}
+export class CanvasHelpers {
+  constructor(private page: Page) {}
 
-export interface GameState {
-  score: number;
-  lives: number;
-  level: number;
-  isPlaying: boolean;
-  isPaused: boolean;
-  isGameOver: boolean;
-  ballPosition?: CanvasPosition;
-  paddlePosition?: CanvasPosition;
-  blocksRemaining?: number;
-}
-
-/**
- * Get Canvas element from the page
- */
-export async function getCanvas(page: Page) {
-  return page.locator('canvas#game-canvas');
-}
-
-/**
- * Wait for Canvas to be ready
- */
-export async function waitForCanvasReady(page: Page, timeout = 5000) {
-  await page.waitForFunction(
-    () => {
-      const canvas = document.querySelector('canvas#game-canvas');
-      return canvas !== null && canvas instanceof HTMLCanvasElement;
-    },
-    { timeout }
-  );
-}
-
-/**
- * Wait for game engine to be ready
- */
-export async function waitForGameEngineReady(page: Page, timeout = 10000) {
-  await page.waitForFunction(
-    () => {
-      return window.gameEngine?.isReady === true;
-    },
-    { timeout }
-  );
-}
-
-/**
- * Get current game state
- */
-export async function getGameState(page: Page): Promise<GameState> {
-  return await page.evaluate(() => {
-    if (!window.gameEngine) {
-      throw new Error('Game engine not initialized');
-    }
-    return window.gameEngine.getState();
-  });
-}
-
-/**
- * Get Canvas image data for visual comparisons
- */
-export async function getCanvasImageData(page: Page) {
-  return await page.evaluate(() => {
-    const canvas = document.querySelector('canvas#game-canvas') as HTMLCanvasElement;
-    if (!canvas) {
-      throw new Error('Canvas element not found');
-    }
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      throw new Error('Canvas 2D context not available');
-    }
-    return ctx.getImageData(0, 0, canvas.width, canvas.height);
-  });
-}
-
-/**
- * Click at specific coordinates on Canvas
- */
-export async function clickCanvasAt(page: Page, x: number, y: number) {
-  const canvas = await getCanvas(page);
-  await canvas.click({ position: { x, y } });
-}
-
-/**
- * Move mouse to specific coordinates on Canvas
- */
-export async function moveMouseTo(page: Page, x: number, y: number) {
-  const canvas = await getCanvas(page);
-  await canvas.hover({ position: { x, y } });
-}
-
-/**
- * Drag from one position to another on Canvas
- */
-export async function dragOnCanvas(page: Page, from: CanvasPosition, to: CanvasPosition) {
-  const canvas = await getCanvas(page);
-  await page.mouse.move(from.x, from.y);
-  await page.mouse.down();
-  await page.mouse.move(to.x, to.y, { steps: 10 });
-  await page.mouse.up();
-}
-
-/**
- * Wait for specific game state condition
- */
-export async function waitForGameState(
-  page: Page,
-  condition: (state: GameState) => boolean,
-  timeout = 5000
-) {
-  await page.waitForFunction(
-    (conditionStr) => {
-      if (!window.gameEngine) return false;
-      const state = window.gameEngine.getState();
-      const fn = new Function('state', `return ${conditionStr}`);
-      return fn(state);
-    },
-    condition.toString().replace(/^[^{]*{/, '').replace(/}[^}]*$/, ''),
-    { timeout }
-  );
-}
-
-/**
- * Start a new game
- */
-export async function startNewGame(page: Page) {
-  await page.evaluate(() => {
-    if (window.gameEngine) {
-      window.gameEngine.startNewGame();
-    }
-  });
-  await waitForGameState(page, state => state.isPlaying === true);
-}
-
-/**
- * Pause the game
- */
-export async function pauseGame(page: Page) {
-  await page.keyboard.press('Escape');
-  await waitForGameState(page, state => state.isPaused === true);
-}
-
-/**
- * Resume the game
- */
-export async function resumeGame(page: Page) {
-  await page.keyboard.press('Escape');
-  await waitForGameState(page, state => state.isPaused === false && state.isPlaying === true);
-}
-
-/**
- * Move paddle to specific X position
- */
-export async function movePaddleTo(page: Page, x: number) {
-  const canvas = await getCanvas(page);
-  const box = await canvas.boundingBox();
-  if (!box) throw new Error('Canvas bounding box not found');
-  
-  // Move mouse to paddle height (typically bottom of canvas)
-  await page.mouse.move(box.x + x, box.y + box.height - 50);
-}
-
-/**
- * Simulate keyboard controls
- */
-export async function pressGameKey(page: Page, key: string) {
-  await page.keyboard.press(key);
-  // Small delay to allow game to process input
-  await page.waitForTimeout(50);
-}
-
-/**
- * Get FPS reading from performance monitor
- */
-export async function getFPS(page: Page): Promise<number> {
-  return await page.evaluate(() => {
-    if (!window.gameEngine || !window.gameEngine.getPerformanceMetrics) {
-      return 60; // Default if not available
-    }
-    const metrics = window.gameEngine.getPerformanceMetrics();
-    return metrics.fps || 60;
-  });
-}
-
-/**
- * Wait for animation frame
- */
-export async function waitForAnimationFrame(page: Page) {
-  await page.evaluate(() => {
-    return new Promise(resolve => requestAnimationFrame(resolve));
-  });
-}
-
-/**
- * Take screenshot of Canvas only
- */
-export async function screenshotCanvas(page: Page, path?: string) {
-  const canvas = await getCanvas(page);
-  return await canvas.screenshot({ path });
-}
-
-/**
- * Check if a specific block exists at grid position
- */
-export async function isBlockAt(page: Page, row: number, col: number): Promise<boolean> {
-  return await page.evaluate(({ row, col }) => {
-    if (!window.gameEngine) return false;
-    const state = window.gameEngine.getState();
-    if (!state.blocks) return false;
-    return state.blocks.some((block: any) => 
-      block.row === row && block.col === col && !block.destroyed
+  /**
+   * Wait for the game engine to be ready
+   */
+  async waitForGameReady() {
+    await this.page.waitForFunction(
+      () => {
+        const gameEngine = (window as any).gameEngine;
+        return gameEngine?.isReady === true;
+      },
+      { timeout: 10000 }
     );
-  }, { row, col });
-}
+  }
 
-/**
- * Get paddle position
- */
-export async function getPaddlePosition(page: Page): Promise<CanvasPosition | null> {
-  return await page.evaluate(() => {
-    if (!window.gameEngine) return null;
-    const state = window.gameEngine.getState();
-    return state.paddlePosition || null;
-  });
-}
+  /**
+   * Get the current game state
+   */
+  async getGameState() {
+    return await this.page.evaluate(() => {
+      const gameEngine = (window as any).gameEngine;
+      return gameEngine?.getState ? gameEngine.getState() : null;
+    });
+  }
 
-/**
- * Get ball position
- */
-export async function getBallPosition(page: Page): Promise<CanvasPosition | null> {
-  return await page.evaluate(() => {
-    if (!window.gameEngine) return null;
-    const state = window.gameEngine.getState();
-    return state.ballPosition || null;
-  });
-}
+  /**
+   * Get canvas image data for visual comparison
+   */
+  async getCanvasImageData() {
+    return await this.page.evaluate(() => {
+      const canvas = document.querySelector('canvas#game-canvas') as HTMLCanvasElement;
+      if (!canvas) return null;
+      
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return null;
+      
+      return ctx.getImageData(0, 0, canvas.width, canvas.height);
+    });
+  }
 
-// Extend Window interface for TypeScript
-declare global {
-  interface Window {
-    gameEngine?: {
-      isReady: boolean;
-      getState: () => GameState;
-      startNewGame: () => void;
-      getPerformanceMetrics?: () => { fps: number };
-    };
+  /**
+   * Simulate paddle movement at specific coordinates
+   */
+  async movePaddle(x: number) {
+    const canvas = await this.page.locator('canvas#game-canvas');
+    const box = await canvas.boundingBox();
+    
+    if (box) {
+      await this.page.mouse.move(box.x + x, box.y + 550);
+    }
+  }
+
+  /**
+   * Click at specific canvas coordinates
+   */
+  async clickCanvas(x: number, y: number) {
+    const canvas = await this.page.locator('canvas#game-canvas');
+    await canvas.click({ position: { x, y } });
+  }
+
+  /**
+   * Simulate keyboard input for game controls
+   */
+  async pressGameKey(key: string) {
+    await this.page.keyboard.press(key);
+  }
+
+  /**
+   * Get current score from game state
+   */
+  async getScore(): Promise<number> {
+    return await this.page.evaluate(() => {
+      const gameEngine = (window as any).gameEngine;
+      return gameEngine?.state?.score || 0;
+    });
+  }
+
+  /**
+   * Get current lives from game state
+   */
+  async getLives(): Promise<number> {
+    return await this.page.evaluate(() => {
+      const gameEngine = (window as any).gameEngine;
+      return gameEngine?.state?.lives || 0;
+    });
+  }
+
+  /**
+   * Get current level from game state
+   */
+  async getLevel(): Promise<number> {
+    return await this.page.evaluate(() => {
+      const gameEngine = (window as any).gameEngine;
+      return gameEngine?.state?.level || 1;
+    });
+  }
+
+  /**
+   * Check if game is paused
+   */
+  async isGamePaused(): Promise<boolean> {
+    return await this.page.evaluate(() => {
+      const gameEngine = (window as any).gameEngine;
+      return gameEngine?.state?.isPaused || false;
+    });
+  }
+
+  /**
+   * Check if game is over
+   */
+  async isGameOver(): Promise<boolean> {
+    return await this.page.evaluate(() => {
+      const gameEngine = (window as any).gameEngine;
+      return gameEngine?.state?.isGameOver || false;
+    });
+  }
+
+  /**
+   * Wait for specific game state
+   */
+  async waitForState(statePredicate: string, timeout = 5000) {
+    await this.page.waitForFunction(
+      (pred) => {
+        const gameEngine = (window as any).gameEngine;
+        if (!gameEngine) return false;
+        
+        // Execute predicate in page context
+        return eval(pred);
+      },
+      { timeout },
+      statePredicate
+    );
+  }
+
+  /**
+   * Take a screenshot of the canvas only
+   */
+  async takeCanvasScreenshot(path: string) {
+    const canvas = await this.page.locator('canvas#game-canvas');
+    await canvas.screenshot({ path });
+  }
+
+  /**
+   * Get FPS from performance monitor
+   */
+  async getFPS(): Promise<number> {
+    return await this.page.evaluate(() => {
+      const gameEngine = (window as any).gameEngine;
+      return gameEngine?.performanceMonitor?.fps || 0;
+    });
+  }
+
+  /**
+   * Get memory usage
+   */
+  async getMemoryUsage(): Promise<number> {
+    return await this.page.evaluate(() => {
+      if ((performance as any).memory) {
+        return (performance as any).memory.usedJSHeapSize / 1048576; // Convert to MB
+      }
+      return 0;
+    });
+  }
+
+  /**
+   * Wait for animation frame
+   */
+  async waitForAnimationFrame() {
+    await this.page.evaluate(() => {
+      return new Promise(resolve => requestAnimationFrame(resolve));
+    });
+  }
+
+  /**
+   * Simulate touch input for mobile testing
+   */
+  async touchCanvas(x: number, y: number) {
+    const canvas = await this.page.locator('canvas#game-canvas');
+    await canvas.tap({ position: { x, y } });
+  }
+
+  /**
+   * Drag gesture for paddle control on mobile
+   */
+  async dragPaddle(fromX: number, toX: number) {
+    const canvas = await this.page.locator('canvas#game-canvas');
+    const box = await canvas.boundingBox();
+    
+    if (box) {
+      const y = box.y + 550;
+      await this.page.mouse.move(box.x + fromX, y);
+      await this.page.mouse.down();
+      await this.page.mouse.move(box.x + toX, y);
+      await this.page.mouse.up();
+    }
   }
 }

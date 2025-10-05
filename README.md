@@ -1,5 +1,8 @@
 # Block Breaker Game - React + TypeScript + Vite
 
+[![CI/CD Pipeline](https://github.com/yoshikawashin/bmad_brock_bloken/actions/workflows/deploy.yml/badge.svg)](https://github.com/yoshikawashin/bmad_brock_bloken/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A modern block breaker game built with React, TypeScript, and Canvas, featuring comprehensive testing and CI/CD integration.
 
 ## 🎮 Features

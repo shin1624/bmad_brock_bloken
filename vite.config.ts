@@ -3,6 +3,12 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
+  define: {
+    // Inject sanitized version at build time (only major.minor)
+    __APP_VERSION__: JSON.stringify(
+      process.env.npm_package_version?.split('.').slice(0, 2).join('.') || '1.0'
+    ),
+  },
   plugins: [react()],
   resolve: {
     alias: {

@@ -1,0 +1,16 @@
+<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="6.872834">
+<testsuite name="tests/basic.spec.ts" timestamp="2025-09-27T13:13:49.607Z" hostname="chromium" tests="6" failures="0" skipped="0" time="11.521" errors="0">
+<testcase name="Basic E2E Tests › should load application" classname="tests/basic.spec.ts" time="1.386">
+</testcase>
+<testcase name="Basic E2E Tests › should display main menu" classname="tests/basic.spec.ts" time="1.697">
+</testcase>
+<testcase name="Basic E2E Tests › should navigate to game screen" classname="tests/basic.spec.ts" time="2.144">
+</testcase>
+<testcase name="Basic E2E Tests › should navigate to settings" classname="tests/basic.spec.ts" time="2.652">
+</testcase>
+<testcase name="Basic E2E Tests › should navigate to high scores" classname="tests/basic.spec.ts" time="1.785">
+</testcase>
+<testcase name="Basic E2E Tests › should return to main menu from game" classname="tests/basic.spec.ts" time="1.857">
+</testcase>
+</testsuite>
+</testsuites>
