@@ -8,7 +8,7 @@
  * - Smooth transitions
  * - Quality settings integration
  */
-import { getQualitySettings } from '../../../stores/qualitySettingsStore';
+import { getQualitySettings } from "../../../stores/qualitySettingsStore";
 
 export interface SlowMotionEffectConfig {
   vignetteColor: string;
@@ -19,7 +19,7 @@ export interface SlowMotionEffectConfig {
 }
 
 const DEFAULT_CONFIG: SlowMotionEffectConfig = {
-  vignetteColor: 'rgba(138, 43, 226, 0.3)', // Purple
+  vignetteColor: "rgba(138, 43, 226, 0.3)", // Purple
   vignetteIntensity: 0.3,
   waveAmplitude: 5,
   waveFrequency: 0.002,
@@ -31,7 +31,6 @@ export class SlowMotionEffect {
   private intensity: number = 0; // 0-1
   private config: SlowMotionEffectConfig;
   private wavePhase: number = 0;
-  private transitionStartTime: number = 0;
   private targetIntensity: number = 0;
 
   constructor(config: Partial<SlowMotionEffectConfig> = {}) {
@@ -43,7 +42,6 @@ export class SlowMotionEffect {
    */
   public activate(): void {
     this.targetIntensity = 1.0;
-    this.transitionStartTime = Date.now();
     this.active = true;
   }
 
@@ -52,31 +50,28 @@ export class SlowMotionEffect {
    */
   public deactivate(): void {
     this.targetIntensity = 0.0;
-    this.transitionStartTime = Date.now();
   }
 
   /**
    * Update effect state
    */
   public update(deltaTime: number): void {
-    // Update intensity transition
-    const elapsed = Date.now() - this.transitionStartTime;
-    const progress = Math.min(elapsed / this.config.transitionDuration, 1.0);
+    // Update intensity with smooth lerp
+    const lerpSpeed = deltaTime / this.config.transitionDuration;
+    const delta = this.targetIntensity - this.intensity;
+    this.intensity += delta * Math.min(lerpSpeed * 5, 1.0); // 5x speed multiplier for responsiveness
 
-    // Smooth ease-in-out
-    const easedProgress =
-      progress < 0.5
-        ? 2 * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+    // Snap to target when very close
+    if (Math.abs(this.intensity - this.targetIntensity) < 0.01) {
+      this.intensity = this.targetIntensity;
+    }
 
-    const currentIntensity = this.intensity;
-    this.intensity =
-      currentIntensity + (this.targetIntensity - currentIntensity) * easedProgress;
+    // Clamp intensity to [0, 1]
+    this.intensity = Math.max(0, Math.min(1, this.intensity));
 
     // Deactivate if fully faded out
-    if (this.intensity < 0.01 && this.targetIntensity === 0) {
+    if (this.intensity === 0 && this.targetIntensity === 0) {
       this.active = false;
-      this.intensity = 0;
     }
 
     // Update wave phase for animation
@@ -119,7 +114,7 @@ export class SlowMotionEffect {
   private renderVignette(
     ctx: CanvasRenderingContext2D,
     width: number,
-    height: number
+    height: number,
   ): void {
     const gradient = ctx.createRadialGradient(
       width / 2,
@@ -127,14 +122,14 @@ export class SlowMotionEffect {
       0,
       width / 2,
       height / 2,
-      Math.max(width, height) / 2
+      Math.max(width, height) / 2,
     );
 
     // Parse color and apply intensity
     const alpha = this.config.vignetteIntensity * this.intensity;
     const color = this.config.vignetteColor.replace(/[\d.]+\)$/g, `${alpha})`);
 
-    gradient.addColorStop(0, 'rgba(138, 43, 226, 0)');
+    gradient.addColorStop(0, "rgba(138, 43, 226, 0)");
     gradient.addColorStop(1, color);
 
     ctx.fillStyle = gradient;
@@ -147,7 +142,7 @@ export class SlowMotionEffect {
   private renderEdgeWaves(
     ctx: CanvasRenderingContext2D,
     width: number,
-    height: number
+    height: number,
   ): void {
     const waveIntensity = this.intensity * this.config.waveAmplitude;
     const edgeThickness = 20;
@@ -160,7 +155,8 @@ export class SlowMotionEffect {
     for (let x = 0; x <= width; x += 5) {
       const y =
         edgeThickness +
-        Math.sin(x * this.config.waveFrequency + this.wavePhase) * waveIntensity;
+        Math.sin(x * this.config.waveFrequency + this.wavePhase) *
+          waveIntensity;
       if (x === 0) {
         ctx.moveTo(x, y);
       } else {
@@ -190,7 +186,8 @@ export class SlowMotionEffect {
     for (let y = 0; y <= height; y += 5) {
       const x =
         edgeThickness +
-        Math.sin(y * this.config.waveFrequency + this.wavePhase) * waveIntensity;
+        Math.sin(y * this.config.waveFrequency + this.wavePhase) *
+          waveIntensity;
       if (y === 0) {
         ctx.moveTo(x, y);
       } else {
