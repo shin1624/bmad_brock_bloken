@@ -2,11 +2,12 @@
  * Particle System for visual effects
  * Manages particle creation, update, and rendering with object pooling
  */
-import { Particle, ParticleOptions } from '../entities/Particle';
-import { ObjectPool } from '../utils/ObjectPool';
-import { Vector2D, BlockType } from '../../types/game.types';
-import { EventBus } from '../core/EventBus';
-import { ParticleBatchRenderer } from '../rendering/ParticleBatchRenderer';
+import { Particle, ParticleOptions } from "../entities/Particle";
+import { ObjectPool } from "../utils/ObjectPool";
+import { Vector2D, BlockType } from "../../types/game.types";
+import { EventBus } from "../core/EventBus";
+import { ParticleBatchRenderer } from "../rendering/ParticleBatchRenderer";
+import { getQualitySettings } from "../../stores/qualitySettingsStore";
 
 export interface ParticleSystemConfig {
   maxParticles: number;
@@ -18,7 +19,7 @@ export interface ParticleSystemConfig {
   qualityScale?: number;
 }
 
-type ParticleThemePreset = 'neon' | 'pixel' | 'synthwave' | 'minimal';
+type ParticleThemePreset = "neon" | "pixel" | "synthwave" | "minimal";
 
 interface ParticleThemeColors {
   particle: string;
@@ -51,37 +52,37 @@ type ThemeEffect = (particle: Particle) => void;
 
 type PerformanceChangeEvent =
   | {
-      type: 'qualityChange';
+      type: "qualityChange";
       previousLevel: number;
       currentLevel: number;
       fps: number;
     }
   | {
-      type: 'memoryWarning';
+      type: "memoryWarning";
       utilizationRate: number;
-      poolStats: ReturnType<ObjectPool<Particle>['getStats']>;
+      poolStats: ReturnType<ObjectPool<Particle>["getStats"]>;
     };
 
 type PerformanceChangeCallback = (event: PerformanceChangeEvent) => void;
 
 const THEME_PRESETS: Record<ParticleThemePreset, ParticleTheme> = {
   neon: {
-    colors: { particle: '#ffffff', trail: '#ffffff80' },
+    colors: { particle: "#ffffff", trail: "#ffffff80" },
     sizes: { min: 1, max: 4 },
     effects: { glow: false, trail: false },
   },
   pixel: {
-    colors: { particle: '#4ECDC4', trail: '#F7FFF780' },
+    colors: { particle: "#4ECDC4", trail: "#F7FFF780" },
     sizes: { min: 1, max: 3 },
     effects: { glow: false, trail: false },
   },
   synthwave: {
-    colors: { particle: '#FF71CE', trail: '#01CDFE80' },
+    colors: { particle: "#FF71CE", trail: "#01CDFE80" },
     sizes: { min: 1, max: 4 },
     effects: { glow: true, trail: true },
   },
   minimal: {
-    colors: { particle: '#F5F5F5', trail: '#E5E7EB80' },
+    colors: { particle: "#F5F5F5", trail: "#E5E7EB80" },
     sizes: { min: 1, max: 2 },
     effects: { glow: false, trail: false },
   },
@@ -95,26 +96,29 @@ const cloneTheme = (theme: ParticleTheme): ParticleTheme => ({
   effects: { ...theme.effects },
 });
 
-const THEME_COLOR_MAP: Record<ParticleThemePreset, { primary: string; secondary: string; accent: string }> = {
+const THEME_COLOR_MAP: Record<
+  ParticleThemePreset,
+  { primary: string; secondary: string; accent: string }
+> = {
   neon: {
-    primary: '#00FFFF',
-    secondary: '#FF00FF',
-    accent: '#FFFF00',
+    primary: "#00FFFF",
+    secondary: "#FF00FF",
+    accent: "#FFFF00",
   },
   pixel: {
-    primary: '#4ECDC4',
-    secondary: '#F7FFF7',
-    accent: '#FF6B6B',
+    primary: "#4ECDC4",
+    secondary: "#F7FFF7",
+    accent: "#FF6B6B",
   },
   synthwave: {
-    primary: '#FF006E',
-    secondary: '#8338EC',
-    accent: '#FB5607',
+    primary: "#FF006E",
+    secondary: "#8338EC",
+    accent: "#FB5607",
   },
   minimal: {
-    primary: '#333333',
-    secondary: '#666666',
-    accent: '#0066CC',
+    primary: "#333333",
+    secondary: "#666666",
+    accent: "#0066CC",
   },
 };
 
@@ -129,7 +133,12 @@ export class ParticleSystem {
   private batchRenderer: ParticleBatchRenderer;
   private useBatchRendering: boolean = true;
   private cameraOffset: Vector2D = { x: 0, y: 0 };
-  private viewportBounds: { x: number; y: number; width: number; height: number } | null = null;
+  private viewportBounds: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null = null;
 
   // Performance tracking
   private particleCount: number = 0;
@@ -146,35 +155,41 @@ export class ParticleSystem {
     warning?: () => void;
     critical?: () => void;
   } = {};
-  private performanceChangeCallbacks: Map<string, PerformanceChangeCallback> = new Map();
+  private performanceChangeCallbacks: Map<string, PerformanceChangeCallback> =
+    new Map();
   private activeTheme: ParticleTheme = cloneTheme(DEFAULT_THEME);
-  private activeThemePreset: ParticleThemePreset | null = 'neon';
+  private activeThemePreset: ParticleThemePreset | null = "neon";
 
   constructor(eventBus: EventBus, config: Partial<ParticleSystemConfig> = {}) {
     this.eventBus = eventBus;
+
+    // Get quality settings to determine particle density
+    const qualitySettings = getQualitySettings();
+
     this.config = {
       maxParticles: config.maxParticles || 1000,
       preFillCount: config.preFillCount || 100,
       enableDebugMode: config.enableDebugMode || false,
-      qualityScale: config.qualityScale || 1.0
+      qualityScale: config.qualityScale || qualitySettings.particleDensity,
     };
-    
+
     this.debugMode = this.config.enableDebugMode;
     this.activeParticles = new Set();
-    
+
     // Initialize object pool
     this.particlePool = new ObjectPool<Particle>(
-      () => new Particle({
-        position: { x: 0, y: 0 },
-        velocity: { x: 0, y: 0 },
-        color: '#FFFFFF',
-        size: 1,
-        lifespan: 1
-      }),
+      () =>
+        new Particle({
+          position: { x: 0, y: 0 },
+          velocity: { x: 0, y: 0 },
+          color: "#FFFFFF",
+          size: 1,
+          lifespan: 1,
+        }),
       (_particle) => {
         // Reset function - particle will be reset when acquired
       },
-      this.config.maxParticles
+      this.config.maxParticles,
     );
 
     // Pre-fill pool for better performance
@@ -184,7 +199,7 @@ export class ParticleSystem {
     this.batchRenderer = new ParticleBatchRenderer({
       maxBatchSize: 100,
       enableBlending: true,
-      enableGlow: true
+      enableGlow: true,
     });
 
     this.setupEventListeners();
@@ -195,7 +210,7 @@ export class ParticleSystem {
    */
   private setupThemeEffects(): void {
     // Neon theme - glowing particles with trails
-    this.themeEffects.set('neon', (particle: Particle) => {
+    this.themeEffects.set("neon", (particle: Particle) => {
       // Add glow effect by increasing size slightly
       particle.size *= 1.2;
       // Add trail effect
@@ -206,7 +221,7 @@ export class ParticleSystem {
     });
 
     // Pixel theme - blocky, no anti-aliasing
-    this.themeEffects.set('pixel', (particle: Particle) => {
+    this.themeEffects.set("pixel", (particle: Particle) => {
       // Snap to pixel grid
       particle.position.x = Math.floor(particle.position.x);
       particle.position.y = Math.floor(particle.position.y);
@@ -215,7 +230,7 @@ export class ParticleSystem {
     });
 
     // Synthwave theme - neon colors with chromatic aberration
-    this.themeEffects.set('synthwave', (particle: Particle) => {
+    this.themeEffects.set("synthwave", (particle: Particle) => {
       // Add extra particles for chromatic effect
       particle.chromatic = true;
       particle.size *= 1.1;
@@ -224,7 +239,7 @@ export class ParticleSystem {
     });
 
     // Minimal theme - simple, clean particles
-    this.themeEffects.set('minimal', (particle: Particle) => {
+    this.themeEffects.set("minimal", (particle: Particle) => {
       // Smaller, simpler particles
       particle.size *= 0.8;
       particle.fadeOut = true;
@@ -247,12 +262,14 @@ export class ParticleSystem {
     }
   }
 
-
-
   /**
    * Get theme-specific particle colors
-  */
-  private getThemeColors(): { primary: string; secondary: string; accent: string } {
+   */
+  private getThemeColors(): {
+    primary: string;
+    secondary: string;
+    accent: string;
+  } {
     if (this.activeThemePreset) {
       return THEME_COLOR_MAP[this.activeThemePreset];
     }
@@ -272,60 +289,65 @@ export class ParticleSystem {
    */
   private setupEventListeners(): void {
     // Block destruction effect
-    this.eventBus.on('block:destroyed', (data: {
-      type: BlockType;
-      position: Vector2D;
-      score: number;
-    }) => {
-      this.createBlockDestructionEffect(data.position, data.type);
-    });
+    this.eventBus.on(
+      "block:destroyed",
+      (data: { type: BlockType; position: Vector2D; score: number }) => {
+        this.createBlockDestructionEffect(data.position, data.type);
+      },
+    );
 
     // Block hit effect (for hard blocks)
-    this.eventBus.on('block:hit', (data: {
-      type: BlockType;
-      position: Vector2D;
-    }) => {
-      if (data.type === BlockType.Hard) {
-        this.createBlockHitEffect(data.position, data.type);
-      }
-    });
+    this.eventBus.on(
+      "block:hit",
+      (data: { type: BlockType; position: Vector2D }) => {
+        if (data.type === BlockType.Hard) {
+          this.createBlockHitEffect(data.position, data.type);
+        }
+      },
+    );
 
     // Combo effect
-    this.eventBus.on('combo:activated', (data: {
-      combo: number;
-      position: Vector2D;
-    }) => {
-      this.createComboEffect(data.position, data.combo);
-    });
+    this.eventBus.on(
+      "combo:activated",
+      (data: { combo: number; position: Vector2D }) => {
+        this.createComboEffect(data.position, data.combo);
+      },
+    );
 
     // Power-up collection effect
-    this.eventBus.on('powerup:collected', (data: {
-      type: string;
-      position: Vector2D;
-    }) => {
-      this.createEffect('powerup', data.position);
-    });
+    this.eventBus.on(
+      "powerup:collected",
+      (data: { type: string; position: Vector2D }) => {
+        this.createEffect("powerup", data.position);
+      },
+    );
 
     // Ball collision effect
-    this.eventBus.on('ball:collision', (data: {
-      position: Vector2D;
-      velocity?: Vector2D;
-      intensity?: number;
-    }) => {
-      // Create spark effect at collision point
-      this.createEffect('spark', data.position);
-    });
+    this.eventBus.on(
+      "ball:collision",
+      (data: {
+        position: Vector2D;
+        velocity?: Vector2D;
+        intensity?: number;
+      }) => {
+        // Create spark effect at collision point
+        this.createEffect("spark", data.position);
+      },
+    );
   }
 
   /**
    * Create block destruction explosion effect
    */
-  public createBlockDestructionEffect(position: Vector2D, blockType: BlockType): void {
+  public createBlockDestructionEffect(
+    position: Vector2D,
+    blockType: BlockType,
+  ): void {
     const color = this.getBlockColor(blockType);
     const particleConfigs = Particle.createExplosionConfig(
       position,
       color,
-      8 // 8 particles for block destruction
+      8, // 8 particles for block destruction
     );
 
     this.createParticles(particleConfigs);
@@ -339,7 +361,7 @@ export class ParticleSystem {
     const particleConfigs = Particle.createSparkleConfig(
       position,
       color,
-      4 // 4 particles for block hit
+      4, // 4 particles for block hit
     );
 
     this.createParticles(particleConfigs);
@@ -350,27 +372,27 @@ export class ParticleSystem {
    */
   public createComboEffect(position: Vector2D, comboCount: number): void {
     const particleCount = Math.min(comboCount * 2, 16); // Scale with combo, max 16
-    const colors = ['#FFD700', '#FFA500', '#FF6347']; // Gold, orange, red
-    
+    const colors = ["#FFD700", "#FFA500", "#FF6347"]; // Gold, orange, red
+
     for (let i = 0; i < particleCount; i++) {
       const color = colors[i % colors.length];
       const angle = (i / particleCount) * Math.PI * 2;
       const speed = 80 + comboCount * 10; // Faster particles for higher combos
-      
+
       const particleConfig: ParticleOptions = {
         position: { ...position },
         velocity: {
           x: Math.cos(angle) * speed,
-          y: Math.sin(angle) * speed - 30 // Upward bias
+          y: Math.sin(angle) * speed - 30, // Upward bias
         },
         color: color,
         size: 3 + Math.random() * 2,
         lifespan: 0.6 + comboCount * 0.1, // Longer life for higher combos
         gravity: 100,
         damping: 0.98,
-        fadeOut: true
+        fadeOut: true,
       };
-      
+
       this.createParticle(particleConfig);
     }
   }
@@ -378,37 +400,45 @@ export class ParticleSystem {
   /**
    * Create custom particle effect
    */
-  public createCustomEffect(center: Vector2D, config: {
-    particleCount: number;
-    colors: string[];
-    speedRange: { min: number; max: number };
-    sizeRange: { min: number; max: number };
-    lifespan: number;
-    gravity?: number;
-    spread?: number; // Angle spread in radians
-  }): void {
+  public createCustomEffect(
+    center: Vector2D,
+    config: {
+      particleCount: number;
+      colors: string[];
+      speedRange: { min: number; max: number };
+      sizeRange: { min: number; max: number };
+      lifespan: number;
+      gravity?: number;
+      spread?: number; // Angle spread in radians
+    },
+  ): void {
     const spread = config.spread || Math.PI * 2;
-    
+
     for (let i = 0; i < config.particleCount; i++) {
       const angle = (i / config.particleCount) * spread;
-      const speed = config.speedRange.min + Math.random() * (config.speedRange.max - config.speedRange.min);
-      const size = config.sizeRange.min + Math.random() * (config.sizeRange.max - config.sizeRange.min);
-      const color = config.colors[Math.floor(Math.random() * config.colors.length)];
-      
+      const speed =
+        config.speedRange.min +
+        Math.random() * (config.speedRange.max - config.speedRange.min);
+      const size =
+        config.sizeRange.min +
+        Math.random() * (config.sizeRange.max - config.sizeRange.min);
+      const color =
+        config.colors[Math.floor(Math.random() * config.colors.length)];
+
       const particleConfig: ParticleOptions = {
         position: { ...center },
         velocity: {
           x: Math.cos(angle) * speed,
-          y: Math.sin(angle) * speed
+          y: Math.sin(angle) * speed,
         },
         color: color,
         size: size,
         lifespan: config.lifespan,
         gravity: config.gravity || 200,
         damping: 0.98,
-        fadeOut: true
+        fadeOut: true,
       };
-      
+
       this.createParticle(particleConfig);
     }
   }
@@ -416,9 +446,12 @@ export class ParticleSystem {
   /**
    * Create a named effect at a specific position
    */
-  public createEffect(effectName: string, position: { x: number; y: number }): void {
+  public createEffect(
+    effectName: string,
+    position: { x: number; y: number },
+  ): void {
     const themeColors = this.getThemeColors();
-    
+
     switch (effectName) {
       case "explosion":
         this.createBlockDestructionEffect(position, BlockType.Normal);
@@ -432,7 +465,7 @@ export class ParticleSystem {
           sizeRange: { min: 1, max: 3 },
           lifespan: 0.3,
           gravity: 0,
-          spread: Math.PI * 2
+          spread: Math.PI * 2,
         });
         break;
       case "powerup":
@@ -444,7 +477,7 @@ export class ParticleSystem {
           sizeRange: { min: 2, max: 5 },
           lifespan: 0.6,
           gravity: 100,
-          spread: Math.PI * 2
+          spread: Math.PI * 2,
         });
         break;
       default:
@@ -456,7 +489,7 @@ export class ParticleSystem {
           sizeRange: { min: 2, max: 4 },
           lifespan: 0.5,
           gravity: 150,
-          spread: Math.PI * 2
+          spread: Math.PI * 2,
         });
     }
   }
@@ -464,7 +497,12 @@ export class ParticleSystem {
   /**
    * Set the viewport for spatial culling
    */
-  public setViewport(x: number, y: number, width: number, height: number): void {
+  public setViewport(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ): void {
     this.viewportBounds = { x, y, width, height };
     this.batchRenderer.updateCanvasSize(width, height);
   }
@@ -481,15 +519,17 @@ export class ParticleSystem {
    */
   private isInViewport(particle: Particle): boolean {
     if (!this.viewportBounds) return true;
-    
+
     const pos = particle.position;
     const bounds = this.viewportBounds;
     const margin = particle.size * 2;
-    
-    return pos.x >= bounds.x - margin &&
-           pos.x <= bounds.x + bounds.width + margin &&
-           pos.y >= bounds.y - margin &&
-           pos.y <= bounds.y + bounds.height + margin;
+
+    return (
+      pos.x >= bounds.x - margin &&
+      pos.x <= bounds.x + bounds.width + margin &&
+      pos.y >= bounds.y - margin &&
+      pos.y <= bounds.y + bounds.height + margin
+    );
   }
 
   /**
@@ -503,7 +543,7 @@ export class ParticleSystem {
    * Create multiple particles from configurations
    */
   private createParticles(configs: ParticleOptions[]): void {
-    configs.forEach(config => this.createParticle(config));
+    configs.forEach((config) => this.createParticle(config));
   }
 
   /**
@@ -520,14 +560,14 @@ export class ParticleSystem {
 
     const particle = this.particlePool.acquire();
     particle.reset(config);
-    
+
     // Apply theme-specific effects
     this.applyThemeEffects(particle);
-    
+
     this.activeParticles.add(particle);
     this.particleCount++;
     this.totalParticlesCreated++;
-    
+
     return particle;
   }
 
@@ -547,7 +587,7 @@ export class ParticleSystem {
    */
   private getBlockColor(blockType: BlockType): string {
     const themeColors = this.getThemeColors();
-    
+
     // Use theme colors for different block types
     switch (blockType) {
       case BlockType.Normal:
@@ -566,49 +606,51 @@ export class ParticleSystem {
    */
   public update(deltaTime: number): void {
     const startTime = performance.now();
-    
+
     // Update FPS tracking
     const currentTime = startTime;
     if (this.lastFrameTime > 0) {
       const frameDelta = currentTime - this.lastFrameTime;
       this.fps = 1000 / frameDelta;
-      
+
       // Auto quality adjustment
       if (this.autoQualityEnabled) {
         this.updateQualityLevel();
       }
-      
+
       // Performance monitoring
       this.checkPerformanceThresholds();
     }
     this.lastFrameTime = currentTime;
-    
+
     // Apply quality level to particle count
-    const maxParticlesThisFrame = Math.floor(this.config.maxParticles * this.qualityLevel);
-    
+    const maxParticlesThisFrame = Math.floor(
+      this.config.maxParticles * this.qualityLevel,
+    );
+
     const particlesToRemove: Particle[] = [];
     let processedCount = 0;
-    
-    this.activeParticles.forEach(particle => {
+
+    this.activeParticles.forEach((particle) => {
       // Skip processing if we've exceeded quality-adjusted limit
       if (processedCount >= maxParticlesThisFrame) {
         particlesToRemove.push(particle);
         return;
       }
-      
+
       particle.update(deltaTime);
-      
+
       if (!particle.isAlive()) {
         particlesToRemove.push(particle);
       }
       processedCount++;
     });
-    
+
     // Remove dead particles
-    particlesToRemove.forEach(particle => {
+    particlesToRemove.forEach((particle) => {
       this.removeParticle(particle);
     });
-    
+
     this.frameTime = performance.now() - startTime;
   }
 
@@ -619,30 +661,30 @@ export class ParticleSystem {
     // Apply camera transform
     ctx.save();
     ctx.translate(-this.cameraOffset.x, -this.cameraOffset.y);
-    
+
     if (this.useBatchRendering) {
       // Use optimized batch rendering
       const visibleParticles = new Set<Particle>();
-      
+
       // Cull particles outside viewport
-      this.activeParticles.forEach(particle => {
+      this.activeParticles.forEach((particle) => {
         if (this.isInViewport(particle)) {
           visibleParticles.add(particle);
         }
       });
-      
+
       // Batch and render visible particles
       const batches = this.batchRenderer.batchParticles(visibleParticles);
       this.batchRenderer.renderBatches(ctx, batches);
     } else {
       // Fallback to individual particle rendering
-      this.activeParticles.forEach(particle => {
+      this.activeParticles.forEach((particle) => {
         if (this.isInViewport(particle)) {
           particle.render(ctx);
         }
       });
     }
-    
+
     ctx.restore();
 
     // Debug rendering (not affected by camera)
@@ -674,28 +716,28 @@ export class ParticleSystem {
    */
   private renderDebugInfo(ctx: CanvasRenderingContext2D): void {
     const poolStats = this.particlePool.getStats();
-    
+
     ctx.save();
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     ctx.fillRect(10, 10, 250, 120);
-    
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = '12px monospace';
-    ctx.textAlign = 'left';
-    
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "12px monospace";
+    ctx.textAlign = "left";
+
     const debugInfo = [
       `Active Particles: ${this.activeParticles.size}`,
       `Pool Size: ${poolStats.poolSize}`,
       `Total Created: ${this.totalParticlesCreated}`,
       `Utilization: ${(poolStats.utilizationRate * 100).toFixed(1)}%`,
       `Frame Time: ${this.frameTime.toFixed(2)}ms`,
-      `Max Particles: ${this.config.maxParticles}`
+      `Max Particles: ${this.config.maxParticles}`,
     ];
-    
+
     debugInfo.forEach((info, index) => {
       ctx.fillText(info, 15, 30 + index * 15);
     });
-    
+
     ctx.restore();
   }
 
@@ -703,7 +745,7 @@ export class ParticleSystem {
    * Clear all particles
    */
   public clear(): void {
-    this.activeParticles.forEach(particle => {
+    this.activeParticles.forEach((particle) => {
       this.particlePool.release(particle);
     });
     this.activeParticles.clear();
@@ -715,7 +757,7 @@ export class ParticleSystem {
    */
   private updateQualityLevel(): void {
     const prevQuality = this.qualityLevel;
-    
+
     if (this.fps < this.performanceCriticalThreshold) {
       // Critical performance - minimum quality
       this.qualityLevel = 0.25;
@@ -726,69 +768,69 @@ export class ParticleSystem {
       // Good performance - gradually increase quality
       this.qualityLevel = Math.min(1.0, this.qualityLevel + 0.05);
     }
-    
+
     // Emit event if quality changed significantly
     if (Math.abs(prevQuality - this.qualityLevel) > 0.1) {
-      this.eventBus.emit('particles:qualityChanged', {
+      this.eventBus.emit("particles:qualityChanged", {
         previousLevel: prevQuality,
         currentLevel: this.qualityLevel,
-        fps: this.fps
+        fps: this.fps,
       });
-      
+
       // Trigger callbacks
-      this.performanceChangeCallbacks.forEach(callback => {
+      this.performanceChangeCallbacks.forEach((callback) => {
         callback({
-          type: 'qualityChange',
+          type: "qualityChange",
           previousLevel: prevQuality,
           currentLevel: this.qualityLevel,
-          fps: this.fps
+          fps: this.fps,
         });
       });
     }
   }
-  
+
   /**
    * Check performance thresholds and emit warnings
    */
   private checkPerformanceThresholds(): void {
     const poolStats = this.particlePool.getStats();
     const memoryUsage = poolStats.utilizationRate;
-    
+
     // Check FPS thresholds
     if (this.fps < this.performanceCriticalThreshold) {
-      this.eventBus.emit('particles:performanceCritical', {
+      this.eventBus.emit("particles:performanceCritical", {
         fps: this.fps,
         particleCount: this.activeParticles.size,
-        qualityLevel: this.qualityLevel
+        qualityLevel: this.qualityLevel,
       });
-      
+
       // Trigger critical callback
       if (this.performanceThresholdCallbacks.critical) {
         this.performanceThresholdCallbacks.critical();
       }
     } else if (this.fps < this.performanceWarningThreshold) {
-      this.eventBus.emit('particles:performanceWarning', {
+      this.eventBus.emit("particles:performanceWarning", {
         fps: this.fps,
         particleCount: this.activeParticles.size,
-        qualityLevel: this.qualityLevel
+        qualityLevel: this.qualityLevel,
       });
-      
+
       // Trigger warning callback
       if (this.performanceThresholdCallbacks.warning) {
         this.performanceThresholdCallbacks.warning();
       }
     }
-    
+
     // Check memory threshold
     if (memoryUsage > this.memoryWarningThreshold) {
-      this.eventBus.emit('particles:memoryWarning', {
+      this.eventBus.emit("particles:memoryWarning", {
         utilizationRate: memoryUsage,
         activeCount: poolStats.activeCount,
-        poolSize: poolStats.poolSize
+        poolSize: poolStats.poolSize,
       });
     }
   }
-  
+
   /**
    * Set performance thresholds
    */
@@ -796,7 +838,7 @@ export class ParticleSystem {
     this.performanceWarningThreshold = warning;
     this.performanceCriticalThreshold = critical;
   }
-  
+
   /**
    * Enable or disable auto quality adjustment
    */
@@ -806,7 +848,7 @@ export class ParticleSystem {
       this.qualityLevel = 1.0; // Reset to full quality
     }
   }
-  
+
   /**
    * Manually set quality level (0.25 to 1.0)
    */
@@ -814,21 +856,24 @@ export class ParticleSystem {
     this.qualityLevel = Math.max(0.25, Math.min(1.0, level));
     this.autoQualityEnabled = false; // Disable auto when manually set
   }
-  
+
   /**
    * Register performance callback
    */
-  public onPerformanceChange(id: string, callback: PerformanceChangeCallback): void {
+  public onPerformanceChange(
+    id: string,
+    callback: PerformanceChangeCallback,
+  ): void {
     this.performanceChangeCallbacks.set(id, callback);
   }
-  
+
   /**
    * Unregister performance callback
    */
   public offPerformanceChange(id: string): void {
     this.performanceChangeCallbacks.delete(id);
   }
-  
+
   /**
    * Get comprehensive performance metrics
    */
@@ -841,8 +886,8 @@ export class ParticleSystem {
     memoryUsage: number;
     updateTime?: number;
     particlePoolUtilization: number;
-    poolStats: ReturnType<ObjectPool<Particle>['getStats']>;
-    renderStats: ReturnType<ParticleBatchRenderer['getRenderStats']>;
+    poolStats: ReturnType<ObjectPool<Particle>["getStats"]>;
+    renderStats: ReturnType<ParticleBatchRenderer["getRenderStats"]>;
     totalParticlesCreated: number;
     autoQualityEnabled: boolean;
     thresholds: {
@@ -853,7 +898,7 @@ export class ParticleSystem {
   } {
     const poolStats = this.particlePool.getStats();
     const renderStats = this.batchRenderer.getRenderStats();
-    
+
     return {
       fps: this.fps,
       frameTime: this.frameTime,
@@ -870,11 +915,11 @@ export class ParticleSystem {
       thresholds: {
         warning: this.performanceWarningThreshold,
         critical: this.performanceCriticalThreshold,
-        memory: this.memoryWarningThreshold
-      }
+        memory: this.memoryWarningThreshold,
+      },
     };
   }
-  
+
   /**
    * Force optimize particle system (emergency performance recovery)
    */
@@ -883,123 +928,142 @@ export class ParticleSystem {
     const particlesToRemove: Particle[] = [];
     let count = 0;
     const targetRemoval = Math.floor(this.activeParticles.size / 2);
-    
-    this.activeParticles.forEach(particle => {
+
+    this.activeParticles.forEach((particle) => {
       if (count < targetRemoval) {
         particlesToRemove.push(particle);
         count++;
       }
     });
-    
-    particlesToRemove.forEach(particle => {
+
+    particlesToRemove.forEach((particle) => {
       this.removeParticle(particle);
     });
-    
+
     // Set quality to minimum
     this.qualityLevel = 0.25;
-    
+
     // Emit optimization event
-    this.eventBus.emit('particles:forceOptimized', {
+    this.eventBus.emit("particles:forceOptimized", {
       particlesRemoved: targetRemoval,
-      newQualityLevel: this.qualityLevel
+      newQualityLevel: this.qualityLevel,
     });
   }
-  
+
   /**
    * Get current particle count
    */
   /**
    * Emit particles from a specific position
    */
-  public emit(x: number, y: number, options: {
-    count: number;
-    speed?: number;
-    spread?: number;
-    color?: string;
-  }): void {
-    const { count, speed = 100, spread = Math.PI * 2, color = '#ffffff' } = options;
-    
+  public emit(
+    x: number,
+    y: number,
+    options: {
+      count: number;
+      speed?: number;
+      spread?: number;
+      color?: string;
+    },
+  ): void {
+    const {
+      count,
+      speed = 100,
+      spread = Math.PI * 2,
+      color = "#ffffff",
+    } = options;
+
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * spread + (Math.random() - 0.5) * 0.2;
       const particleSpeed = speed * (0.8 + Math.random() * 0.4);
-      
+
       this.createParticle({
         position: { x, y },
         velocity: {
           x: Math.cos(angle) * particleSpeed,
-          y: Math.sin(angle) * particleSpeed
+          y: Math.sin(angle) * particleSpeed,
         },
         color,
         size: 2 + Math.random() * 2,
         lifespan: 0.5 + Math.random() * 0.5,
         gravity: 200,
         damping: 0.98,
-        fadeOut: true
+        fadeOut: true,
       });
     }
   }
-  
+
   /**
    * Create an explosion effect
    */
-  public createExplosion(x: number, y: number, options: {
-    count: number;
-    speed?: number;
-    color?: string;
-  }): void {
-    const { count, speed = 200, color = '#ff6b6b' } = options;
-    
+  public createExplosion(
+    x: number,
+    y: number,
+    options: {
+      count: number;
+      speed?: number;
+      color?: string;
+    },
+  ): void {
+    const { count, speed = 200, color = "#ff6b6b" } = options;
+
     this.emit(x, y, {
       count,
       speed,
       spread: Math.PI * 2,
-      color
+      color,
     });
   }
-  
+
   /**
    * Create an impact effect
    */
-  public createImpactEffect(x: number, y: number, options: {
-    count: number;
-    speed?: number;
-  }): void {
+  public createImpactEffect(
+    x: number,
+    y: number,
+    options: {
+      count: number;
+      speed?: number;
+    },
+  ): void {
     const { count, speed = 150 } = options;
-    
+
     this.emit(x, y, {
       count,
       speed,
       spread: Math.PI,
-      color: '#4ecdc4'
+      color: "#4ecdc4",
     });
   }
-  
+
   /**
    * Register a performance warning callback
    */
   public onPerformanceWarning(callback: () => void): void {
     this.performanceThresholdCallbacks.warning = callback;
   }
-  
+
   /**
    * Register a performance critical callback
    */
   public onPerformanceCritical(callback: () => void): void {
     this.performanceThresholdCallbacks.critical = callback;
   }
-  
+
   /**
    * Set the particle theme
    */
-  public setTheme(theme: ParticleThemePreset | ParticleThemeConfig | null): void {
+  public setTheme(
+    theme: ParticleThemePreset | ParticleThemeConfig | null,
+  ): void {
     if (theme === null) {
       this.activeTheme = cloneTheme(DEFAULT_THEME);
-      this.activeThemePreset = 'neon';
+      this.activeThemePreset = "neon";
       this.clear();
       return;
     }
 
-    if (typeof theme === 'string') {
+    if (typeof theme === "string") {
       const preset = THEME_PRESETS[theme];
       if (!preset) {
         return;
@@ -1008,7 +1072,7 @@ export class ParticleSystem {
       this.activeTheme = cloneTheme(preset);
       this.activeThemePreset = theme;
       this.clear();
-      this.eventBus.emit('particles:themeChanged', { theme });
+      this.eventBus.emit("particles:themeChanged", { theme });
       return;
     }
 
@@ -1036,7 +1100,9 @@ export class ParticleSystem {
   /**
    * Alias for getPerformanceMetrics for backwards compatibility
    */
-  public getPerformanceStats(): ReturnType<ParticleSystem['getPerformanceMetrics']> {
+  public getPerformanceStats(): ReturnType<
+    ParticleSystem["getPerformanceMetrics"]
+  > {
     return this.getPerformanceMetrics();
   }
 
@@ -1047,13 +1113,13 @@ export class ParticleSystem {
     activeCount: number;
     totalCreated: number;
     frameTime: number;
-    poolStats: ReturnType<ObjectPool<Particle>['getStats']>;
+    poolStats: ReturnType<ObjectPool<Particle>["getStats"]>;
   } {
     return {
       activeCount: this.activeParticles.size,
       totalCreated: this.totalParticlesCreated,
       frameTime: this.frameTime,
-      poolStats: this.particlePool.getStats()
+      poolStats: this.particlePool.getStats(),
     };
   }
 
@@ -1078,10 +1144,10 @@ export class ParticleSystem {
   public destroy(): void {
     this.clear();
     this.particlePool.clear();
-    this.eventBus.off('block:destroyed');
-    this.eventBus.off('block:hit');
-    this.eventBus.off('combo:activated');
-    this.eventBus.off('powerup:collected');
-    this.eventBus.off('ball:collision');
+    this.eventBus.off("block:destroyed");
+    this.eventBus.off("block:hit");
+    this.eventBus.off("combo:activated");
+    this.eventBus.off("powerup:collected");
+    this.eventBus.off("ball:collision");
   }
 }
