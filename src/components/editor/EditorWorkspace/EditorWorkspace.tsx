@@ -2,12 +2,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { editorActions } from "../../../stores/editorStore";
 import { useEditorStore } from "../../../stores/editorStore";
+import { useTutorialStore } from "../../../stores/tutorialStore";
 import { BlockData, SerializedBlockData } from "../../../types/editor.types";
 import { LevelService, type LevelRecord, type LevelSummary } from "../../../services/LevelService";
 import { BlockPalette } from "../BlockPalette";
 import { EditorCanvas } from "../EditorCanvas";
 import { EditorProvider } from "../EditorProvider";
 import { EditorTools } from "../EditorTools";
+import { Tutorial } from "../Tutorial";
 import styles from "./EditorWorkspace.module.css";
 
 interface StatusMessage {
@@ -300,6 +302,7 @@ const EditorWorkspace = (): JSX.Element => {
             className={styles.primaryButton}
             onClick={handleSaveLevel}
             disabled={isSaving}
+            data-testid="save-level-button"
           >
             {isSaving ? "保存中..." : "レベルを保存"}
           </button>
@@ -336,6 +339,8 @@ const EditorWorkspace = (): JSX.Element => {
       </EditorProvider>
 
       {shortcutsOpen ? <ShortcutsDialog onClose={() => setShortcutsOpen(false)} /> : null}
+      
+      <Tutorial />
     </div>
   );
 };

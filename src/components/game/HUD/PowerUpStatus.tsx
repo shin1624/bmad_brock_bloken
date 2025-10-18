@@ -8,6 +8,12 @@ export enum PowerUpType {
   BallSpeed = "ballspeed",
   Penetration = "penetration",
   Magnet = "magnet",
+  Shield = "shield",
+  Pierce = "pierce",
+  MagnetPaddle = "magnetpaddle",
+  // Story 4.3b - Phase 2 Advanced Power-ups
+  SlowMotion = "slowmotion",
+  Laser = "laser",
 }
 
 // Active power-up interface
@@ -166,6 +172,9 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
         },
         [PowerUpType.Penetration]: "🎯",
         [PowerUpType.Magnet]: "🧲",
+        [PowerUpType.Shield]: "🛡️",
+        [PowerUpType.Pierce]: "⚔️",
+        [PowerUpType.MagnetPaddle]: "🧲",
       };
 
     const mapping = iconMap[type];
@@ -198,6 +207,9 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
       },
       [PowerUpType.Penetration]: "#96ceb4",
       [PowerUpType.Magnet]: "#feca57",
+      [PowerUpType.Shield]: "#00b8d4",
+      [PowerUpType.Pierce]: "#ffd93d",
+      [PowerUpType.MagnetPaddle]: "#9c88ff",
     };
 
     const mapping = colorMap[type];
@@ -445,62 +457,62 @@ const PowerUpStatus: React.FC<PowerUpStatusProps> = ({
 
       <style>{`
         @keyframes powerUpSpawn {
-          0% { 
-            transform: scale(0.3) translateY(20px); 
-            opacity: 0; 
+          0% {
+            transform: scale(0.3) translateY(20px);
+            opacity: 0;
             filter: blur(4px);
           }
-          50% { 
-            transform: scale(1.2) translateY(-5px); 
-            opacity: 0.8; 
+          50% {
+            transform: scale(1.2) translateY(-5px);
+            opacity: 0.8;
             filter: blur(1px);
           }
-          100% { 
-            transform: scale(1) translateY(0); 
-            opacity: 1; 
+          100% {
+            transform: scale(1) translateY(0);
+            opacity: 1;
             filter: blur(0);
           }
         }
-        
+
         @keyframes powerUpExpire {
-          0% { 
-            transform: scale(1); 
-            opacity: 1; 
+          0% {
+            transform: scale(1);
+            opacity: 1;
           }
-          50% { 
-            transform: scale(1.1); 
-            opacity: 0.7; 
+          50% {
+            transform: scale(1.1);
+            opacity: 0.7;
           }
-          100% { 
-            transform: scale(0.8); 
-            opacity: 0; 
+          100% {
+            transform: scale(0.8);
+            opacity: 0;
             filter: blur(2px);
           }
         }
-        
+
         @keyframes powerUpWarning {
-          0% { 
-            opacity: 1; 
+          0% {
+            opacity: 1;
             transform: scale(1);
           }
-          100% { 
-            opacity: 0.7; 
+          100% {
+            opacity: 0.7;
             transform: scale(1.02);
           }
         }
-        
+
         @keyframes powerUpActivate {
-          0% { 
-            transform: scale(0.8); 
-            opacity: 0; 
+          0% {
+            transform: scale(0.8);
+            opacity: 0;
           }
-          50% { 
-            transform: scale(1.3); 
-            opacity: 1; 
+          50% {
+            transform: scale(1.3);
+            opacity: 1;
           }
-          100% { 
-            transform: scale(1); 
-            opacity: 1; 
+          100% {
+            transform: scale(1);
+            opacity: 1;
           }
         }
 

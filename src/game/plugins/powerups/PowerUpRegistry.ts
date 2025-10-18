@@ -7,6 +7,12 @@ import { PowerUpSystem } from "../../systems/PowerUpSystem";
 import { MultiBallPowerUp } from "./MultiBallPowerUp";
 import { PaddleSizePowerUp } from "./PaddleSizePowerUp";
 import { BallSpeedPowerUp } from "./BallSpeedPowerUp";
+import { ShieldPowerUp } from "./ShieldPowerUp";
+import { PierceBallPowerUp } from "./PierceBallPowerUp";
+import { MagnetPaddlePowerUp } from "./MagnetPaddlePowerUp";
+// Story 4.3b Phase 2 Power-Ups
+import { SlowMotionPowerUp } from "./SlowMotionPowerUp";
+import { LaserGunPowerUp } from "./LaserGunPowerUp";
 import { PowerUpType } from "../../entities/PowerUp";
 import { PowerUpPlugin } from "../PowerUpPlugin";
 
@@ -45,6 +51,20 @@ export class PowerUpRegistry {
       await this.registerPlugin("ball_fast", fastBallPlugin);
       await this.registerPlugin("ball_slow", slowBallPlugin);
 
+      // Register Story 4.3a Phase 1 power-ups
+      const shieldPlugin = new ShieldPowerUp();
+      const piercePlugin = new PierceBallPowerUp();
+      const magnetPlugin = new MagnetPaddlePowerUp();
+      await this.registerPlugin("shield", shieldPlugin);
+      await this.registerPlugin("pierce", piercePlugin);
+      await this.registerPlugin("magnet_paddle", magnetPlugin);
+
+      // Register Story 4.3b Phase 2 power-ups
+      const slowMotionPlugin = new SlowMotionPowerUp();
+      const laserGunPlugin = new LaserGunPowerUp();
+      await this.registerPlugin("slow_motion", slowMotionPlugin);
+      await this.registerPlugin("laser_gun", laserGunPlugin);
+
       console.log(
         `PowerUpRegistry: Successfully registered ${this.registeredPlugins.size} power-up plugins`,
       );
@@ -60,7 +80,10 @@ export class PowerUpRegistry {
   /**
    * Register a single power-up plugin
    */
-  private async registerPlugin(id: string, plugin: PowerUpPlugin): Promise<void> {
+  private async registerPlugin(
+    id: string,
+    plugin: PowerUpPlugin,
+  ): Promise<void> {
     try {
       // Register with PluginManager
       await this.pluginManager.register(plugin);
@@ -97,7 +120,10 @@ export class PowerUpRegistry {
   /**
    * Get plugin by power-up type
    */
-  public getPluginByType(type: PowerUpType, variant?: string): PowerUpPlugin | null {
+  public getPluginByType(
+    type: PowerUpType,
+    variant?: string,
+  ): PowerUpPlugin | null {
     switch (type) {
       case PowerUpType.MultiBall:
         return this.getPlugin("multiball");
@@ -113,6 +139,15 @@ export class PowerUpRegistry {
         if (variant === "slow") return this.getPlugin("ball_slow");
         // Default to fast if no variant specified
         return this.getPlugin("ball_fast");
+
+      case PowerUpType.Shield:
+        return this.getPlugin("shield");
+
+      case PowerUpType.Pierce:
+        return this.getPlugin("pierce");
+
+      case PowerUpType.MagnetPaddle:
+        return this.getPlugin("magnet_paddle");
 
       default:
         return null;
@@ -149,6 +184,9 @@ export class PowerUpRegistry {
       [PowerUpType.MultiBall]: ["multiball"],
       [PowerUpType.PaddleSize]: ["paddle_large", "paddle_small"],
       [PowerUpType.BallSpeed]: ["ball_fast", "ball_slow"],
+      [PowerUpType.Shield]: ["shield"],
+      [PowerUpType.Pierce]: ["pierce"],
+      [PowerUpType.MagnetPaddle]: ["magnet_paddle"],
     };
 
     return {

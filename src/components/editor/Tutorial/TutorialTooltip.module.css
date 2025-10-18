@@ -1,0 +1,188 @@
+.tooltip {
+  position: fixed;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  z-index: 10001;
+  max-width: 400px;
+  min-width: 300px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  animation: slideIn 0.4s ease-out;
+}
+
+.tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.progress {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4a4a4a;
+  margin: 0 0 20px 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.rightActions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.previousButton,
+.nextButton,
+.skipButton {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  outline: none;
+}
+
+.previousButton {
+  background: #f0f0f0;
+  color: #4a4a4a;
+}
+
+.previousButton:hover {
+  background: #e0e0e0;
+}
+
+.skipButton {
+  background: transparent;
+  color: #666;
+  text-decoration: underline;
+  padding: 8px 12px;
+}
+
+.skipButton:hover {
+  color: #333;
+}
+
+.nextButton {
+  background: #3b82f6;
+  color: white;
+}
+
+.nextButton:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.nextButton:active {
+  transform: translateY(0);
+}
+
+.arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.arrow-top {
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0 10px;
+  border-color: white transparent transparent transparent;
+}
+
+.arrow-bottom {
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent white transparent;
+}
+
+.arrow-left {
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent white;
+}
+
+.arrow-right {
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+}
+
+/* Accessibility - Focus styles */
+.previousButton:focus-visible,
+.nextButton:focus-visible,
+.skipButton:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    animation: none;
+    transition: opacity 0.1s ease;
+  }
+  
+  .nextButton:hover {
+    transform: none;
+  }
+}
+
+/* Global styles for highlighted elements */
+:global(.tutorial-highlight) {
+  position: relative;
+  z-index: 10000;
+  outline: 3px solid #3b82f6 !important;
+  outline-offset: 2px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    outline-color: #3b82f6;
+  }
+  50% {
+    outline-color: #60a5fa;
+  }
+}

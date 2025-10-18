@@ -51,6 +51,19 @@ if (!global.performance) {
   global.performance = {
     now: vi.fn(() => Date.now()),
   } as any;
+} else if (!global.performance.now) {
+  global.performance.now = vi.fn(() => Date.now());
+}
+
+// Mock process.memoryUsage for Node environment
+if (typeof process !== 'undefined' && !process.memoryUsage) {
+  process.memoryUsage = vi.fn(() => ({
+    rss: 0,
+    heapTotal: 0,
+    heapUsed: 0,
+    external: 0,
+    arrayBuffers: 0
+  }));
 }
 
 // Mock Web Audio API for audio tests

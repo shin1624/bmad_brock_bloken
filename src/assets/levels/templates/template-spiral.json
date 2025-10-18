@@ -1,0 +1,32 @@
+{
+  "name": "スパイラル",
+  "description": "渦巻き状の配置パターン",
+  "difficulty": "hard",
+  "blocks": [
+    { "type": "strong", "x": 4, "y": 2, "durability": 2, "points": 20 },
+    { "type": "strong", "x": 5, "y": 2, "durability": 2, "points": 20 },
+    
+    { "type": "normal", "x": 6, "y": 2, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 6, "y": 3, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 6, "y": 4, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 6, "y": 5, "durability": 1, "points": 10 },
+    
+    { "type": "strong", "x": 5, "y": 5, "durability": 2, "points": 20 },
+    { "type": "strong", "x": 4, "y": 5, "durability": 2, "points": 20 },
+    { "type": "strong", "x": 3, "y": 5, "durability": 2, "points": 20 },
+    
+    { "type": "normal", "x": 3, "y": 4, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 3, "y": 3, "durability": 1, "points": 10 },
+    
+    { "type": "special", "x": 4, "y": 3, "durability": 1, "points": 100, "powerUp": "multiball" },
+    { "type": "special", "x": 5, "y": 3, "durability": 1, "points": 100, "powerUp": "ball-speed" },
+    
+    { "type": "normal", "x": 5, "y": 4, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 4, "y": 4, "durability": 1, "points": 10 },
+    
+    { "type": "unbreakable", "x": 2, "y": 2, "durability": -1, "points": 0 },
+    { "type": "unbreakable", "x": 7, "y": 2, "durability": -1, "points": 0 },
+    { "type": "unbreakable", "x": 2, "y": 5, "durability": -1, "points": 0 },
+    { "type": "unbreakable", "x": 7, "y": 5, "durability": -1, "points": 0 }
+  ]
+}

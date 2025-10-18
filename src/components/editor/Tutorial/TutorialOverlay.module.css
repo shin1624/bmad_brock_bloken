@@ -1,0 +1,58 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.overlaySection {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: all;
+  transition: opacity 0.3s ease;
+}
+
+.fullOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: all;
+}
+
+.spotlight {
+  position: absolute;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  animation: spotlightPulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes spotlightPulse {
+  0%, 100% {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  }
+  50% {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .overlaySection,
+  .fullOverlay {
+    transition: none;
+  }
+  
+  .spotlight {
+    animation: none;
+  }
+}

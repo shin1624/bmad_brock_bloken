@@ -3,6 +3,7 @@ import { StartButton } from "./StartButton";
 import { MenuNavigation } from "./MenuNavigation";
 import { useMainMenu } from "../../../hooks/useMainMenu";
 import { About } from "../About";
+import { SettingsPanel } from "../Settings/SettingsPanel";
 import "./MainMenu.css";
 
 export interface MainMenuProps {
@@ -11,17 +12,23 @@ export interface MainMenuProps {
   onOpenEditor?: () => void;
 }
 
-export const MainMenu: React.FC<MainMenuProps> = ({ className = "", onStartGame, onOpenEditor }) => {
+export const MainMenu: React.FC<MainMenuProps> = ({
+  className = "",
+  onStartGame,
+  onOpenEditor,
+}) => {
   const {
+    menuState,
     startGame,
     openSettings,
     openHighScores,
     openLevelSelect,
+    goBack,
     isLoading,
   } = useMainMenu();
-  
+
   const [isAboutOpen, setIsAboutOpen] = useState(false);
-  
+
   const handleStartGame = () => {
     if (onStartGame) {
       onStartGame();
@@ -38,6 +45,11 @@ export const MainMenu: React.FC<MainMenuProps> = ({ className = "", onStartGame,
         </div>
       </div>
     );
+  }
+
+  // Render Settings Panel if settings menu is active
+  if (menuState.currentMenu === "settings") {
+    return <SettingsPanel onClose={goBack} className={className} />;
   }
 
   return (
@@ -106,7 +118,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ className = "", onStartGame,
           </MenuNavigation>
         </nav>
       </div>
-      
+
       <About isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
     </div>
   );

@@ -34,7 +34,7 @@ export interface AudioMetrics {
 }
 
 // Input types
-export type InputDevice = 'keyboard' | 'mouse' | 'touch';
+export type InputDevice = "keyboard" | "mouse" | "touch";
 
 export interface InputState {
   device: InputDevice;
@@ -115,9 +115,9 @@ export interface EntityState {
 
 // Block system types
 export enum BlockType {
-  Normal = 'normal',
-  Hard = 'hard',
-  Indestructible = 'indestructible'
+  Normal = "normal",
+  Hard = "hard",
+  Indestructible = "indestructible",
 }
 
 export interface BlockConfiguration {
@@ -125,7 +125,7 @@ export interface BlockConfiguration {
   maxHitPoints: number;
   scoreValue: number;
   color: string;
-  width: number;  // 75px
+  width: number; // 75px
   height: number; // 25px
 }
 
@@ -140,21 +140,21 @@ export interface BlockState extends EntityState {
 }
 
 export interface GridLayout {
-  columns: number;    // 10列
-  rows: number;      // 8行
+  columns: number; // 10列
+  rows: number; // 8行
   cellWidth: number; // 75px
   cellHeight: number; // 25px
-  spacing: number;   // 5px
-  offsetX: number;   // グリッド開始X座標
-  offsetY: number;   // グリッド開始Y座標
+  spacing: number; // 5px
+  offsetX: number; // グリッド開始X座標
+  offsetY: number; // グリッド開始Y座標
 }
 
 export interface ParticleConfig {
-  count: number;        // 8個
-  lifespan: number;     // 0.5秒
-  velocity: Vector2D;   // 初期速度範囲
-  gravity: number;      // 重力加速度
-  color: string;        // ブロック色ベース
+  count: number; // 8個
+  lifespan: number; // 0.5秒
+  velocity: Vector2D; // 初期速度範囲
+  gravity: number; // 重力加速度
+  color: string; // ブロック色ベース
 }
 
 // Enhanced Game State for state management
@@ -168,6 +168,15 @@ export interface GameState {
   powerUps: EntityState[];
   combo: number;
   highScore: number;
+  // Phase 1 power-up states
+  shieldActive: boolean;
+  pierceActive: boolean;
+  pierceBlocksRemaining: number;
+  magnetActive: boolean;
+  ballAttached: boolean;
+  // Phase 2 power-up states - Story 4.3b
+  timeScale: number; // Default 1.0, Slow Motion = 0.5
+  laserActive: boolean;
 }
 
 // Game state subscriber type

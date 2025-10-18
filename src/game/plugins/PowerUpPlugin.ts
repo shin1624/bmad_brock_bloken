@@ -3,8 +3,12 @@
  * Story 4.1, Task 2: Base power-up plugin class for extensible power-up system
  * Provides foundation for all power-up effect implementations
  */
-import { Plugin, PluginContext } from './PluginManager';
-import { PowerUpType, PowerUpEffect, PowerUpMetadata } from '../entities/PowerUp';
+import { Plugin, PluginContext } from "./PluginManager";
+import {
+  PowerUpType,
+  PowerUpEffect,
+  PowerUpMetadata,
+} from "../entities/PowerUp";
 
 export interface PowerUpSystemState {
   readonly balls?: unknown[];
@@ -24,20 +28,24 @@ export interface GameEntitiesSnapshot {
 export type PowerUpEffectData = Record<string, unknown>;
 
 // PowerUp plugin specific context
-export interface PowerUpPluginContext extends PluginContext<PowerUpSystemState> {
+export interface PowerUpPluginContext
+  extends PluginContext<PowerUpSystemState> {
   readonly powerUpType: PowerUpType;
   readonly powerUpId: string;
   readonly effectData: PowerUpEffectData;
   readonly gameEntities: GameEntitiesSnapshot;
+  // Story 4.3b - Phase 2 Advanced Power-ups
+  readonly projectileSystem?: unknown; // ProjectileSystem for LaserGunPowerUp
+  readonly audioSystem?: unknown; // AudioSystem for sound effects
 }
 
 // Effect lifecycle events
 export enum EffectEvent {
-  Activate = 'activate',
-  Update = 'update', 
-  Deactivate = 'deactivate',
-  Conflict = 'conflict',
-  Stack = 'stack'
+  Activate = "activate",
+  Update = "update",
+  Deactivate = "deactivate",
+  Conflict = "conflict",
+  Stack = "stack",
 }
 
 // Effect execution result
@@ -55,6 +63,7 @@ export interface EffectResult {
 export abstract class PowerUpPlugin implements Plugin {
   public readonly name: string;
   public readonly version: string;
+  public readonly type: string = "powerup";
   public readonly description: string;
   public readonly powerUpType: PowerUpType;
   public readonly effect: PowerUpEffect;
@@ -71,7 +80,7 @@ export abstract class PowerUpPlugin implements Plugin {
     powerUpType: PowerUpType,
     effect: PowerUpEffect,
     description?: string,
-    dependencies?: string[]
+    dependencies?: string[],
   ) {
     this.name = name;
     this.version = version;
@@ -117,7 +126,7 @@ export abstract class PowerUpPlugin implements Plugin {
       return {
         success: false,
         modified: false,
-        error: new Error(`Plugin ${this.name} not initialized`)
+        error: new Error(`Plugin ${this.name} not initialized`),
       };
     }
 
@@ -132,20 +141,19 @@ export abstract class PowerUpPlugin implements Plugin {
 
       // Apply effect with rollback support
       const result = this.onApplyEffect(context);
-      
+
       if (result.success) {
         this.activations++;
         this.recordExecutionTime();
       }
 
       return result;
-
     } catch (error) {
       this.recordExecutionTime();
       return {
         success: false,
         modified: false,
-        error: error as Error
+        error: error as Error,
       };
     }
   }
@@ -158,7 +166,7 @@ export abstract class PowerUpPlugin implements Plugin {
       return {
         success: false,
         modified: false,
-        error: new Error(`Plugin ${this.name} not initialized`)
+        error: new Error(`Plugin ${this.name} not initialized`),
       };
     }
 
@@ -168,13 +176,12 @@ export abstract class PowerUpPlugin implements Plugin {
       const result = this.onRemoveEffect(context);
       this.recordExecutionTime();
       return result;
-
     } catch (error) {
       this.recordExecutionTime();
       return {
         success: false,
         modified: false,
-        error: error as Error
+        error: error as Error,
       };
     }
   }
@@ -187,7 +194,7 @@ export abstract class PowerUpPlugin implements Plugin {
       return {
         success: false,
         modified: false,
-        error: new Error(`Plugin ${this.name} not initialized`)
+        error: new Error(`Plugin ${this.name} not initialized`),
       };
     }
 
@@ -197,13 +204,12 @@ export abstract class PowerUpPlugin implements Plugin {
       const result = this.onUpdateEffect(context);
       this.recordExecutionTime();
       return result;
-
     } catch (error) {
       this.recordExecutionTime();
       return {
         success: false,
         modified: false,
-        error: error as Error
+        error: error as Error,
       };
     }
   }
@@ -212,8 +218,8 @@ export abstract class PowerUpPlugin implements Plugin {
    * Handle effect conflicts with other power-ups
    */
   public handleConflict(
-    conflictingType: PowerUpType, 
-    context: PowerUpPluginContext
+    conflictingType: PowerUpType,
+    context: PowerUpPluginContext,
   ): EffectResult {
     this.executionStartTime = performance.now();
 
@@ -221,13 +227,12 @@ export abstract class PowerUpPlugin implements Plugin {
       const result = this.onHandleConflict(conflictingType, context);
       this.recordExecutionTime();
       return result;
-
     } catch (error) {
       this.recordExecutionTime();
       return {
         success: false,
         modified: false,
-        error: error as Error
+        error: error as Error,
       };
     }
   }
@@ -250,9 +255,10 @@ export abstract class PowerUpPlugin implements Plugin {
   } {
     return {
       totalExecutionTime: this.totalExecutionTime,
-      averageExecutionTime: this.activations > 0 ? this.totalExecutionTime / this.activations : 0,
+      averageExecutionTime:
+        this.activations > 0 ? this.totalExecutionTime / this.activations : 0,
       activations: this.activations,
-      isInitialized: this.isInitialized
+      isInitialized: this.isInitialized,
     };
   }
 
@@ -268,7 +274,7 @@ export abstract class PowerUpPlugin implements Plugin {
       color: this.getColor(),
       rarity: this.getRarity(),
       duration: this.getDuration(),
-      effect: this.effect
+      effect: this.effect,
     };
   }
 
@@ -292,19 +298,23 @@ export abstract class PowerUpPlugin implements Plugin {
   /**
    * Remove the power-up effect from game state
    */
-  protected abstract onRemoveEffect(context: PowerUpPluginContext): EffectResult;
+  protected abstract onRemoveEffect(
+    context: PowerUpPluginContext,
+  ): EffectResult;
 
   /**
    * Update the active effect (called each frame)
    */
-  protected abstract onUpdateEffect(context: PowerUpPluginContext): EffectResult;
+  protected abstract onUpdateEffect(
+    context: PowerUpPluginContext,
+  ): EffectResult;
 
   /**
    * Handle conflicts with other power-ups
    */
   protected abstract onHandleConflict(
-    conflictingType: PowerUpType, 
-    context: PowerUpPluginContext
+    conflictingType: PowerUpType,
+    context: PowerUpPluginContext,
   ): EffectResult;
 
   /**
@@ -320,7 +330,7 @@ export abstract class PowerUpPlugin implements Plugin {
   /**
    * Get power-up rarity
    */
-  protected abstract getRarity(): 'common' | 'rare' | 'epic';
+  protected abstract getRarity(): "common" | "rare" | "epic";
 
   /**
    * Get power-up duration in milliseconds
@@ -340,7 +350,7 @@ export abstract class PowerUpPlugin implements Plugin {
         return {
           success: false,
           modified: false,
-          error: new Error(`Time budget exceeded: ${elapsed}ms`)
+          error: new Error(`Time budget exceeded: ${elapsed}ms`),
         };
       }
     }
@@ -365,7 +375,9 @@ export abstract class PowerUpPlugin implements Plugin {
   /**
    * Create safe game state snapshot for rollback
    */
-  protected createSnapshot(gameState: PowerUpSystemState | null): PowerUpSystemState | null {
+  protected createSnapshot(
+    gameState: PowerUpSystemState | null,
+  ): PowerUpSystemState | null {
     if (!gameState) {
       return null;
     }
@@ -376,7 +388,9 @@ export abstract class PowerUpPlugin implements Plugin {
   /**
    * Create rollback function for effect removal
    */
-  protected createRollback(originalState: PowerUpSystemState | null): () => void {
+  protected createRollback(
+    originalState: PowerUpSystemState | null,
+  ): () => void {
     return () => {
       // Restore game state from snapshot
       // Implementation depends on game state structure
@@ -387,15 +401,18 @@ export abstract class PowerUpPlugin implements Plugin {
   /**
    * Log plugin activity for debugging
    */
-  protected log(message: string, level: 'info' | 'warn' | 'error' = 'info'): void {
+  protected log(
+    message: string,
+    level: "info" | "warn" | "error" = "info",
+  ): void {
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] PowerUpPlugin(${this.name}): ${message}`;
-    
+
     switch (level) {
-      case 'warn':
+      case "warn":
         console.warn(logMessage);
         break;
-      case 'error':
+      case "error":
         console.error(logMessage);
         break;
       default:

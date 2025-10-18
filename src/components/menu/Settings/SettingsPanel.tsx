@@ -1,26 +1,27 @@
-import React from 'react';
-import { AudioSettings } from './AudioSettings';
-import { ThemeSettings } from './ThemeSettings';
-import { AccessibilitySettings } from './AccessibilitySettings';
-import { useSettings } from '../../../hooks/useSettings';
-import './SettingsPanel.css';
+import React from "react";
+import { AudioSettings } from "./AudioSettings";
+import { ThemeSettings } from "./ThemeSettings";
+import { AccessibilitySettings } from "./AccessibilitySettings";
+import { QualitySettings } from "./QualitySettings";
+import { useSettings } from "../../../hooks/useSettings";
+import "./SettingsPanel.css";
 
 export interface SettingsPanelProps {
   onClose: () => void;
   className?: string;
 }
 
-export const SettingsPanel: React.FC<SettingsPanelProps> = ({ 
-  onClose, 
-  className = '' 
+export const SettingsPanel: React.FC<SettingsPanelProps> = ({
+  onClose,
+  className = "",
 }) => {
-  const { 
-    settings, 
+  const {
+    settings,
     updateSettings,
     resetSettings,
     saveSettings,
     isLoading,
-    hasUnsavedChanges
+    hasUnsavedChanges,
   } = useSettings();
 
   const handleSave = async () => {
@@ -29,16 +30,22 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
   };
 
   const handleReset = () => {
-    if (confirm('Reset all settings to default values?')) {
+    if (confirm("Reset all settings to default values?")) {
       resetSettings();
     }
   };
 
   return (
-    <div className={`settings-panel ${className}`} role="dialog" aria-labelledby="settings-title">
+    <div
+      className={`settings-panel ${className}`}
+      role="dialog"
+      aria-labelledby="settings-title"
+    >
       <div className="settings-container">
         <header className="settings-header">
-          <h2 id="settings-title" className="settings-title">Settings</h2>
+          <h2 id="settings-title" className="settings-title">
+            Settings
+          </h2>
           <button
             className="close-button"
             onClick={onClose}
@@ -51,7 +58,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
         <div className="settings-content">
           <section className="settings-section">
-            <AudioSettings 
+            <AudioSettings
               settings={settings}
               onUpdateSettings={updateSettings}
               disabled={isLoading}
@@ -59,7 +66,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           </section>
 
           <section className="settings-section">
-            <ThemeSettings 
+            <ThemeSettings
               settings={settings}
               onUpdateSettings={updateSettings}
               disabled={isLoading}
@@ -67,11 +74,16 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
           </section>
 
           <section className="settings-section">
-            <AccessibilitySettings 
+            <AccessibilitySettings
               settings={settings}
               onUpdateSettings={updateSettings}
               disabled={isLoading}
             />
+          </section>
+
+          <section className="settings-section">
+            <h3 className="section-title">Quality Settings</h3>
+            <QualitySettings />
           </section>
         </div>
 
@@ -102,7 +114,7 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 disabled={isLoading || !hasUnsavedChanges}
                 type="button"
               >
-                {isLoading ? 'Saving...' : 'Save Settings'}
+                {isLoading ? "Saving..." : "Save Settings"}
               </button>
             </div>
           </div>

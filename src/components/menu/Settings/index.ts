@@ -1,4 +1,5 @@
-export { SettingsPanel } from './SettingsPanel';
-export { AudioSettings } from './AudioSettings';
-export { ThemeSettings } from './ThemeSettings';
-export { AccessibilitySettings } from './AccessibilitySettings';
+export { SettingsPanel } from "./SettingsPanel";
+export { AudioSettings } from "./AudioSettings";
+export { ThemeSettings } from "./ThemeSettings";
+export { AccessibilitySettings } from "./AccessibilitySettings";
+export { QualitySettings } from "./QualitySettings";

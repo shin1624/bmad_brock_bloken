@@ -1,0 +1,25 @@
+.tutorialContainer {
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Animation for tutorial start */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tutorialContainer {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .tutorialContainer {
+    animation: none;
+  }
+}

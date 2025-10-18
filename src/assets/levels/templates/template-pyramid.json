@@ -1,0 +1,30 @@
+{
+  "name": "ピラミッド",
+  "description": "階層的な構造のレベル",
+  "difficulty": "medium",
+  "blocks": [
+    { "type": "unbreakable", "x": 4, "y": 1, "durability": -1, "points": 0 },
+    { "type": "unbreakable", "x": 5, "y": 1, "durability": -1, "points": 0 },
+    
+    { "type": "strong", "x": 3, "y": 2, "durability": 3, "points": 30 },
+    { "type": "strong", "x": 4, "y": 2, "durability": 3, "points": 30 },
+    { "type": "strong", "x": 5, "y": 2, "durability": 3, "points": 30 },
+    { "type": "strong", "x": 6, "y": 2, "durability": 3, "points": 30 },
+    
+    { "type": "strong", "x": 2, "y": 3, "durability": 2, "points": 20 },
+    { "type": "normal", "x": 3, "y": 3, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 4, "y": 3, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 5, "y": 3, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 6, "y": 3, "durability": 1, "points": 10 },
+    { "type": "strong", "x": 7, "y": 3, "durability": 2, "points": 20 },
+    
+    { "type": "normal", "x": 1, "y": 4, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 2, "y": 4, "durability": 1, "points": 10 },
+    { "type": "special", "x": 3, "y": 4, "durability": 1, "points": 100, "powerUp": "multiball" },
+    { "type": "normal", "x": 4, "y": 4, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 5, "y": 4, "durability": 1, "points": 10 },
+    { "type": "special", "x": 6, "y": 4, "durability": 1, "points": 100, "powerUp": "paddle-size" },
+    { "type": "normal", "x": 7, "y": 4, "durability": 1, "points": 10 },
+    { "type": "normal", "x": 8, "y": 4, "durability": 1, "points": 10 }
+  ]
+}

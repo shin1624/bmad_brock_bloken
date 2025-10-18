@@ -47,6 +47,13 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
       },
       [PowerUpType.Penetration]: "#96ceb4",
       [PowerUpType.Magnet]: "#feca57",
+      // Story 4.3a Phase 1
+      [PowerUpType.Shield]: "#3B82F6",
+      [PowerUpType.Pierce]: "#EF4444",
+      [PowerUpType.MagnetPaddle]: "#9c88ff",
+      // Story 4.3b Phase 2
+      [PowerUpType.SlowMotion]: "#9333EA",
+      [PowerUpType.Laser]: "#EF4444",
     };
 
     const mapping = colorMap[powerUpType];
@@ -390,20 +397,36 @@ const PowerUpEffects: React.FC<PowerUpEffectsProps> = ({
       {Array.from(activeEffects.values()).map(renderDOMEffect)}
 
       <style jsx>{`
-
         @keyframes powerUpCollect {
-          0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-          50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
-          100% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+          0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 0.8;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+          }
         }
 
         @keyframes powerUpActivate {
-          0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-          50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-          100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+          0% {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+          }
         }
-      
-`}</style>
+      `}</style>
     </div>
   );
 };

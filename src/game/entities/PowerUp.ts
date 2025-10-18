@@ -2,16 +2,21 @@
  * PowerUp Entity Implementation for Power-Up Foundation
  * Story 4.1, Task 1: PowerUp Entity extending Entity base class
  */
-import { Entity } from './Entity';
-
+import { Entity } from "./Entity";
 
 // Power-Up types enumeration (imported from HUD component for consistency)
 export enum PowerUpType {
-  MultiBall = 'multiball',
-  PaddleSize = 'paddlesize', 
-  BallSpeed = 'ballspeed',
-  Penetration = 'penetration',
-  Magnet = 'magnet'
+  MultiBall = "multiball",
+  PaddleSize = "paddlesize",
+  BallSpeed = "ballspeed",
+  Penetration = "penetration",
+  Magnet = "magnet",
+  Shield = "shield",
+  Pierce = "pierce",
+  MagnetPaddle = "magnetpaddle",
+  // Story 4.3b - Phase 2 Advanced Power-ups
+  SlowMotion = "slowmotion",
+  Laser = "laser",
 }
 
 // PowerUp metadata interface
@@ -21,7 +26,7 @@ export interface PowerUpMetadata {
   description: string;
   icon: string;
   color: string;
-  rarity: 'common' | 'rare' | 'epic';
+  rarity: "common" | "rare" | "epic";
   duration: number; // milliseconds
   effect: PowerUpEffect;
 }
@@ -63,12 +68,17 @@ export class PowerUp extends Entity {
     speed: 50, // pixels per second downward
     spawnChance: 0.1,
     despawnTime: 10000, // 10 seconds
-    animationSpeed: 2 // cycles per second
+    animationSpeed: 2, // cycles per second
   };
 
-  constructor(type: PowerUpType, metadata: PowerUpMetadata, position?: Vector2D, config?: Partial<PowerUpConfig>) {
+  constructor(
+    type: PowerUpType,
+    metadata: PowerUpMetadata,
+    position?: Vector2D,
+    config?: Partial<PowerUpConfig>,
+  ) {
     super();
-    
+
     this.type = type;
     this.metadata = metadata;
     this.config = { ...PowerUp.DEFAULT_CONFIG, ...config };
@@ -135,18 +145,29 @@ export class PowerUp extends Entity {
     ctx.scale(scaleOffset, scaleOffset);
 
     // Draw outer glow
-    const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.config.size.width);
-    gradient.addColorStop(0, this.metadata.color + '80'); // 50% opacity
-    gradient.addColorStop(0.7, this.metadata.color + '40'); // 25% opacity
-    gradient.addColorStop(1, this.metadata.color + '00'); // Transparent
+    const gradient = ctx.createRadialGradient(
+      0,
+      0,
+      0,
+      0,
+      0,
+      this.config.size.width,
+    );
+    gradient.addColorStop(0, this.metadata.color + "80"); // 50% opacity
+    gradient.addColorStop(0.7, this.metadata.color + "40"); // 25% opacity
+    gradient.addColorStop(1, this.metadata.color + "00"); // Transparent
 
     ctx.fillStyle = gradient;
-    ctx.fillRect(-this.config.size.width, -this.config.size.height, 
-                 this.config.size.width * 2, this.config.size.height * 2);
+    ctx.fillRect(
+      -this.config.size.width,
+      -this.config.size.height,
+      this.config.size.width * 2,
+      this.config.size.height * 2,
+    );
 
     // Draw main power-up shape
     ctx.fillStyle = this.metadata.color;
-    ctx.strokeStyle = '#ffffff';
+    ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 2;
 
     // Draw rounded rectangle
@@ -155,15 +176,21 @@ export class PowerUp extends Entity {
     const halfHeight = this.config.size.height / 2;
 
     ctx.beginPath();
-    ctx.roundRect(-halfWidth, -halfHeight, this.config.size.width, this.config.size.height, radius);
+    ctx.roundRect(
+      -halfWidth,
+      -halfHeight,
+      this.config.size.width,
+      this.config.size.height,
+      radius,
+    );
     ctx.fill();
     ctx.stroke();
 
     // Draw icon (text-based for now, can be replaced with sprites)
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 16px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 16px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     ctx.fillText(this.metadata.icon, 0, 0);
 
     ctx.restore();
@@ -177,7 +204,7 @@ export class PowerUp extends Entity {
       x: this.position.x,
       y: this.position.y,
       width: this.config.size.width,
-      height: this.config.size.height
+      height: this.config.size.height,
     };
   }
 
@@ -193,7 +220,10 @@ export class PowerUp extends Entity {
    * Check if power-up should despawn (fallen off screen or timed out)
    */
   public shouldDespawn(screenHeight: number): boolean {
-    return this.position.y > screenHeight || this.timeAlive >= this.config.despawnTime;
+    return (
+      this.position.y > screenHeight ||
+      this.timeAlive >= this.config.despawnTime
+    );
   }
 
   /**
@@ -213,7 +243,11 @@ export class PowerUp extends Entity {
   /**
    * Factory method to create PowerUp with predefined metadata
    */
-  public static create(type: PowerUpType, position?: Vector2D, config?: Partial<PowerUpConfig>): PowerUp {
+  public static create(
+    type: PowerUpType,
+    position?: Vector2D,
+    config?: Partial<PowerUpConfig>,
+  ): PowerUp {
     const metadata = PowerUp.getMetadata(type);
     return new PowerUp(type, metadata, position, config);
   }
@@ -225,86 +259,106 @@ export class PowerUp extends Entity {
     const metadataMap: Record<PowerUpType, PowerUpMetadata> = {
       [PowerUpType.MultiBall]: {
         type: PowerUpType.MultiBall,
-        name: 'Multi Ball',
-        description: 'Spawns additional balls',
-        icon: '⚡',
-        color: '#ff6b6b',
-        rarity: 'rare',
+        name: "Multi Ball",
+        description: "Spawns additional balls",
+        icon: "⚡",
+        color: "#ff6b6b",
+        rarity: "rare",
         duration: 30000, // 30 seconds
         effect: {
-          id: 'multiball_effect',
+          id: "multiball_effect",
           priority: 10,
           stackable: true,
-          apply: () => { /* Implementation in PowerUpSystem */ },
-          remove: () => { /* Implementation in PowerUpSystem */ }
-        }
+          apply: () => {
+            /* Implementation in PowerUpSystem */
+          },
+          remove: () => {
+            /* Implementation in PowerUpSystem */
+          },
+        },
       },
       [PowerUpType.PaddleSize]: {
         type: PowerUpType.PaddleSize,
-        name: 'Paddle Size',
-        description: 'Increases paddle size',
-        icon: '🏓',
-        color: '#4ecdc4',
-        rarity: 'common',
+        name: "Paddle Size",
+        description: "Increases paddle size",
+        icon: "🏓",
+        color: "#4ecdc4",
+        rarity: "common",
         duration: 20000, // 20 seconds
         effect: {
-          id: 'paddle_size_effect',
+          id: "paddle_size_effect",
           priority: 5,
           stackable: false,
-          apply: () => { /* Implementation in PowerUpSystem */ },
-          remove: () => { /* Implementation in PowerUpSystem */ }
-        }
+          apply: () => {
+            /* Implementation in PowerUpSystem */
+          },
+          remove: () => {
+            /* Implementation in PowerUpSystem */
+          },
+        },
       },
       [PowerUpType.BallSpeed]: {
         type: PowerUpType.BallSpeed,
-        name: 'Ball Speed',
-        description: 'Modifies ball speed',
-        icon: '💨',
-        color: '#45b7d1',
-        rarity: 'common',
+        name: "Ball Speed",
+        description: "Modifies ball speed",
+        icon: "💨",
+        color: "#45b7d1",
+        rarity: "common",
         duration: 15000, // 15 seconds
         effect: {
-          id: 'ball_speed_effect',
+          id: "ball_speed_effect",
           priority: 3,
           stackable: false,
           conflictsWith: [PowerUpType.Magnet],
-          apply: () => { /* Implementation in PowerUpSystem */ },
-          remove: () => { /* Implementation in PowerUpSystem */ }
-        }
+          apply: () => {
+            /* Implementation in PowerUpSystem */
+          },
+          remove: () => {
+            /* Implementation in PowerUpSystem */
+          },
+        },
       },
       [PowerUpType.Penetration]: {
         type: PowerUpType.Penetration,
-        name: 'Penetration',
-        description: 'Ball penetrates through blocks',
-        icon: '🎯',
-        color: '#96ceb4',
-        rarity: 'epic',
+        name: "Penetration",
+        description: "Ball penetrates through blocks",
+        icon: "🎯",
+        color: "#96ceb4",
+        rarity: "epic",
         duration: 10000, // 10 seconds
         effect: {
-          id: 'penetration_effect',
+          id: "penetration_effect",
           priority: 8,
           stackable: false,
-          apply: () => { /* Implementation in PowerUpSystem */ },
-          remove: () => { /* Implementation in PowerUpSystem */ }
-        }
+          apply: () => {
+            /* Implementation in PowerUpSystem */
+          },
+          remove: () => {
+            /* Implementation in PowerUpSystem */
+          },
+        },
       },
       [PowerUpType.Magnet]: {
         type: PowerUpType.Magnet,
-        name: 'Magnet',
-        description: 'Ball sticks to paddle',
-        icon: '🧲',
-        color: '#feca57',
-        rarity: 'rare',
+        name: "Magnet",
+        description: "Ball sticks to paddle",
+        icon: "🧲",
+        color: "#feca57",
+        rarity: "rare",
         duration: 25000, // 25 seconds
         effect: {
-          id: 'magnet_effect',
+          id: "magnet_effect",
           priority: 7,
           stackable: false,
           conflictsWith: [PowerUpType.BallSpeed],
-          apply: () => { /* Implementation in PowerUpSystem */ },
-          remove: () => { /* Implementation in PowerUpSystem */ }
-        }
-      }
+          apply: () => {
+            /* Implementation in PowerUpSystem */
+          },
+          remove: () => {
+            /* Implementation in PowerUpSystem */
+          },
+        },
+      },
     };
 
     return metadataMap[type];

@@ -26,6 +26,15 @@ export class GameStateManager {
       powerUps: [],
       combo: 0,
       highScore: 0,
+      // Phase 1 power-up states - Story 4.3a
+      shieldActive: false,
+      pierceActive: false,
+      pierceBlocksRemaining: 0,
+      magnetActive: false,
+      ballAttached: false,
+      // Phase 2 power-up states - Story 4.3b
+      timeScale: 1.0,
+      laserActive: false,
       ...initialState,
     };
 
