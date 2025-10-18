@@ -8,8 +8,8 @@
  * - Trail effect
  * - Quality settings integration
  */
-import { Projectile } from '../../entities/Projectile';
-import { getQualitySettings } from '../../../stores/qualitySettingsStore';
+import { Projectile } from "../../entities/Projectile";
+import { getQualitySettings } from "../../../stores/qualitySettingsStore";
 
 export interface LaserEffectConfig {
   glowBlur: number;
@@ -21,7 +21,7 @@ export interface LaserEffectConfig {
 
 const DEFAULT_CONFIG: LaserEffectConfig = {
   glowBlur: 10,
-  glowColor: 'rgba(255, 100, 100, 0.8)',
+  glowColor: "rgba(255, 100, 100, 0.8)",
   muzzleFlashDuration: 150,
   muzzleFlashRadius: 12,
   trailLength: 3,
@@ -30,7 +30,7 @@ const DEFAULT_CONFIG: LaserEffectConfig = {
 interface MuzzleFlash {
   x: number;
   y: number;
-  startTime: number;
+  elapsed: number; // Time elapsed since creation in milliseconds
   intensity: number;
 }
 
@@ -47,7 +47,7 @@ export class LaserEffect {
    */
   public renderProjectile(
     ctx: CanvasRenderingContext2D,
-    projectile: Projectile
+    projectile: Projectile,
   ): void {
     if (!projectile.active) return;
 
@@ -65,7 +65,7 @@ export class LaserEffect {
         position.x - size.width / 2,
         position.y - size.height / 2,
         size.width,
-        size.height
+        size.height,
       );
       ctx.shadowBlur = 0;
     }
@@ -76,7 +76,7 @@ export class LaserEffect {
       position.x - size.width / 2,
       position.y - size.height / 2,
       size.width,
-      size.height
+      size.height,
     );
 
     // Render trail (if quality allows)
@@ -92,7 +92,7 @@ export class LaserEffect {
    */
   private renderTrail(
     ctx: CanvasRenderingContext2D,
-    projectile: Projectile
+    projectile: Projectile,
   ): void {
     const { position, size, velocity, color } = projectile;
 
@@ -110,13 +110,30 @@ export class LaserEffect {
       const trailX = position.x + dirX * size.height * i;
       const trailY = position.y + dirY * size.height * i;
 
-      ctx.fillStyle = color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+      // Convert color to rgba with alpha
+      let trailColor: string;
+      if (color.startsWith("rgb(")) {
+        trailColor = color.replace(")", `, ${alpha})`).replace("rgb", "rgba");
+      } else if (color.startsWith("rgba(")) {
+        trailColor = color.replace(/[\d.]+\)$/, `${alpha})`);
+      } else {
+        // Hex color - use with globalAlpha
+        ctx.globalAlpha = alpha;
+        trailColor = color;
+      }
+
+      ctx.fillStyle = trailColor;
       ctx.fillRect(
         trailX - size.width / 2,
         trailY - size.height / 2,
         size.width,
-        size.height * 0.8
+        size.height * 0.8,
       );
+
+      // Reset globalAlpha if we used it
+      if (!color.startsWith("rgb")) {
+        ctx.globalAlpha = 1.0;
+      }
     }
   }
 
@@ -132,7 +149,7 @@ export class LaserEffect {
     this.muzzleFlashes.push({
       x,
       y,
-      startTime: Date.now(),
+      elapsed: 0,
       intensity: 1.0,
     });
   }
@@ -141,17 +158,16 @@ export class LaserEffect {
    * Update muzzle flashes
    */
   public update(deltaTime: number): void {
-    const now = Date.now();
-
     // Update and remove expired flashes
     this.muzzleFlashes = this.muzzleFlashes.filter((flash) => {
-      const elapsed = now - flash.startTime;
-      if (elapsed >= this.config.muzzleFlashDuration) {
+      flash.elapsed += deltaTime;
+
+      if (flash.elapsed >= this.config.muzzleFlashDuration) {
         return false;
       }
 
       // Update intensity (fade out)
-      flash.intensity = 1 - elapsed / this.config.muzzleFlashDuration;
+      flash.intensity = 1 - flash.elapsed / this.config.muzzleFlashDuration;
       return true;
     });
   }
@@ -179,11 +195,11 @@ export class LaserEffect {
           0,
           flash.x,
           flash.y,
-          radius * 1.5
+          radius * 1.5,
         );
         gradient.addColorStop(0, `rgba(255, 200, 100, ${alpha})`);
         gradient.addColorStop(0.5, `rgba(255, 100, 100, ${alpha * 0.5})`);
-        gradient.addColorStop(1, 'rgba(255, 100, 100, 0)');
+        gradient.addColorStop(1, "rgba(255, 100, 100, 0)");
 
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -206,7 +222,7 @@ export class LaserEffect {
    */
   public render(
     ctx: CanvasRenderingContext2D,
-    projectiles: Projectile[]
+    projectiles: Projectile[],
   ): void {
     // Render muzzle flashes first (behind projectiles)
     this.renderMuzzleFlashes(ctx);
