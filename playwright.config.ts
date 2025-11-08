@@ -41,7 +41,7 @@ export default defineConfig({
     actionTimeout: 10000,
 
     // Base URL to use in actions like `await page.goto('/')`
-    baseURL: process.env.BASE_URL || "http://localhost:3001",
+    baseURL: process.env.BASE_URL || "http://localhost:3000",
 
     // Collect trace when retrying the failed test
     trace: "on-first-retry",
@@ -111,7 +111,7 @@ export default defineConfig({
   // Run your local dev server before starting the tests
   webServer: {
     command: "npm run dev",
-    port: 3001,
+    port: 3000,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
