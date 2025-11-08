@@ -41,7 +41,7 @@ export default defineConfig({
     actionTimeout: 10000,
 
     // Base URL to use in actions like `await page.goto('/')`
-    baseURL: process.env.BASE_URL || "http://localhost:3000",
+    baseURL: process.env.BASE_URL || "http://localhost:3001",
 
     // Collect trace when retrying the failed test
     trace: "on-first-retry",

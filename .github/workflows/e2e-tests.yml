@@ -74,35 +74,43 @@ jobs:
     - name: Merge test reports
       run: |
         npm install --no-save @playwright/test
-        npx playwright merge-reports --reporter html ./all-reports
-    
+        npx playwright merge-reports --reporter html --reporter json ./all-reports
+
     - name: Upload merged report
       uses: actions/upload-artifact@v3
       with:
         name: playwright-report-merged
         path: playwright-report/
         retention-days: 30
-    
+
     - name: Comment PR
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v6
       with:
         script: |
           const fs = require('fs');
-          const results = JSON.parse(fs.readFileSync('./e2e-reports/results.json', 'utf8'));
-          
-          const comment = `
-          ## 🎭 E2E Test Results
-          
-          - **Total Tests**: ${results.total}
-          - **Passed**: ✅ ${results.passed}
-          - **Failed**: ❌ ${results.failed}
-          - **Skipped**: ⏭️ ${results.skipped}
-          - **Duration**: ⏱️ ${results.duration}ms
-          
-          [View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          `;
-          
+          let comment = `## 🎭 E2E Test Results\n\n`;
+
+          try {
+            // Try to read the merged JSON report
+            const resultsPath = './playwright-report/results.json';
+            if (fs.existsSync(resultsPath)) {
+              const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+              comment += `- **Total Tests**: ${results.total || 'N/A'}\n`;
+              comment += `- **Passed**: ✅ ${results.passed || 0}\n`;
+              comment += `- **Failed**: ❌ ${results.failed || 0}\n`;
+              comment += `- **Skipped**: ⏭️ ${results.skipped || 0}\n`;
+              comment += `- **Duration**: ⏱️ ${results.duration || 'N/A'}ms\n`;
+            } else {
+              comment += `Test execution completed. Check the artifacts for detailed results.\n`;
+            }
+          } catch (error) {
+            comment += `Test execution completed. Check the artifacts for detailed results.\n`;
+            console.log('Could not parse test results:', error.message);
+          }
+
+          comment += `\n[View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+
           github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
